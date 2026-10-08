@@ -9,7 +9,9 @@ Proyecto académico de Machine Learning I. Antes de proponer cambios:
 3. **Particiones por mes**, con `CVTemporalPorMes`. Nunca `train_test_split` ni `shuffle=True`.
 4. **No leer la prueba** (agosto 2025 – julio 2026). `cargar_prueba()` solo en
    `scripts/evaluar_prueba.py`.
-5. `L`, `F` y `eta` nunca son predictores (`config.COLUMNAS_PROHIBIDAS`).
+5. Las columnas de `componentes_regionales.csv` y `lineas_nacionales.csv` nunca son predictores
+   (`config.COLUMNAS_PROHIBIDAS`). No modificar `data/raw/` ni los scripts de `src/simulation` y
+   `src/features` sin acuerdo del equipo: reproducen la base verificada.
 6. Rutas y constantes siempre desde `src/config.py`. Semilla: `config.SEMILLA`.
 7. Cada archivo tiene un dueño (primera línea `# Dueño: ...`). No edites archivos de otra persona
    ni cambies nombres o parámetros de funciones existentes.

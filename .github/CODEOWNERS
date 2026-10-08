@@ -2,34 +2,30 @@
 
 # --- Aleja ---
 /src/config.py                            @AlejaCortes
-/src/datos/esquema.py                     @AlejaCortes
-/src/datos/emc.py                         @AlejaCortes
-/src/datos/simulacion.py                  @AlejaCortes
-/src/datos/panel.py                       @AlejaCortes
-/src/datos/cargar.py                      @AlejaCortes
+/src/datos/                               @AlejaCortes
+/src/simulation/                          @AlejaCortes
 /src/evaluacion/agregacion.py             @AlejaCortes
-/scripts/construir_panel.py               @AlejaCortes
 /scripts/reproducir.py                    @AlejaCortes
 /tests/test_fuga.py                       @AlejaCortes
+/tests/test_config.py                     @AlejaCortes
+/tests/test_esquema.py                    @AlejaCortes
+/tests/test_cargar.py                     @AlejaCortes
+/results/verificacion.md                  @AlejaCortes
 /notebooks/01_verificacion_simulacion.ipynb @AlejaCortes
 /notebooks/05_escenarios.ipynb            @AlejaCortes
-/docs/migracion_e1.md                     @AlejaCortes
 /README.md                                @AlejaCortes
 /pyproject.toml                           @AlejaCortes
 /requirements.txt                         @AlejaCortes
 /.github/                                 @AlejaCortes
 
 # --- Julián ---
-/src/datos/predictores.py                 @jdrodriguez03
-/src/datos/unir.py                        @jdrodriguez03
+/src/features/                            @jdrodriguez03
 /src/modelos/stepwise.py                  @jdrodriguez03
 /src/modelos/candidatos.py                @jdrodriguez03
 /src/evaluacion/interpretacion.py         @jdrodriguez03
-/scripts/construir_predictores.py         @jdrodriguez03
-/scripts/construir_dataset.py             @jdrodriguez03
 /notebooks/02_calidad_predictores.ipynb   @jdrodriguez03
 /notebooks/04_interpretacion.ipynb        @jdrodriguez03
-/data/raw/FUENTES.md                      @jdrodriguez03
+/data/                                    @jdrodriguez03
 /docs/diccionario_datos.md                @jdrodriguez03
 /docs/uso_ia.md                           @jdrodriguez03
 /docs/bitacora_resultados.md              @jdrodriguez03
