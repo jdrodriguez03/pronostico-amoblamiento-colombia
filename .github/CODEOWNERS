@@ -1,21 +1,23 @@
-# Dueño: Aleja · Quién cuida qué (ver docs/guia_repositorio). GitHub marca al dueño en cada PR.
-# PENDIENTE: reemplazar ALEJA_USUARIO y JUANES_USUARIO por los usuarios de GitHub y quitar el "#".
+# Dueño: Aleja · Quién cuida qué. GitHub marca al dueño en cada PR.
 
 # --- Aleja ---
-# /src/config.py                          @ALEJA_USUARIO
-# /src/datos/esquema.py                   @ALEJA_USUARIO
-# /src/datos/emc.py                       @ALEJA_USUARIO
-# /src/datos/simulacion.py                @ALEJA_USUARIO
-# /src/datos/panel.py                     @ALEJA_USUARIO
-# /src/datos/cargar.py                    @ALEJA_USUARIO
-# /src/evaluacion/agregacion.py           @ALEJA_USUARIO
-# /scripts/construir_panel.py             @ALEJA_USUARIO
-# /scripts/reproducir.py                  @ALEJA_USUARIO
-# /tests/test_fuga.py                     @ALEJA_USUARIO
-# /README.md                              @ALEJA_USUARIO
-# /pyproject.toml                         @ALEJA_USUARIO
-# /requirements.txt                       @ALEJA_USUARIO
-# /.github/                               @ALEJA_USUARIO
+/src/config.py                            @AlejaCortes
+/src/datos/esquema.py                     @AlejaCortes
+/src/datos/emc.py                         @AlejaCortes
+/src/datos/simulacion.py                  @AlejaCortes
+/src/datos/panel.py                       @AlejaCortes
+/src/datos/cargar.py                      @AlejaCortes
+/src/evaluacion/agregacion.py             @AlejaCortes
+/scripts/construir_panel.py               @AlejaCortes
+/scripts/reproducir.py                    @AlejaCortes
+/tests/test_fuga.py                       @AlejaCortes
+/notebooks/01_verificacion_simulacion.ipynb @AlejaCortes
+/notebooks/05_escenarios.ipynb            @AlejaCortes
+/docs/migracion_e1.md                     @AlejaCortes
+/README.md                                @AlejaCortes
+/pyproject.toml                           @AlejaCortes
+/requirements.txt                         @AlejaCortes
+/.github/                                 @AlejaCortes
 
 # --- Julián ---
 /src/datos/predictores.py                 @jdrodriguez03
@@ -25,21 +27,26 @@
 /src/evaluacion/interpretacion.py         @jdrodriguez03
 /scripts/construir_predictores.py         @jdrodriguez03
 /scripts/construir_dataset.py             @jdrodriguez03
+/notebooks/02_calidad_predictores.ipynb   @jdrodriguez03
+/notebooks/04_interpretacion.ipynb        @jdrodriguez03
 /data/raw/FUENTES.md                      @jdrodriguez03
 /docs/diccionario_datos.md                @jdrodriguez03
 /docs/uso_ia.md                           @jdrodriguez03
+/docs/bitacora_resultados.md              @jdrodriguez03
 
 # --- Juanes ---
-# /src/modelos/preprocesamiento.py        @JUANES_USUARIO
-# /src/modelos/pipeline.py                @JUANES_USUARIO
-# /src/modelos/lineas_base.py             @JUANES_USUARIO
-# /src/evaluacion/particion.py            @JUANES_USUARIO
-# /src/evaluacion/metricas.py             @JUANES_USUARIO
-# /src/evaluacion/validar.py              @JUANES_USUARIO
-# /src/figuras.py                         @JUANES_USUARIO
-# /scripts/crear_fixture.py               @JUANES_USUARIO
-# /scripts/entrenar.py                    @JUANES_USUARIO
-# /scripts/evaluar_prueba.py              @JUANES_USUARIO
-# /data/fixtures/                         @JUANES_USUARIO
-# /docs/validacion.md                     @JUANES_USUARIO
-# /docs/guion_sustentacion.md             @JUANES_USUARIO
+/src/modelos/preprocesamiento.py          @juanesaacosta26
+/src/modelos/pipeline.py                  @juanesaacosta26
+/src/modelos/lineas_base.py               @juanesaacosta26
+/src/evaluacion/particion.py              @juanesaacosta26
+/src/evaluacion/metricas.py               @juanesaacosta26
+/src/evaluacion/validar.py                @juanesaacosta26
+/src/figuras.py                           @juanesaacosta26
+/scripts/crear_fixture.py                 @juanesaacosta26
+/scripts/entrenar.py                      @juanesaacosta26
+/scripts/evaluar_prueba.py                @juanesaacosta26
+/data/fixtures/                           @juanesaacosta26
+/notebooks/03_comparacion_modelos.ipynb   @juanesaacosta26
+/docs/validacion.md                       @juanesaacosta26
+/docs/guion_sustentacion.md               @juanesaacosta26
+/docs/cuadre_cifras.md                    @juanesaacosta26
