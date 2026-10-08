@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+# Entornos
+.venv/
+venv/
+# Jupyter
+.ipynb_checkpoints/
+# Herramientas
+.pytest_cache/
+.ruff_cache/
+# Excel abierto
+~$*.xlsx
+~$*.xls
+# Modelos entrenados: se regeneran con scripts/entrenar.py
+resultados/modelos/
+*.joblib
+# Sistema y editores
+.DS_Store
+Thumbs.db
+.vscode/

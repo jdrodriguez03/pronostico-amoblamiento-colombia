@@ -1,0 +1,28 @@
+# Dueño: Aleja
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pronostico-amoblamiento-colombia"
+version = "0.2.0"
+description = "Proyecto Integrador ML I: pronóstico de ventas de amoblamiento y hogar en Colombia"
+requires-python = ">=3.12"
+
+[tool.setuptools]
+packages = ["src", "src.datos", "src.modelos", "src.evaluacion"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = ["notebooks/00_entrega1"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff.lint.per-file-ignores]
+# En los notebooks se importa de más mientras se explora
+"notebooks/*" = ["F401", "E402"]

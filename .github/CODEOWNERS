@@ -1,0 +1,45 @@
+# Dueño: Aleja · Quién cuida qué (ver docs/guia_repositorio). GitHub marca al dueño en cada PR.
+# PENDIENTE: reemplazar ALEJA_USUARIO y JUANES_USUARIO por los usuarios de GitHub y quitar el "#".
+
+# --- Aleja ---
+# /src/config.py                          @ALEJA_USUARIO
+# /src/datos/esquema.py                   @ALEJA_USUARIO
+# /src/datos/emc.py                       @ALEJA_USUARIO
+# /src/datos/simulacion.py                @ALEJA_USUARIO
+# /src/datos/panel.py                     @ALEJA_USUARIO
+# /src/datos/cargar.py                    @ALEJA_USUARIO
+# /src/evaluacion/agregacion.py           @ALEJA_USUARIO
+# /scripts/construir_panel.py             @ALEJA_USUARIO
+# /scripts/reproducir.py                  @ALEJA_USUARIO
+# /tests/test_fuga.py                     @ALEJA_USUARIO
+# /README.md                              @ALEJA_USUARIO
+# /pyproject.toml                         @ALEJA_USUARIO
+# /requirements.txt                       @ALEJA_USUARIO
+# /.github/                               @ALEJA_USUARIO
+
+# --- Julián ---
+/src/datos/predictores.py                 @jdrodriguez03
+/src/datos/unir.py                        @jdrodriguez03
+/src/modelos/stepwise.py                  @jdrodriguez03
+/src/modelos/candidatos.py                @jdrodriguez03
+/src/evaluacion/interpretacion.py         @jdrodriguez03
+/scripts/construir_predictores.py         @jdrodriguez03
+/scripts/construir_dataset.py             @jdrodriguez03
+/data/raw/FUENTES.md                      @jdrodriguez03
+/docs/diccionario_datos.md                @jdrodriguez03
+/docs/uso_ia.md                           @jdrodriguez03
+
+# --- Juanes ---
+# /src/modelos/preprocesamiento.py        @JUANES_USUARIO
+# /src/modelos/pipeline.py                @JUANES_USUARIO
+# /src/modelos/lineas_base.py             @JUANES_USUARIO
+# /src/evaluacion/particion.py            @JUANES_USUARIO
+# /src/evaluacion/metricas.py             @JUANES_USUARIO
+# /src/evaluacion/validar.py              @JUANES_USUARIO
+# /src/figuras.py                         @JUANES_USUARIO
+# /scripts/crear_fixture.py               @JUANES_USUARIO
+# /scripts/entrenar.py                    @JUANES_USUARIO
+# /scripts/evaluar_prueba.py              @JUANES_USUARIO
+# /data/fixtures/                         @JUANES_USUARIO
+# /docs/validacion.md                     @JUANES_USUARIO
+# /docs/guion_sustentacion.md             @JUANES_USUARIO
