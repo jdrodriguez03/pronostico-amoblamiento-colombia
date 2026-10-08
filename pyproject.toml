@@ -26,3 +26,6 @@ testpaths = ["tests"]
 [tool.ruff.lint.per-file-ignores]
 # En los notebooks se importa de más mientras se explora
 "notebooks/*" = ["F401", "E402"]
+# Scripts de construcción de la base (Entrega 1): se conservan tal como se generaron
+"src/simulation/*" = ["E501", "E741"]
+"src/features/*" = ["E501", "E741"]

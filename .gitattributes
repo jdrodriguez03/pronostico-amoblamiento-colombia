@@ -3,3 +3,5 @@
 *.xlsx binary
 *.parquet binary
 *.png binary
+*.pdf binary
+*.docx binary
