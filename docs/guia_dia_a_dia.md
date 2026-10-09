@@ -78,10 +78,10 @@ Cada cierre fusiona los PR del bloque y deja una etiqueta en main; el punto de c
 
 **Julián · fuentes y presentación de la base (3 h)**
 
-- [ ] Invitar a Aleja y a Juanes en **Settings → Collaborators** (si no lo hizo ya).
-- [x] Completar en `data/raw/FUENTES.md` la URL y la fecha de descarga de cada insumo (hecho el 9 de octubre; faltan los enlaces directos de `interes.xlsx` y del PDF de Fedesarrollo, marcados VERIFICAR).
-- [ ] Correr `python src/features/predictores.py` (requiere `pdftotext`) y comprobar con `git status` que nada cambió.
-- [ ] Preparar 15 minutos para la reunión: las 19 columnas, por qué existen las `_rez1`, por qué el ICC es solo nacional, el capítulo 94 completo y la ventana de `covid`.
+- [x] Invitar a Aleja y a Juanes en **Settings → Collaborators** (si no lo hizo ya).
+- [x] Completar en `data/raw/FUENTES.md` la URL y la fecha de descarga de cada insumo (hecho el 9 de octubre; los enlaces de `interes.xlsx` y de la EOC se completaron el mismo día, con notas).
+- [x] Correr `python src/features/predictores.py` (requiere `pdftotext`) y comprobar con `git status` que nada cambió (hecho el 9 de octubre: falló con el `pdftotext` de Git para Windows, que dejaba 3 meses del ICC vacíos; se corrigió el patrón de `icc()` en el PR #1 y ahora la base se reproduce byte a byte).
+- [x] Preparar 15 minutos para la reunión: las 19 columnas, por qué existen las `_rez1`, por qué el ICC es solo nacional, el capítulo 94 completo y la ventana de `covid`.
 
 * **Listo cuando:** `FUENTES.md` está completo y la explicación está lista.
 
@@ -96,11 +96,11 @@ Cada cierre fusiona los PR del bloque y deja una etiqueta en main; el punto de c
 
 **Todos · reunión de arranque (1.5 h, 19:00, en llamada)**
 
-- [ ] (10 min) Leer juntos "La idea en tres líneas" y "Las 6 reglas" de la guía del repositorio.
-- [ ] (25 min) Julián recorre el repositorio y la base: carpetas, scripts de construcción, columnas y archivos de auditoría.
-- [ ] (15 min) Revisar el contrato (`COLUMNAS_BASE` en `esquema.py`). Después de hoy solo cambia en un cierre.
-- [ ] (20 min) Repasar las decisiones del día 1 (ya en `docs/decisiones.md`): que los tres puedan explicar el porqué de cada una.
-- [ ] (20 min) Cada quien sigue el primer arranque y corre `pytest`. Nadie cuelga hasta que los tres vean verde.
+- [x] (10 min) Leer juntos "La idea en tres líneas" y "Las 6 reglas" de la guía del repositorio.
+- [x] (25 min) Julián recorre el repositorio y la base: carpetas, scripts de construcción, columnas y archivos de auditoría.
+- [x] (15 min) Revisar el contrato (`COLUMNAS_BASE` en `esquema.py`). Después de hoy solo cambia en un cierre.
+- [x] (20 min) Repasar las decisiones del día 1 (ya en `docs/decisiones.md`): que los tres puedan explicar el porqué de cada una.
+- [x] (20 min) Cada quien sigue el primer arranque y corre `pytest`. Nadie cuelga hasta que los tres vean verde.
 
 ### Día 2 · sábado 10 de octubre
 
@@ -613,4 +613,4 @@ En `notebooks/04_interpretacion.ipynb`:
 ## Lo que no está resuelto todavía
 
 - Fecha y duración de la sustentación: ajustar el bloque 7 cuando se sepa.
-- Los enlaces directos de `interes.xlsx` y del PDF de Fedesarrollo en `data/raw/FUENTES.md` (Julián).
+- Confirmar desde un navegador que el enlace de `interes.xls` en `data/raw/FUENTES.md` sigue activo (Julián).
