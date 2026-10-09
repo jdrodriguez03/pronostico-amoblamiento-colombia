@@ -21,4 +21,5 @@ Formato: fecha · quién · decisión · por qué (una o dos líneas).
 | 2026-10-09 | Julián | Objetivo en logaritmo con `TransformedTargetRegressor` (`LOG_OBJETIVO = True`) | El índice es L × F × η: en logaritmo los factores se suman, que es lo que asume la regresión lineal; las métricas se calculan en la escala original |
 | 2026-10-09 | Julián | KNN para regresión como cuarto modelo, junto a MLR (stepwise y completa), Ridge y Lasso | La rúbrica de la 7.3 nombra KNN y pide varios modelos; aporta un contraste no lineal |
 | 2026-10-09 | Julián | El repositorio se hace público el 27 de octubre | El profesor lo revisa sin necesitar invitación; hasta entonces sigue privado |
-| 2026-10-09 | Julián | Cambio: el repositorio es público desde el 9 de octubre (reemplaza la entrada anterior) | El profesor puede seguir el avance desde ya y GitHub permite proteger main en repos públicos gratuitos |
+| 2026-10-09 | Julián | Cambio: el repositorio es público desde el 9 de octubre (reemplaza la entrada anterior) | El profesor puede seguir el avance desde ya |
+| 2026-10-09 | Julián | main sin regla de protección en GitHub | Confiamos en el equipo; el flujo de ramas, PR con 2 aprobaciones y CI en verde se cumple por acuerdo |

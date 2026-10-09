@@ -224,7 +224,7 @@ Todos se corren desde la raíz del repositorio y, en Windows, en Git Bash.
 
 ## La revisión de cierre
 
-Al final de cada bloque (cada 2 o 3 días, ver la guía día por día) los tres revisan juntos todos los PR en una llamada de 45 minutos. Un PR se fusiona con **las 2 aprobaciones de los otros dos y el CI en verde**. Como el repo es público, GitHub lo hace cumplir: main está protegida y no acepta un PR sin el CI en verde y las aprobaciones.
+Al final de cada bloque (cada 2 o 3 días, ver la guía día por día) los tres revisan juntos todos los PR en una llamada de 45 minutos. Un PR se fusiona con **las 2 aprobaciones de los otros dos y el CI en verde**. main no tiene una regla de protección en GitHub (decisión del 9 de octubre: confiamos en el equipo), así que técnicamente se podría subir directo o fusionar sin aprobaciones. No se hace: lo cumplimos entre todos.
 
 1. El dueño comparte pantalla: muestra qué cambió, `pytest` en verde y, si aplica, la tabla o figura que produjo.
 2. Los otros miran **Files changed**: ¿tocó archivos ajenos?, ¿hay algo ajustado fuera del Pipeline?, ¿se leyó la prueba?
