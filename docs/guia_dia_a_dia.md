@@ -39,7 +39,7 @@ Cuatro decisiones cambian el trabajo de todos. Julián las tomó el 9 de octubre
 | ¿Predictores del mismo mes o rezagados? | Rezagados (`_rez1`), `USAR_REZAGO = True`, y se descarta enero de 2019 | Al pronosticar el mes t aún no se conocen sus datos económicos; descartar el único mes sin rezago de vivienda evita imputar |
 | ¿Modelar el índice en logaritmo? | Sí, con `TransformedTargetRegressor` | El índice se construyó como producto L × F × η: en logaritmo esos factores se suman |
 | ¿Agregar KNN como cuarto modelo? | Sí, KNN para regresión | La rúbrica de la 7.3 nombra KNN y pide "varios modelos" |
-| ¿Cómo ve el profesor el código? | Repo privado hasta el 27; ese día se hace público | El profesor lo revisa sin necesitar invitación |
+| ¿Cómo ve el profesor el código? | Repo público desde el 9 de octubre | El profesor puede seguir el avance sin necesitar invitación; todo lo que se sube es visible, así que nada de datos personales ni claves |
 
 Los modelos que se comparan quedan así: **MLR con stepwise** (reproduce el artículo), **MLR completa** (todas las variables, para ver la multicolinealidad), **Ridge**, **Lasso** y **KNN**, contra dos líneas base: **predictor de la media** e **ingenuo estacional**.
 
@@ -598,8 +598,8 @@ En `notebooks/04_interpretacion.ipynb`:
 **Objetivo del día:** todo cerrado un día antes.
 
 - [ ] **Todos · ensayo 2 (1 h):** con los cambios del ensayo 1. El que hace de profesor elige preguntas al azar y a cualquier persona, no al dueño de la sección.
-- [ ] **Aleja (2 h):** exportar el informe a PDF y subirlo a `docs/informe/`; etiquetar `v2.0` en main y comprobar el enlace público en una ventana de incógnito.
-- [ ] **Julián (1 h):** hacer público el repositorio (**Settings → General → Danger Zone → Change visibility**; solo el dueño de la cuenta puede hacerlo) y correr `reproducir.py --hasta prueba` desde un clon limpio de `v2.0` por última vez.
+- [ ] **Aleja (2 h):** exportar el informe a PDF y subirlo a `docs/informe/`; etiquetar `v2.0` en main y comprobar en una ventana de incógnito que el enlace abre la etiqueta.
+- [ ] **Julián (1 h):** correr `reproducir.py --hasta prueba` desde un clon limpio de `v2.0` por última vez.
 - [ ] **Juanes (1 h):** cuadre final de cifras entre el PDF y las tablas de `v2.0`.
 
 * **Listo cuando:** PDF, etiqueta y enlace verificados; el ensayo 2 sin fallas graves.

@@ -12,7 +12,7 @@ El repositorio `pronostico-amoblamiento-colombia` tiene todo lo de la Entrega 2:
 2. **Cada archivo tiene un dueño.** Solo el dueño lo edita. Si necesitas algo de un archivo ajeno, se lo pides por el chat. La primera línea de cada archivo dice `# Dueño: ...`.
 3. **Nadie sube directo a main.** main es la versión que siempre funciona. Cada quien trabaja en su **rama** y la junta con main mediante un **PR** (pull request: una solicitud para que el equipo revise y apruebe tus cambios) en el cierre de cada bloque.
 
-El repositorio está en `github.com/jdrodriguez03/pronostico-amoblamiento-colombia`, privado, en la cuenta de Julián. Ya tiene la base de la Entrega 1 completa y verificada: los insumos en `data/raw/`, los scripts que la construyen en `src/simulation/` y `src/features/`, y las bases finales en `data/processed/`. También tiene la estructura de la Entrega 2 (configuración, contrato, CI y 20 pruebas en verde). Aleja es la dueña de la configuración (`config.py`, CI, README). El 27 de octubre Julián lo hace público para que el profesor lo revise.
+El repositorio está en `github.com/jdrodriguez03/pronostico-amoblamiento-colombia`, público, en la cuenta de Julián. Ya tiene la base de la Entrega 1 completa y verificada: los insumos en `data/raw/`, los scripts que la construyen en `src/simulation/` y `src/features/`, y las bases finales en `data/processed/`. También tiene la estructura de la Entrega 2 (configuración, contrato, CI y 20 pruebas en verde). Aleja es la dueña de la configuración (`config.py`, CI, README). Como es público, el profesor puede verlo en cualquier momento: todo lo que se sube, incluso en las ramas, queda a la vista.
 
 ### Quién cuida qué
 
@@ -224,7 +224,7 @@ Todos se corren desde la raíz del repositorio y, en Windows, en Git Bash.
 
 ## La revisión de cierre
 
-Al final de cada bloque (cada 2 o 3 días, ver la guía día por día) los tres revisan juntos todos los PR en una llamada de 45 minutos. Un PR se fusiona con **las 2 aprobaciones de los otros dos y el CI en verde**. GitHub no lo obliga en repos privados gratuitos, así que lo cumplimos entre todos.
+Al final de cada bloque (cada 2 o 3 días, ver la guía día por día) los tres revisan juntos todos los PR en una llamada de 45 minutos. Un PR se fusiona con **las 2 aprobaciones de los otros dos y el CI en verde**. Como el repo es público, GitHub lo hace cumplir: main está protegida y no acepta un PR sin el CI en verde y las aprobaciones.
 
 1. El dueño comparte pantalla: muestra qué cambió, `pytest` en verde y, si aplica, la tabla o figura que produjo.
 2. Los otros miran **Files changed**: ¿tocó archivos ajenos?, ¿hay algo ajustado fuera del Pipeline?, ¿se leyó la prueba?
@@ -257,4 +257,4 @@ Cada persona hace esto una vez, desde VS Code. Antes: VS Code con la extensión 
 
 ## Decisiones del arranque
 
-Tomadas el 9 de octubre y registradas en `docs/decisiones.md`: predictores rezagados (`USAR_REZAGO = True`), objetivo en logaritmo, KNN como cuarto modelo y repositorio público desde el 27 de octubre.
+Tomadas el 9 de octubre y registradas en `docs/decisiones.md`: predictores rezagados (`USAR_REZAGO = True`), objetivo en logaritmo, KNN como cuarto modelo y repositorio público desde el 9 de octubre.
