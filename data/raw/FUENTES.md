@@ -1,14 +1,20 @@
 # Fuentes de los datos crudos
 
-Dueño: Julián. Archivos tal como se descargaron; nadie los edita. Pendiente: URL exacta y fecha de descarga.
+Dueño: Julián. Los archivos están tal como se descargaron y nadie los edita.
 
-| Archivo | Fuente | Contenido | Lo lee | URL | Descargado |
-| --- | --- | --- | --- | --- | --- |
-| `anex-EMC-ComercioMinorista-jul2026.xlsx` | DANE, Encuesta Mensual de Comercio, anexo nacional | Índices reales por línea (hoja 2.2) y actividades 474/475 (hoja 2.4) | `simular_base.py` | | |
-| `anex-EMC-ComercioalpormenorDep-jul2026.xlsx` | DANE, EMC, anexo departamental | Contribuciones (1.1), participación del grupo 4741–4759 (2.1) e índices por dominio (3.2) | `simular_base.py` | | |
-| `anex-ELIC-SerieTipoBaseMun-jul2026.xlsx` | DANE, Estadísticas de Licencias de Construcción | Área aprobada por municipio y destino (hoja `elic`) | `predictores.py` | | |
-| `anex-ELIC-SerieHist1000Mun-jul2026.xlsx` | DANE, ELIC, serie histórica 1.000 municipios | Referencia; no lo lee ningún script | — | | |
-| `anex-IMP-MensCapiArancel-jul2026.xlsx` | DANE, importaciones por capítulo del arancel | Capítulo 94 (muebles), miles de USD CIF | `predictores.py` | | |
-| `anex-IPC-Indices-ago2026.xlsx` | DANE, IPC, series de empalme | Índice total mensual | `predictores.py` | | |
-| `interes.xlsx` | Superintendencia Financiera | Interés bancario corriente, crédito de consumo y ordinario | `predictores.py` | | |
-| `EOC_Julio_2026_Hit_rico.pdf` | Fedesarrollo, Encuesta de Opinión del Consumidor | ICC histórico nacional (se lee con `pdftotext`) | `predictores.py` | | |
+| Archivo | Fuente | Contenido | Lo lee | Página oficial | Enlace directo | Descargado | Periodo | Publicación |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `anex-EMC-ComercioMinorista-jul2026.xlsx` | DANE, Encuesta Mensual de Comercio, anexo nacional | Índices reales por línea (hoja 2.2) y actividades 474/475 (hoja 2.4) | `simular_base.py` | [EMC](https://www.dane.gov.co/index.php/estadisticas-por-tema/comercio-interno/encuesta-mensual-de-comercio-emc) | [xlsx](https://www.dane.gov.co/files/operaciones/EMC/anex-EMC-ComercioMinorista-jul2026.xlsx) | 2026-10-07 (aprox.) | ene 2019 – jul 2026 (provisional) | 2026-09-16 |
+| `anex-EMC-ComercioalpormenorDep-jul2026.xlsx` | DANE, EMC, anexo departamental | Contribuciones (1.1), participación del grupo 4741–4759 (2.1) e índices por dominio (3.2) | `simular_base.py` | [EMC](https://www.dane.gov.co/index.php/estadisticas-por-tema/comercio-interno/encuesta-mensual-de-comercio-emc) | [xlsx](https://www.dane.gov.co/files/operaciones/EMC/anex-EMC-ComercioalpormenorDep-jul2026.xlsx) | 2026-10-07 (aprox.) | ene 2019 – jul 2026 (provisional) | 2026-09-16 |
+| `anex-ELIC-SerieTipoBaseMun-jul2026.xlsx` | DANE, Estadísticas de Licencias de Construcción | Área aprobada por municipio y destino (hoja `elic`) | `predictores.py` | [ELIC](https://www.dane.gov.co/index.php/estadisticas-por-tema/construccion/licencias-de-construccion) | [xlsx](https://www.dane.gov.co/files/operaciones/ELIC/anex-ELIC-SerieTipoBaseMun-jul2026.xlsx) | 2026-10-07 (aprox.) | ene 2005 – jul 2026 | 2026-09-15 |
+| `anex-ELIC-SerieHist1000Mun-jul2026.xlsx` | DANE, ELIC, serie histórica 1.000 municipios | Referencia; no lo lee ningún script | — | [ELIC](https://www.dane.gov.co/index.php/estadisticas-por-tema/construccion/licencias-de-construccion) | [xlsx](https://www.dane.gov.co/files/operaciones/ELIC/anex-ELIC-SerieHist1000Mun-jul2026.xlsx) | 2026-10-07 (aprox.) | ene 2019 – jul 2026 | 2026-09-15 |
+| `anex-IMP-MensCapiArancel-jul2026.xlsx` | DANE, importaciones por capítulo del arancel | Capítulo 94 (muebles), miles de USD CIF | `predictores.py` | [Importaciones](https://www.dane.gov.co/index.php/estadisticas-por-tema/comercio-internacional/importaciones) | [xlsx](https://www.dane.gov.co/files/operaciones/IMP/anex-IMP-MensCapiArancel-jul2026.xlsx) | 2026-10-07 (aprox.) | 2007 – jul 2026 (provisional) | 2026-09-21 |
+| `anex-IPC-Indices-ago2026.xlsx` | DANE, IPC, series de empalme | Índice total mensual | `predictores.py` | [IPC](https://www.dane.gov.co/index.php/estadisticas-por-tema/precios-y-costos/indice-de-precios-al-consumidor-ipc) | [xlsx](https://www.dane.gov.co/files/operaciones/IPC/ago2026/anex-IPC-Indices-ago2026.xlsx) | 2026-10-07 (aprox.) | ene 2003 – ago 2026 | 2026-09-07 |
+| `interes.xlsx` | Superintendencia Financiera | Interés bancario corriente, crédito de consumo y ordinario | `predictores.py` | [Histórico IBC](https://www.superfinanciera.gov.co/publicaciones/10102839/sala-de-prensa/comunicados-de-prensa-/interes-bancario-corriente/historico-comunicado-de-prensa-interes-bancario-corriente-10102839/) | VERIFICAR | 2026-10-07 (aprox.) | oct 1971 – oct 2026 | 2026-09-30 (última resolución del archivo) |
+| `EOC_Julio_2026_Hit_rico.pdf` | Fedesarrollo, Encuesta de Opinión del Consumidor | ICC histórico nacional (se lee con `pdftotext`) | `predictores.py` | [EOC](https://www.fedesarrollo.org.co/p/publicaciones/encuesta-opinion-del-consumidor) | VERIFICAR | 2026-10-07 (aprox.) | nov 2001 – jul 2026 | 2026-08-12 (fecha de creación del PDF) |
+
+**Notas**
+
+- "Descargado (aprox.)" es el día en que los archivos se subieron al chat donde se construyó la base. Pudieron bajarse antes.
+- El periodo y la fecha de publicación se leyeron dentro de cada archivo.
+- Las dos casillas que dicen VERIFICAR se completan copiando el enlace del botón de descarga en la página oficial. Para Fedesarrollo no hay fecha de publicación oficial; se usa la fecha de creación del PDF.
