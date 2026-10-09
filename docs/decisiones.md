@@ -23,3 +23,4 @@ Formato: fecha · quién · decisión · por qué (una o dos líneas).
 | 2026-10-09 | Julián | El repositorio se hace público el 27 de octubre | El profesor lo revisa sin necesitar invitación; hasta entonces sigue privado |
 | 2026-10-09 | Julián | Cambio: el repositorio es público desde el 9 de octubre (reemplaza la entrada anterior) | El profesor puede seguir el avance desde ya |
 | 2026-10-09 | Julián | main sin regla de protección en GitHub | Confiamos en el equipo; el flujo de ramas, PR con 2 aprobaciones y CI en verde se cumple por acuerdo |
+| 2026-10-09 | Julián | Se compara con MAPE 4,89 % (MLR del artículo) | Es la cifra de la tabla de resultados y de las conclusiones del artículo (MAD 447,14, MSD 417.422,39; Holt–Winters 6 %). El resumen dice 3,47 % y 4,21 %: el artículo es inconsistente y se menciona en el informe |
