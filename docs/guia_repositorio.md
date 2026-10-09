@@ -12,7 +12,7 @@ El repositorio `pronostico-amoblamiento-colombia` tiene todo lo de la Entrega 2:
 2. **Cada archivo tiene un dueño.** Solo el dueño lo edita. Si necesitas algo de un archivo ajeno, se lo pides por el chat. La primera línea de cada archivo dice `# Dueño: ...`.
 3. **Nadie sube directo a main.** main es la versión que siempre funciona. Cada quien trabaja en su **rama** y la junta con main mediante un **PR** (pull request: una solicitud para que el equipo revise y apruebe tus cambios) en el cierre de cada bloque.
 
-El repositorio está en `github.com/jdrodriguez03/pronostico-amoblamiento-colombia`, privado, en la cuenta de Julián. Ya tiene la base de la Entrega 1 completa y verificada: los insumos en `data/raw/`, los scripts que la construyen en `src/simulation/` y `src/features/`, y las bases finales en `data/processed/`. También tiene la estructura de la Entrega 2 (configuración, contrato, CI y 20 pruebas en verde). Aleja es la dueña de la configuración (`config.py`, CI, README). El 27 de octubre se invita al profesor o se hace público, según se decida en la reunión de arranque.
+El repositorio está en `github.com/jdrodriguez03/pronostico-amoblamiento-colombia`, privado, en la cuenta de Julián. Ya tiene la base de la Entrega 1 completa y verificada: los insumos en `data/raw/`, los scripts que la construyen en `src/simulation/` y `src/features/`, y las bases finales en `data/processed/`. También tiene la estructura de la Entrega 2 (configuración, contrato, CI y 20 pruebas en verde). Aleja es la dueña de la configuración (`config.py`, CI, README). El 27 de octubre Julián lo hace público para que el profesor lo revise.
 
 ### Quién cuida qué
 
@@ -255,7 +255,6 @@ Cada persona hace esto una vez, desde VS Code. Antes: VS Code con la extensión 
 
 **Si algo falla:** copia el error completo de la terminal en el chat, no una descripción. No pases de 15 minutos con el mismo error de git.
 
-## Preguntas abiertas para el arranque
+## Decisiones del arranque
 
-- ¿Se confirman las decisiones del día 1 (predictores rezagados, logaritmo del objetivo, KNN)? Están en `config.py` y en la guía día por día.
-- ¿El repositorio se hace público el 27 o se invita al profesor como colaborador?
+Tomadas el 9 de octubre y registradas en `docs/decisiones.md`: predictores rezagados (`USAR_REZAGO = True`), objetivo en logaritmo, KNN como cuarto modelo y repositorio público desde el 27 de octubre.

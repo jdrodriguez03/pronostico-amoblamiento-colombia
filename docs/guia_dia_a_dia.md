@@ -30,16 +30,16 @@ La letra se usa en el nombre de las ramas (`a/e1-repo`, `b/e2-predictores`, `c/e
 4. **Día de cierre de bloque (45 min, en llamada, 19:00):** cada quien abre su PR antes de las 18:00; se revisan juntos, se fusionan y Aleja etiqueta el bloque (`e1`, `e2`...). Después, `git checkout main && git pull`.
 5. **Cruce de conocimiento (30 min, después de los cierres 2, 3 y 5):** una persona explica su parte a las otras dos, que le hacen las preguntas que haría el profesor.
 
-### Decisiones que se toman el día 1
+### Decisiones del día 1 (tomadas el 9 de octubre)
 
-Cuatro decisiones cambian el trabajo de todos. La guía y `config.py` ya asumen la opción recomendada; si en el arranque se decide otra, se ajustan los pasos afectados. La ventana de pandemia ya quedó fijada en la Entrega 1 (`covid` = abril a agosto de 2020).
+Cuatro decisiones cambian el trabajo de todos. Julián las tomó el 9 de octubre, quedaron en `docs/decisiones.md` y `config.py` ya las aplica. La ventana de pandemia ya quedó fijada en la Entrega 1 (`covid` = abril a agosto de 2020).
 
-| Decisión | Recomendado | Por qué |
+| Decisión | Se decidió | Por qué |
 | --- | --- | --- |
 | ¿Predictores del mismo mes o rezagados? | Rezagados (`_rez1`), `USAR_REZAGO = True`, y se descarta enero de 2019 | Al pronosticar el mes t aún no se conocen sus datos económicos; descartar el único mes sin rezago de vivienda evita imputar |
 | ¿Modelar el índice en logaritmo? | Sí, con `TransformedTargetRegressor` | El índice se construyó como producto L × F × η: en logaritmo esos factores se suman |
 | ¿Agregar KNN como cuarto modelo? | Sí, KNN para regresión | La rúbrica de la 7.3 nombra KNN y pide "varios modelos" |
-| ¿Cómo ve el profesor el código? | Repo privado hasta el 27; ese día se invita al profesor o se hace público | Según lo que pida el curso |
+| ¿Cómo ve el profesor el código? | Repo privado hasta el 27; ese día se hace público | El profesor lo revisa sin necesitar invitación |
 
 Los modelos que se comparan quedan así: **MLR con stepwise** (reproduce el artículo), **MLR completa** (todas las variables, para ver la multicolinealidad), **Ridge**, **Lasso** y **KNN**, contra dos líneas base: **predictor de la media** e **ingenuo estacional**.
 
@@ -99,7 +99,7 @@ Cada cierre fusiona los PR del bloque y deja una etiqueta en main; el punto de c
 - [ ] (10 min) Leer juntos "La idea en tres líneas" y "Las 6 reglas" de la guía del repositorio.
 - [ ] (25 min) Julián recorre el repositorio y la base: carpetas, scripts de construcción, columnas y archivos de auditoría.
 - [ ] (15 min) Revisar el contrato (`COLUMNAS_BASE` en `esquema.py`). Después de hoy solo cambia en un cierre.
-- [ ] (20 min) Tomar las decisiones del día 1 y que Juanes las escriba en `docs/decisiones.md`.
+- [ ] (20 min) Repasar las decisiones del día 1 (ya en `docs/decisiones.md`): que los tres puedan explicar el porqué de cada una.
 - [ ] (20 min) Cada quien sigue el primer arranque y corre `pytest`. Nadie cuelga hasta que los tres vean verde.
 
 ### Día 2 · sábado 10 de octubre
@@ -598,8 +598,8 @@ En `notebooks/04_interpretacion.ipynb`:
 **Objetivo del día:** todo cerrado un día antes.
 
 - [ ] **Todos · ensayo 2 (1 h):** con los cambios del ensayo 1. El que hace de profesor elige preguntas al azar y a cualquier persona, no al dueño de la sección.
-- [ ] **Aleja (2 h):** exportar el informe a PDF y subirlo a `docs/informe/`; etiquetar `v2.0` en main; invitar al profesor o hacer público el repositorio, y comprobar el enlace en una ventana de incógnito o con la cuenta del profesor.
-- [ ] **Julián (1 h):** correr `reproducir.py --hasta prueba` desde un clon limpio de `v2.0` por última vez.
+- [ ] **Aleja (2 h):** exportar el informe a PDF y subirlo a `docs/informe/`; etiquetar `v2.0` en main y comprobar el enlace público en una ventana de incógnito.
+- [ ] **Julián (1 h):** hacer público el repositorio (**Settings → General → Danger Zone → Change visibility**; solo el dueño de la cuenta puede hacerlo) y correr `reproducir.py --hasta prueba` desde un clon limpio de `v2.0` por última vez.
 - [ ] **Juanes (1 h):** cuadre final de cifras entre el PDF y las tablas de `v2.0`.
 
 * **Listo cuando:** PDF, etiqueta y enlace verificados; el ensayo 2 sin fallas graves.
