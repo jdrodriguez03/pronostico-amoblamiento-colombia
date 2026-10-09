@@ -79,7 +79,7 @@ Cada cierre fusiona los PR del bloque y deja una etiqueta en main; el punto de c
 **Julián · fuentes y presentación de la base (3 h)**
 
 - [ ] Invitar a Aleja y a Juanes en **Settings → Collaborators** (si no lo hizo ya).
-- [ ] Completar en `data/raw/FUENTES.md` la URL y la fecha de descarga de cada insumo.
+- [x] Completar en `data/raw/FUENTES.md` la URL y la fecha de descarga de cada insumo (hecho el 9 de octubre; faltan los enlaces directos de `interes.xlsx` y del PDF de Fedesarrollo, marcados VERIFICAR).
 - [ ] Correr `python src/features/predictores.py` (requiere `pdftotext`) y comprobar con `git status` que nada cambió.
 - [ ] Preparar 15 minutos para la reunión: las 19 columnas, por qué existen las `_rez1`, por qué el ICC es solo nacional, el capítulo 94 completo y la ventana de `covid`.
 
@@ -401,7 +401,7 @@ Si todo está marcado, el bloque 5 sigue como está. Si falta algo, cada casilla
 
 **Juanes · evaluación única en prueba (3 h) · rama `c/e5-prueba`**
 
-- [ ] `scripts/evaluar_prueba.py`: para cada escenario y modelo, reentrenar con la configuración elegida en la validación cruzada sobre enero de 2019 a julio de 2025 y predecir agosto de 2025 a julio de 2026.
+- [ ] `scripts/evaluar_prueba.py`: para cada escenario y modelo, reentrenar con la configuración elegida en la validación cruzada sobre febrero de 2019 a julio de 2025 (enero de 2019 se descarta por el rezago) y predecir agosto de 2025 a julio de 2026.
 - [ ] Se reportan todos los modelos, pero el modelo preliminar ya se eligió el día 11: lo que salga aquí no cambia la elección. Si el resultado en prueba contradice la validación, se reporta y se discute, no se corrige.
 - [ ] `results/tablas/prueba.csv`: escenario, modelo, MAPE, MAD y MSD nacionales, MAPE del panel y mejora % frente a cada línea base.
 - [ ] Figura: serie nacional observada en la prueba frente a las predicciones del modelo preliminar, la MLR con stepwise y el ingenuo estacional.
@@ -613,4 +613,4 @@ En `notebooks/04_interpretacion.ipynb`:
 ## Lo que no está resuelto todavía
 
 - Fecha y duración de la sustentación: ajustar el bloque 7 cuando se sepa.
-- La URL y la fecha de descarga de cada insumo en `data/raw/FUENTES.md` (Julián, día 1).
+- Los enlaces directos de `interes.xlsx` y del PDF de Fedesarrollo en `data/raw/FUENTES.md` (Julián).
