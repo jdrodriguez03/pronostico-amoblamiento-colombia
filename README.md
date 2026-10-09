@@ -1,63 +1,119 @@
-# Pronóstico de ventas de bienes del hogar en Colombia
+# Pronóstico de ventas de muebles y artículos del hogar en Colombia
+
+[![CI](https://github.com/jdrodriguez03/pronostico-amoblamiento-colombia/actions/workflows/ci.yml/badge.svg)](https://github.com/jdrodriguez03/pronostico-amoblamiento-colombia/actions/workflows/ci.yml)
 
 Proyecto Integrador · Machine Learning I · Universidad Externado de Colombia · 2026
 
-**Integrantes:** Juan Esteban Acosta Morales, Julián Rodríguez, Alejandra Cortés
+> **¿Pueden las variables macroeconómicas pronosticar las ventas minoristas de muebles en Colombia mejor que el simple patrón estacional?**
+> Reproducimos con datos del DANE el planteamiento de İnce y Taşdemir (2024), que respondieron esa pregunta para Estados Unidos con regresión lineal múltiple, y lo ampliamos con regularización (Ridge, Lasso) y KNN.
 
-## Resumen
+| Entrega | Contenido | Estado |
+| --- | --- | --- |
+| 1 | Comprensión del artículo, planteamiento y construcción de la base | ✅ Entregada y corregida ([informe](reports/entrega_1/)) |
+| 2 | Flujo sin fuga, comparación de modelos y evaluación en prueba | 🚧 En curso, entrega el 28 de octubre de 2026 |
 
-Reproducimos con datos colombianos el objetivo de İnce y Taşdemir (2024): pronosticar las ventas minoristas de muebles y artículos del hogar con regresión lineal múltiple y variables macroeconómicas.
-La variable objetivo es el índice de ventas reales (base 2019 = 100) de la Encuesta Mensual de Comercio del DANE, en un panel de 7 dominios departamentales × 8 líneas del hogar × 91 meses (enero de 2019 a julio de 2026; 5.096 registros).
-El índice combina dos componentes reales del DANE (la serie nacional de cada línea y el factor regional del grupo CIIU 4741–4759) con un único componente simulado, η, que se genera en tres escenarios de ruido (2 %, 7 % y 13 %) para analizar la sensibilidad.
-Los predictores son la confianza del consumidor, la inflación, la tasa de consumo, las importaciones de muebles y el área aprobada para vivienda (departamental), cada uno también con un mes de rezago.
-Se comparan la MLR con stepwise, Ridge, Lasso y KNN frente a dos líneas base, con validación cruzada temporal y sin fuga de datos.
+## El problema en cifras
 
-## Estructura
+- **Variable objetivo:** índice de ventas reales (base 2019 = 100) de la Encuesta Mensual de Comercio del DANE.
+- **Panel:** 7 dominios departamentales × 8 líneas de bienes del hogar × 91 meses (enero 2019 – julio 2026) = **5.096 registros**.
+- **Lo que se evalúa:** la línea 8, *electrodomésticos y muebles*, agregada a nivel nacional, con MAPE (y MAD y MSD como contraste), igual que en el artículo.
+- **Predictores:** confianza del consumidor (Fedesarrollo), inflación anual (IPC), tasa de interés de consumo (Superfinanciera), importaciones de muebles (capítulo 94) y área aprobada para vivienda por departamento (ELIC). Todos entran con un mes de rezago, más una variable de pandemia (abril a agosto de 2020).
+
+### Qué parte de los datos es real
+
+El índice de cada departamento y línea se construye como **L × F × η**:
+
+| Componente | Origen | Qué aporta |
+| --- | --- | --- |
+| **L** | Real (DANE, serie nacional de cada línea) | Tendencia y estacionalidad de cada línea |
+| **F** | Real (DANE, factor regional del grupo CIIU 4741–4759) | Diferencias entre departamentos |
+| **η** | Simulado (AR(1), ρ = 0,6, semilla 42) | Variación propia de cada serie, que el DANE no publica |
+
+η se reescala para que el agregado nacional reproduzca **exactamente** la serie real, así que la evaluación principal no depende del componente simulado. Para comprobarlo, η se genera en tres escenarios de ruido: **bajo (2 %)**, **central (7 %, el principal)** y **alto (13 %)**. Las cinco pruebas de la simulación están en [`results/verificacion.md`](results/verificacion.md).
+
+## Cómo se modela
 
 ```
-data/
-  raw/          anexos originales (DANE, Superfinanciera, Fedesarrollo), sin modificar
-  interim/      bases por escenario, predictores y archivos de auditoría
-  processed/    base_final_{bajo,central,alto}.csv: la base para modelar (principal: central)
-  README.md     diccionario de datos
-src/
-  simulation/   simular_base.py: construye la variable objetivo y la verificación
-  features/     predictores.py: construye los predictores y los une con la base
-  datos/ modelos/ evaluacion/ config.py   módulos de la Entrega 2 (en construcción)
-results/        verificacion.md: las 5 pruebas de la base en los 3 escenarios
-reports/
-  entrega_1/    informe corregido y cambios por la retroalimentación
-  referencias/  artículo base, rúbrica y catálogo de artículos
-notebooks/ scripts/ tests/ docs/   flujo de modelamiento de la Entrega 2
+base_final_{escenario}.csv
+   ├─ entrenamiento: feb 2019 – jul 2025 ──► validación cruzada temporal (5 folds de 6 meses, partición por mes)
+   │                                         Pipeline: codificar y escalar → stepwise o penalización → modelo
+   │                                         todo se ajusta dentro de cada fold
+   └─ prueba: ago 2025 – jul 2026 ─────────► se abre una sola vez, con el modelo ya elegido
 ```
 
-## Cómo reproducir la base
+| Modelos | Líneas base |
+| --- | --- |
+| MLR con stepwise (α = 0,25, como el artículo) · MLR completa · Ridge · Lasso · KNN | Predictor de la media · Ingenuo estacional (mismo mes del año anterior) |
 
-Desde la raíz del repositorio, con Python 3.12:
+El objetivo se modela en logaritmo. Las decisiones y su justificación están en [`docs/decisiones.md`](docs/decisiones.md) y la estrategia de validación en [`docs/validacion.md`](docs/validacion.md).
+
+## Inicio rápido
+
+Requiere **Python 3.12** y, para leer el PDF de Fedesarrollo, **poppler** (`pdftotext`). Para instalarlo: `sudo apt install poppler-utils` en Linux, `brew install poppler` en Mac, o en Windows descargar poppler y agregar su carpeta `bin` al PATH.
 
 ```bash
+git clone https://github.com/jdrodriguez03/pronostico-amoblamiento-colombia.git
+cd pronostico-amoblamiento-colombia
 python -m venv .venv
 source .venv/Scripts/activate        # Mac o Linux: source .venv/bin/activate
 pip install -r requirements.txt
 pip install -e .
 
-python src/simulation/simular_base.py
-python src/features/predictores.py
+pytest                               # comprueba que todo está en orden
 ```
 
-1. `simular_base.py` lee los dos anexos de la EMC en `data/raw/`, escribe `base_{bajo,central,alto}.csv`, `componentes_regionales.csv` y `lineas_nacionales.csv` en `data/interim/`, y la verificación en `results/verificacion.md`.
-2. `predictores.py` lee los insumos de `data/raw/` y las bases de `data/interim/`, escribe los `predictores_*.csv` en `data/interim/` y las `base_final_*.csv` en `data/processed/`.
+**Reconstruir la base desde los anexos originales:**
 
-La semilla es fija (42): con los mismos anexos, el resultado es idéntico.
+```bash
+python src/simulation/simular_base.py   # variable objetivo → data/interim/ y results/verificacion.md
+python src/features/predictores.py      # predictores y unión → data/processed/base_final_*.csv
+git status                              # no debe cambiar nada: la base es reproducible byte a byte
+```
 
-**Requisito adicional:** `predictores.py` lee el ICC de Fedesarrollo desde un PDF con `pdftotext`, que viene en **poppler-utils** (no se instala con pip). Linux: `sudo apt install poppler-utils`. Mac: `brew install poppler`. Windows: descargar poppler y agregar su carpeta `bin` al PATH.
+**Usar la base en código:**
 
-## Diccionario de datos
+```python
+from src.datos.cargar import cargar_entrenamiento
 
-Columnas, fuentes, niveles y notas de cada base: ver [`data/README.md`](data/README.md).
+df = cargar_entrenamiento("central")    # valida el contrato y devuelve feb 2019 – jul 2025
+```
 
-Tres advertencias que no son errores:
+## Estructura
 
-- Las tres bases (bajo, central, alto) son escenarios de ruido a propósito; solo cambia `indice_ventas_real`.
-- `componentes_regionales.csv` y `lineas_nacionales.csv` son de auditoría: **no se usan como predictores**, porque sería fuga de información.
-- `area_vivienda_m2_rez1` está vacía en enero de 2019 (56 filas) a propósito.
+```
+data/
+  raw/          8 anexos originales y FUENTES.md (enlaces y fechas de descarga)
+  interim/      bases por escenario, predictores y archivos de auditoría
+  processed/    base_final_{bajo,central,alto}.csv: la que entra a los modelos
+  README.md     diccionario de datos
+src/
+  simulation/   construcción de la variable objetivo
+  features/     construcción de los predictores
+  config.py     rutas, columnas, fechas y semilla (fuente única)
+  datos/        contrato de la base y carga
+  modelos/      preprocesamiento, Pipeline, stepwise, candidatos, líneas base
+  evaluacion/   partición temporal, métricas, agregación nacional, interpretación
+scripts/        entrenar, evaluar en prueba y reproducir todo
+notebooks/      verificación, predictores, comparación, interpretación, escenarios
+results/        verificación de la base, tablas y figuras
+reports/        informe de la entrega 1 y referencias
+docs/           guías del equipo, decisiones, validación
+tests/          pruebas automáticas (corren en cada PR)
+```
+
+## Equipo
+
+| Integrante | Responde por |
+| --- | --- |
+| Alejandra Cortés | Variable objetivo y simulación, verificación de la base, auditoría de fuga |
+| Julián Rodríguez | Predictores y fuentes, modelos candidatos, interpretación |
+| Juan Esteban Acosta Morales | Validación temporal, Pipeline, métricas y resultados |
+
+Cómo trabajamos: [guía del repositorio](docs/guia_repositorio.md) · [plan día por día](docs/guia_dia_a_dia.md).
+
+## Referencias
+
+- İnce, M. N. y Taşdemir, Ç. (2024). Forecasting Retail Sales for Furniture and Furnishing Items through the Employment of Multiple Linear Regression and Holt–Winters Models. *Systems*, 12(6), 219. https://doi.org/10.3390/systems12060219 (acceso abierto, CC BY 4.0).
+- DANE: Encuesta Mensual de Comercio, Licencias de Construcción, Importaciones e IPC. Fedesarrollo: Encuesta de Opinión del Consumidor. Superintendencia Financiera: interés bancario corriente. Enlaces y fechas en [`data/raw/FUENTES.md`](data/raw/FUENTES.md).
+
+Se usó IA generativa como apoyo para organizar el trabajo y revisar código. Todas las decisiones técnicas fueron tomadas y pueden ser sustentadas por el equipo.
