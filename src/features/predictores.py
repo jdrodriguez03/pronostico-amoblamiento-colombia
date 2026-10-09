@@ -60,8 +60,11 @@ def icc(ruta):
     txt = subprocess.run(["pdftotext", "-layout", str(ruta), "-"], capture_output=True, text=True).stdout
     reg = []
     for linea in txt.splitlines():
-        m = re.match(r"\s*([a-z]{3})-(\d{2})\s+(-?\d+,\d)\s+(-?\d+,\d)\s+(-?\d+,\d)", linea)
-        if m:
+        # Solo mes, año e ICC: las otras dos columnas del PDF no se usan y, según la
+        # versión de pdftotext (Xpdf o Poppler), pueden no salir en algunas filas.
+        # Máximo 6 espacios: en filas viejas sin ICC, el número lejano es de otra columna.
+        m = re.match(r"\s*([a-z]{3})-(\d{2})\s{1,6}(-?\d+,\d)", linea)
+        if m and m.group(1) in MES_ABR:
             fecha = pd.Timestamp(2000 + int(m.group(2)), MES_ABR[m.group(1)], 1)
             reg.append((fecha, float(m.group(3).replace(",", "."))))
     s = pd.Series(dict(reg), name="icc").sort_index()
@@ -133,15 +136,15 @@ def vivienda(ruta):
     df = pd.DataFrame(reg, columns=["fecha", "departamento", "area"])
     return df.groupby(["fecha", "departamento"]).area.sum().rename("area_vivienda_m2").reset_index()
 
-
 def main(insumos=RAW, interim=INTERIM, procesada=PROCESSED):
     interim, procesada = Path(interim), Path(procesada)
     procesada.mkdir(parents=True, exist_ok=True)
     fechas = pd.date_range(INICIO, FIN, freq="MS")
+    # sort=True: garantiza filas en orden de fecha, del que depende el shift(1) de los rezagos
     nac = pd.concat([icc(buscar(insumos, "*EOC*.pdf")),
                      inflacion(buscar(insumos, "*anex-IPC-Indices*.xlsx")),
                      tasa(buscar(insumos, "*interes*.xlsx")),
-                     importaciones(buscar(insumos, "*anex-IMP-MensCapiArancel*.xlsx"))], axis=1)
+                     importaciones(buscar(insumos, "*anex-IMP-MensCapiArancel*.xlsx"))], axis=1, sort=True)
     # rezago de un mes (el dato del mes t no se conoce al pronosticar t)
     for c in list(nac.columns):
         nac[f"{c}_rez1"] = nac[c].shift(1)
@@ -157,19 +160,19 @@ def main(insumos=RAW, interim=INTERIM, procesada=PROCESSED):
     # El rezago de enero 2019 queda vacio: antes de 2019 la cobertura de ELIC era menor y no es comparable
     viv = viv[viv.fecha.between(INICIO, FIN)]
 
+    # lineterminator="\n": mismos bytes en Windows, Linux y Mac (reproducibilidad exacta)
     resumen = []
     for esc in ["bajo", "central", "alto"]:
         base = pd.read_csv(interim / f"base_{esc}.csv", parse_dates=["fecha"])
         final = base.merge(nac, on="fecha", how="left").merge(viv, on=["fecha", "departamento"], how="left")
-        final.to_csv(procesada / f"base_final_{esc}.csv", index=False, float_format="%.4f")
+        final.to_csv(procesada / f"base_final_{esc}.csv", index=False, float_format="%.4f", lineterminator="\n")
         resumen.append((esc, final.shape, final.isna().sum()[final.isna().sum() > 0].to_dict()))
-    nac.to_csv(interim / "predictores_nacionales.csv", index=False, float_format="%.4f")
-    viv.to_csv(interim / "predictores_vivienda_departamental.csv", index=False, float_format="%.2f")
+    nac.to_csv(interim / "predictores_nacionales.csv", index=False, float_format="%.4f", lineterminator="\n")
+    viv.to_csv(interim / "predictores_vivienda_departamental.csv", index=False, float_format="%.2f", lineterminator="\n")
     for r in resumen:
         print(r)
     print(nac.describe().T.round(2).to_string())
     print(viv.groupby("departamento").area_vivienda_m2.describe().round(0).to_string())
-
 
 if __name__ == "__main__":
     if len(sys.argv) == 3:
