@@ -117,3 +117,7 @@ Cómo trabajamos: [guía del repositorio](docs/guia_repositorio.md) · [plan dí
 - DANE: Encuesta Mensual de Comercio, Licencias de Construcción, Importaciones e IPC. Fedesarrollo: Encuesta de Opinión del Consumidor. Superintendencia Financiera: interés bancario corriente. Enlaces y fechas en [`data/raw/FUENTES.md`](data/raw/FUENTES.md).
 
 Se usó IA generativa como apoyo para organizar el trabajo y revisar código. Todas las decisiones técnicas fueron tomadas y pueden ser sustentadas por el equipo.
+
+## Licencia
+
+El código, los notebooks y los documentos propios del equipo están bajo licencia [MIT](LICENSE). Los anexos de `data/raw/` conservan los términos de uso de sus fuentes (DANE, Fedesarrollo, Superintendencia Financiera), el artículo de İnce y Taşdemir su licencia CC BY 4.0, y el material del curso en `reports/referencias/` pertenece a sus autores.
