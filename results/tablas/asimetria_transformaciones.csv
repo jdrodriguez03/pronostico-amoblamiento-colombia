@@ -1,0 +1,6 @@
+predictor,asimetria_original,asimetria_log,minimo,log_mejora
+icc_rez1,-0.6025,,-41.3000,False
+inflacion_anual_rez1,0.5847,-0.2596,1.4873,True
+tasa_consumo_rez1,1.3427,1.1421,16.5900,True
+importaciones_muebles_usd_miles_rez1,0.0939,-0.8804,15069.8339,False
+area_vivienda_m2_rez1,1.5777,-0.5384,6492.0000,True
