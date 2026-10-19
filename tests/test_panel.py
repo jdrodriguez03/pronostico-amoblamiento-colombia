@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
 import pytest
@@ -107,6 +109,7 @@ def test_escenario_desconocido_se_rechaza():
 
 
 def test_script_escribe_paneles_y_componentes_en_rutas_configuradas(tmp_path, monkeypatch):
+    monkeypatch.syspath_prepend(str(Path(__file__).resolve().parents[1]))
     import scripts.construir_panel as script
 
     monkeypatch.setattr(script, "RUTA_PROCESSED", tmp_path)
