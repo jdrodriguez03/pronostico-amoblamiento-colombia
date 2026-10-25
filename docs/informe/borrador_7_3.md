@@ -58,14 +58,28 @@ los escenarios bajo y alto (análisis de Aleja, día 10).]
 | Aspecto | Artículo base (EE. UU., 2019–2023) | Este trabajo (Colombia, 2019–2025) |
 | --- | --- | --- |
 | Método | MLR con stepwise (Minitab, α = 0,25), 60 meses con ajuste estacional | 5 modelos con validación cruzada temporal por mes; estacionalidad con dummies |
-| MAPE | 4,89 % (MLR); 6 % (Holt–Winters) | [pendiente: MAPE nacional del mejor modelo] |
+| MAPE de ajuste (mismos meses con que se estima el modelo) | 4,89 % (MLR); 6 % (Holt–Winters), sobre 2019–2023 | [pendiente: MAPE nacional de ajuste del modelo final, reentrenado con feb 2019 – jul 2025] |
+| MAPE fuera de muestra (meses no vistos) | No lo reporta | [pendiente: validación cruzada, media ± desv.; prueba ago 2025 – jul 2026] |
 | Variables retenidas | Importaciones, sentimiento del consumidor, inicios de vivienda, población, precios al productor, pandemia | [pendiente: variables elegidas por el stepwise y no anuladas por Lasso] |
 | Signos | Población negativa (−0,265), contraria a la teoría | [pendiente: signo de cada coeficiente frente al esperado] |
 | VIF máximo | 23,18 (precios al productor); 16,16 (población) | 6,28 (inflación), ninguno sobre 10 |
-| R² | 76,73 % (ajustado 74,09 %) | [pendiente, si se reporta] |
+| R² de ajuste | 76,73 % (ajustado 74,09 %) | [pendiente, si se reporta: R² de ajuste del modelo final] |
 
 Signos esperados según la teoría: importaciones (+), ICC (+), área de vivienda (+), inflación (−),
 tasa de consumo (−), covid (−).
+
+**Qué cifra se compara con cuál.** El artículo mide su error sobre los mismos meses con que
+estima el modelo: para Holt–Winters lo declara como métrica dentro de muestra (p. 15), y el MAPE
+de la MLR aparece en la tabla de pronósticos de 2024 a 2026, meses sin valores observados, así
+que solo pudo calcularse sobre los meses de ajuste (2019–2023). Por eso el 4,89 % se compara con
+el MAPE de ajuste de nuestro modelo final, no con el de prueba. El MAPE de validación y de prueba
+responde otra pregunta, cuánto se equivoca el modelo en meses que no vio, y el artículo no lo
+reporta. Se espera que sea mayor que el de ajuste sin que eso signifique un modelo peor.
+
+Texto propuesto para el informe: *"El artículo reporta el error sobre los mismos meses con que
+ajusta el modelo (4,89 %). Nuestro modelo, medido de la misma forma, obtiene [X] %. Además
+reportamos el error en meses no vistos, [Y] % en validación cruzada y [Z] % en prueba, que es la
+medida de capacidad predictiva."*
 
 Nota: el resumen del artículo reporta 3,47 % y 4,21 %, cifras que no coinciden con su tabla de
 resultados (4,89 % y 6 %); se usa la de la tabla (ver `docs/decisiones.md`).
