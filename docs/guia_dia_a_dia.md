@@ -280,6 +280,7 @@ Cada cierre fusiona los PR del bloque y deja una etiqueta en main; el punto de c
 
 - [ ] Traer la rama de Juanes sin editarla (`git fetch` y `git checkout c/e3-entrenar`) y correr `python scripts/entrenar.py --escenario central`.
 - [ ] Revisar avisos de convergencia de Lasso; si aparecen, ajustar la rejilla en `candidatos.py` (su archivo).
+- [ ] En `construir_candidato`, pedir al Pipeline el one-hot sin `drop` para `knn` (`drop_categorica=None`, el parámetro que agrega Juanes). Con `drop="first"` la categoría de referencia queda a distancia 1 de todas las demás y las otras a √2 entre sí, lo que distorsiona los vecinos; los modelos lineales sí necesitan el `drop`. Una prueba en `tests/test_candidatos.py` que lo compruebe.
 - [ ] ¿Algún modelo supera al ingenuo estacional? ¿Qué variables elige el stepwise? Anotar en `docs/bitacora_resultados.md`.
 
 * **Listo cuando:** hay una primera tabla de los 5 modelos en el escenario central, comentada en la bitácora.
@@ -334,8 +335,10 @@ Cada cierre fusiona los PR del bloque y deja una etiqueta en main; el punto de c
 
 **Julián · curvas de validación (4 h) · rama `b/e4-curvas`**
 
-- [ ] Ridge y Lasso: MAPE nacional de validación contra alpha (escala log), con banda de ±1 desviación entre folds y el alpha elegido marcado.
-- [ ] KNN: MAPE contra k, una línea por tipo de peso.
+- [ ] Funciones reutilizables en `src/evaluacion/curvas.py` (con sus pruebas): una tabla por valor del hiperparámetro con el MAPE de validación y de entrenamiento (media y desviación entre folds, leídas del `GridSearchCV` con `return_train_score=True`), y la figura.
+- [ ] Ridge y Lasso: MAPE nacional de validación contra alpha (escala log), con banda de ±1 desviación entre folds, la curva de entrenamiento en línea punteada y el alpha elegido marcado.
+- [ ] KNN: MAPE de validación y de entrenamiento contra k, una línea por tipo de peso.
+- [ ] En cada curva: dónde se abre la brecha entre entrenamiento y validación (subajuste si los dos son altos, sobreajuste si el de entrenamiento es mucho menor) y si algún valor más simple (alpha mayor o k mayor) queda a menos de 1 desviación del mínimo. Si es así, anotarlo y justificar cuál se usa: a igualdad de error se prefiere el más simple.
 - [ ] Trayectoria de Lasso: coeficiente de cada predictor contra alpha. ¿Cuáles se van a cero primero? Comparar con lo que elige el stepwise.
 - [ ] Guardar las 3 figuras en `results/figuras/` con `guardar_figura()`.
 
@@ -362,7 +365,7 @@ Cada cierre fusiona los PR del bloque y deja una etiqueta en main; el punto de c
 
 **Julián · contraste con el artículo (3 h)**
 
-- [ ] Tabla "artículo frente a este trabajo": MAPE (4,89 % en el artículo), variables retenidas (las 5 del artículo y las nuestras), signo de cada coeficiente frente al esperado, VIF máximo.
+- [ ] Tabla "artículo frente a este trabajo": MAPE de ajuste (4,89 % en el artículo, calculado sobre sus mismos meses de ajuste) y MAPE fuera de muestra por separado, variables retenidas (las 5 del artículo y las nuestras), signo de cada coeficiente frente al esperado, VIF máximo.
 - [ ] Responder en `docs/bitacora_resultados.md` la pregunta de la E1: ¿la regularización mejora la capacidad predictiva frente a la MLR cuando hay predictores correlacionados?
 
 * **Listo cuando:** la tabla está llena y la pregunta tiene una respuesta preliminar con cifra.
@@ -444,6 +447,7 @@ En `notebooks/04_interpretacion.ipynb`:
 
 - [ ] `docs/informe/borrador_7_4_interpretacion.md` (máximo media página): variables relevantes, tipos de error y sus implicaciones para la planeación de inventarios, usando los hallazgos de Aleja.
 - [ ] Pasar la respuesta sobre regularización y estabilidad a una frase con cifra.
+- [ ] Leer cada coeficiente como asociación condicional (manteniendo fijas las demás variables), no como efecto causal, y no usar los p-valores del stepwise como prueba de que una variable predice: para eso está la validación.
 
 * **Listo cuando:** el borrador menciona cada figura y tabla que usa.
 
