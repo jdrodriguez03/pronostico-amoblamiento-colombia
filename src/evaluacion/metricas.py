@@ -9,6 +9,11 @@ para poder comparar:
     MAPE = 100 · promedio(|e_t| / |y_t|)       en %: no depende de la escala
     MAD  = promedio(|e_t|)                     en unidades del índice
     MSD  = promedio(e_t²)                      castiga más los errores grandes
+    RMSE = √MSD                                el MSD de vuelta en unidades del índice
+
+El RMSE no está en el artículo; se agrega (plan de cierre, 25 de octubre) porque el MSD
+queda en "unidades al cuadrado" y no se puede leer junto al MAD. El RMSE sí: si el RMSE es
+mucho mayor que el MAD, hay meses con errores grandes que pesan más que el promedio.
 
 Todas se calculan en la ESCALA ORIGINAL del índice (no en logaritmo): el Pipeline
 modela log(y), pero TransformedTargetRegressor devuelve las predicciones ya en escala
@@ -50,6 +55,15 @@ def msd(y, yhat) -> float:
     """Desviación cuadrática media (error cuadrático medio)."""
     y, yhat = _como_arreglos(y, yhat)
     return float(np.mean((y - yhat) ** 2))
+
+
+def rmse(y, yhat) -> float:
+    """Raíz del error cuadrático medio: √MSD, en las mismas unidades del índice que el MAD.
+
+    Siempre se cumple RMSE ≥ MAD; la distancia entre los dos mide qué tanto pesan los
+    errores grandes (si todos los errores tuvieran el mismo tamaño, serían iguales).
+    """
+    return float(np.sqrt(msd(y, yhat)))
 
 
 def mejora_pct(metrica_modelo, metrica_base) -> float:
