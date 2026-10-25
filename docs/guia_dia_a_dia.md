@@ -2,6 +2,8 @@
 
 > Versión en el repo de la guía compartida del equipo. Si hay diferencias, manda la versión del documento compartido.
 
+> **Desde el 25 de octubre manda el [Plan de cierre](#plan-de-cierre--domingo-25-a-miércoles-28-de-octubre)**, al final de esta guía. Los días 1 a 17 quedan como registro de lo planeado; lo que quedó pendiente de ellos está reorganizado en el plan de cierre.
+
 Oct 8, 2026 · @Julian
 
 En 20 días y 7 bloques llegamos al Oct 28, 2026 con el dataset consolidado, el flujo sin fuga, cinco modelos comparados en tres escenarios, el informe de 3 a 5 páginas y la sustentación ensayada.
@@ -53,7 +55,7 @@ Los modelos que se comparan quedan así: **MLR con stepwise** (reproduce el art�
 | 4 · Modelos y comparación (7.3) | 9–11 | 17–19 oct (punto de control el 19) | e4 |
 | 5 · Prueba e interpretación (7.4) | 12–14 | 20–22 oct (se abre la prueba el 20) | e5-resultados |
 | 6 · Informe | 15–17 | 23–25 oct | e6 |
-| 7 · Revisión y entrega | 18–20 | 26–28 oct | v2.0 |
+| Plan de cierre (reemplaza al bloque 7) | — | 25–28 oct | v2.0 |
 
 Cada cierre fusiona los PR del bloque y deja una etiqueta en main; el punto de control del 19 decide el modelo preliminar antes de abrir la prueba el 20.
 
@@ -553,68 +555,327 @@ En `notebooks/04_interpretacion.ipynb`:
 
 **Cierre del bloque 6 (todos, 19:00, 45 min):** se revisa la versión 2 juntos, se fusionan las correcciones al repositorio y se etiqueta `e6`.
 
-## Bloque 7 · días 18 a 20 · Revisión, sustentación y entrega
+## Plan de cierre · domingo 25 a miércoles 28 de octubre
 
-**Objetivo del bloque:** informe final en PDF, repositorio accesible para el profesor con la etiqueta `v2.0`, y los tres capaces de sustentar cualquier parte. La guía asume que la sustentación es el 28 o después; si es antes, los ensayos se adelantan. Todos parten de `e6`.
+**Por qué cambia el plan.** El 25 de octubre, día 17 del plan, el avance real era: Julián al día en lo que no depende de otros (días 1 a 8); Juanes con los días 1 a 4 hechos (las métricas, las líneas base y el Pipeline están en su rama `c/e1-particion`, sin llegar a `main`); Aleja con los días 2 a 4 en su rama `a/e2-simulacion`, sin fusionar. Faltan el scorer, `entrenar.py`, la comparación, la interpretación y el informe, con tres días hábiles.
 
-### Día 18 · lunes 26 de octubre
+**Qué se decidió.** La rúbrica de la segunda entrega (7.1 a 7.4) no pide evaluar en la prueba: eso es de la entrega final (8.1). La variabilidad que pide la 7.4 sale de la desviación entre folds y del rango entre los tres escenarios. Por eso la prueba sigue cerrada y todo lo que depende de ella pasa a la entrega final. Se mantienen los 5 modelos, las 2 líneas base y los 3 escenarios, que pesan en la rúbrica y cuestan poco una vez existe `entrenar.py`. Las tareas incluyen además los ajustes de la revisión metodológica del 25 de octubre (error de entrenamiento, horizonte de un mes, KNN sin `drop`, comparación por fold y limitaciones).
 
-**Objetivo del día:** guion y banco de preguntas listos, primer ensayo.
+**Reglas del cierre.**
 
-**Juanes · guion de la sustentación (3 h)**
+- La prueba (agosto 2025 – julio 2026) **no se abre** en esta entrega. Nadie corre `evaluar_prueba.py`.
+- De la rama de Aleja se fusiona solo `agregar_nacional` y la verificación de la simulación. La reconstrucción de la base (módulos nuevos de `src/datos/` y `cargar.py` reescrito) queda para después de la entrega.
+- Cada PR se fusiona apenas el CI está en verde y otro integrante lo revisa; no se espera a un cierre de bloque.
+- Unas 4 a 5 horas por persona cada día.
 
-- [ ] `docs/guion_sustentacion.md`: tabla minuto a minuto con qué se muestra (figura o tabla), qué cifra debe decirse y quién habla. Duración según lo que indique el profesor.
-- [ ] Cada persona presenta la parte que **no** construyó (Aleja la 7.3, Julián la 7.2, Juanes la 7.1) y la 7.4 se reparte. Así el profesor ve dominio de todo el equipo.
-- [ ] Preparar las diapositivas o la vista del informe que se proyectará.
+### Domingo 25 de octubre · hoy
 
-* **Listo cuando:** el guion tiene nombre en cada renglón.
+**Objetivo del día:** que el Pipeline, las métricas y `agregar_nacional` estén en `main` esta noche, para que el lunes se pueda entrenar.
 
-**Julián · banco de preguntas (3 h)**
+#### Juanes
 
-- [ ] En el guion, una respuesta de máximo dos frases y con cifra a cada una de estas preguntas probables:
-  1. ¿Qué parte de los datos es real y cuál simulada? ¿Cómo saben que la simulación es realista?
-  2. ¿El resultado depende del componente simulado?
-  3. ¿Por qué se parte por mes y no al azar? ¿Qué pasaría con `train_test_split`?
-  4. ¿Por qué el stepwise y el escalamiento van dentro del Pipeline?
-  5. ¿Los 5.096 registros son independientes? ¿Qué implica para los p-valores del stepwise?
-  6. ¿Por qué MAPE? ¿Qué pasa cuando el valor observado es muy bajo?
-  7. ¿Por qué el ingenuo estacional es una línea base más exigente que la media?
-  8. ¿La regularización resolvió la multicolinealidad del artículo? ¿Cómo lo midieron?
-  9. ¿Qué aporta KNN en un problema de regresión con series de tiempo?
-  10. ¿Por qué modelar el logaritmo del índice?
-  11. ¿Los predictores de la prueba son conocidos de antemano? (pronóstico ex post)
-  12. ¿Cómo se compara su MAPE con el 4,89 % del artículo y por qué difiere?
-- [ ] Agregar las que salgan de los ensayos.
+**Tarea 1 · Pipeline a `main` (2.5 h)**
 
-* **Listo cuando:** las 12 preguntas tienen respuesta y responsable principal.
+- [ ] Abrir un PR de `c/e1-particion` hacia `main` con las métricas, las líneas base, el preprocesador y el Pipeline. El PR #3 se fusionó en `c/e1-particion` y no en `main`, por eso nadie más tiene ese código.
+- [ ] Antes de abrirlo, agregar `rmse(y, yhat)` en `metricas.py` (la raíz del MSD, en unidades del índice), con una prueba a mano.
+- [ ] Agregar un parámetro opcional `drop_categorica="first"` en `crear_preprocesador` (se pasa al `OneHotEncoder` como `drop=drop_categorica`) y el mismo parámetro en `construir_pipeline`, que lo deja pasar. KNN lo usará con `None`: con `drop="first"` la categoría de referencia queda a distancia 1 de todas las demás y las otras a √2 entre sí, lo que distorsiona los vecinos. El nombre tiene que ser exactamente `drop_categorica`.
 
-**Aleja · formato y ortografía final (2 h)**
+* **Listo cuando:** el Pipeline está en `main` y `pytest` pasa.
 
-- [ ] Revisar numeración de figuras y tablas, que cada una se cite en el texto antes de aparecer, portada y referencias.
-- [ ] Pasar el corrector del Word a todo el documento y leerlo una vez completo en voz alta.
+**Tarea 2 · Empezar el scorer (si queda tiempo)**
 
-* **Listo cuando:** versión 3 sin errores marcados por el corrector.
+- [ ] Adelantar `scorer_mape_nacional` (ver lunes, tarea 1).
 
-**Todos · ensayo 1 (1 h, 19:00):** se presenta completo con cronómetro; quien no habla hace de profesor y pregunta del banco. Juanes anota tiempo y fallas.
+#### Aleja
 
-### Día 19 · martes 27 de octubre
+**Tarea 1 · `agregar_nacional` a `main` (1 h)**
 
-**Objetivo del día:** todo cerrado un día antes.
+- [ ] Un PR desde una rama nueva que parta de `main` con solo `src/evaluacion/agregacion.py` y una prueba `tests/test_agregacion.py`: `agregar_nacional(base, "indice_ventas_real")` coincide con `L_8` de `lineas_nacionales.csv` (error relativo < 1e-6) en los tres escenarios.
+- [ ] Conservar `linea_codigo` como nombre del tercer parámetro, que es como lo llama el resto del código.
 
-- [ ] **Todos · ensayo 2 (1 h):** con los cambios del ensayo 1. El que hace de profesor elige preguntas al azar y a cualquier persona, no al dueño de la sección.
-- [ ] **Aleja (2 h):** exportar el informe a PDF y subirlo a `docs/informe/`; etiquetar `v2.0` en main y comprobar en una ventana de incógnito que el enlace abre la etiqueta.
-- [ ] **Julián (1 h):** correr `reproducir.py --hasta prueba` desde un clon limpio de `v2.0` por última vez.
-- [ ] **Juanes (1 h):** cuadre final de cifras entre el PDF y las tablas de `v2.0`.
+* **Listo cuando:** `agregar_nacional` está en `main` con su prueba.
 
-* **Listo cuando:** PDF, etiqueta y enlace verificados; el ensayo 2 sin fallas graves.
+**Tarea 2 · Verificación de la simulación a `main` (1 h)**
 
-### Día 20 · miércoles 28 de octubre · Entrega
+- [ ] `notebooks/01_verificacion_simulacion.ipynb`, `results/tablas/verificacion_simulacion.csv` y su figura, adaptados para que corran con el código de `main` (sin los módulos nuevos de `src/datos/`).
 
-- [ ] **Aleja:** entregar el PDF y el enlace al repositorio (etiqueta `v2.0`) por el canal del curso, antes de la hora límite, y avisar en el chat.
-- [ ] **Todos (30 min):** repaso rápido del banco de preguntas si la sustentación es ese día.
-- [ ] **Después de la sustentación:** cada quien anota en `docs/decisiones.md` la retroalimentación del profesor sobre su parte; es el punto de partida de la entrega final.
+* **Listo cuando:** el notebook corre en `main` y regenera la tabla y la figura.
+
+**Tarea 3 · Explicar las dos verificaciones que no cumplen (30 min)**
+
+- [ ] Anotar en `docs/bitacora_resultados.md` por qué salen `False` la correlación entre líneas y las proporciones departamentales: ¿el rango de referencia estaba mal planteado o la simulación no lo reproduce? Es lo primero que preguntará el profesor de la 7.1.
+
+* **Listo cuando:** cada una tiene su explicación en una o dos frases.
+
+#### Julián
+
+**Tarea 1 · Fusionar el PR de documentación (15 min)**
+
+- [ ] Fusionar `b/e6-comparacion-articulo` cuando alguien lo apruebe: trae este plan, la tabla del artículo y las decisiones nuevas.
+
+**Tarea 2 · Curvas de validación en código (1.5 h)**
+
+- [ ] `src/evaluacion/curvas.py` con sus pruebas: una tabla por valor del hiperparámetro con el MAPE de validación y de entrenamiento (media y desviación entre folds, leídas de `GridSearchCV` con `return_train_score=True`), la regla de una desviación (¿un valor más simple queda a menos de una desviación del mínimo?) y la figura con las dos curvas.
+
+* **Listo cuando:** las funciones pasan sus pruebas con un `GridSearchCV` sobre la base pequeña.
+
+**Tarea 3 · KNN sin `drop` en los candidatos (30 min)**
+
+- [ ] En `construir_candidato`, pasar `drop_categorica=None` para `knn`, con una prueba que se salte mientras el parámetro no esté en `main`.
+
+* **Listo cuando:** está en un PR con el CI en verde.
+
+**Tarea 4 · Referencias y declaración de IA (1.5 h)**
+
+- [ ] Referencias en el estilo de la Entrega 1: artículo base, DANE (EMC, ELIC, IPC, importaciones), Fedesarrollo, Superintendencia Financiera, y las librerías (scikit-learn, statsmodels, pandas), porque la rúbrica exige citar código y librerías externas.
+- [ ] `docs/uso_ia.md` y el párrafo del informe: para qué se usó IA generativa y que cada decisión técnica fue entendida y puede sustentarse.
+
+* **Listo cuando:** las referencias y el párrafo están listos para pegar en el Word.
+
+#### Todos
+
+**Control del día (21:00, por el chat, 10 min):** ¿el Pipeline y `agregar_nacional` están en `main`? Si no, lo primero del lunes es terminarlos.
+
+### Lunes 26 de octubre
+
+**Objetivo del día:** los 5 modelos y las 2 líneas base entrenados en los 3 escenarios, y el modelo preliminar elegido sin mirar la prueba.
+
+#### Juanes
+
+**Tarea 1 · Scorer y evaluación por fold (mañana, 1.5 h) · camino crítico**
+
+- [ ] En `src/evaluacion/validar.py`, `scorer_mape_nacional(estimador, X, y)`: predice, agrega la línea 8 con `agregar_nacional` y devuelve −MAPE (scikit-learn maximiza).
+- [ ] `evaluar_cv(pipeline, df, cv)`: MAPE, MAD, MSD y RMSE nacionales y MAPE del panel en cada fold. Probarlo con las dos líneas base sobre la base pequeña.
+
+* **Listo cuando:** `evaluar_cv` devuelve una tabla de 5 folds para el ingenuo estacional.
+
+**Tarea 2 · `entrenar.py` (mañana, 2.5 h) · camino crítico**
+
+- [ ] `scripts/entrenar.py --escenario central|bajo|alto|todos [--rapido]`: para cada candidato, `GridSearchCV(pipeline, rejilla, cv=CVTemporalPorMes(), scoring=scorer_mape_nacional, refit=True, return_train_score=True)` sobre `cargar_entrenamiento(escenario)`. Las líneas base entran por `evaluar_cv`.
+- [ ] `results/tablas/cv_resultados.csv`, una fila por escenario, modelo y fold: hiperparámetros elegidos, `mape`, `mad`, `msd`, `rmse` y `mape_entrena`. El MAPE de entrenamiento sale de `cv_results_["split{k}_train_score"]` con el signo volteado; sin él no se puede decir si un modelo subajusta (los dos errores altos) o sobreajusta (entrenamiento bajo y validación alta).
+- [ ] Con el modelo que `GridSearchCV` reentrena con todos los meses de entrenamiento (`best_estimator_`), predecir esos mismos meses y guardar su MAPE nacional como `mape_ajuste`. Es la única cifra comparable con el 4,89 % del artículo, que se calculó sobre sus mismos meses de ajuste.
+- [ ] Guardar las búsquedas ajustadas en `results/modelos/` (en `.gitignore`), para que Julián dibuje las curvas sin volver a entrenar.
+
+* **Listo cuando:** `python scripts/entrenar.py --escenario todos` corre y `cv_resultados.csv` tiene 7 modelos × 3 escenarios × 5 folds.
+
+**Tarea 3 · Tablas de comparación (tarde, 1 h)**
+
+- [ ] `results/tablas/comparacion_cv.csv`: una fila por escenario y modelo (21 filas) con MAPE medio ± desviación entre folds, MAPE de entrenamiento medio, MAD, MSD, RMSE, `mape_ajuste`, mejora % frente a la media y frente al ingenuo estacional, e hiperparámetros elegidos.
+- [ ] `results/tablas/comparacion_pareada.csv`: como todos los modelos usan los mismos 5 folds, la diferencia de MAPE fold por fold de cada modelo frente al ingenuo estacional y frente a la MLR con stepwise, y en cuántos folds gana cada uno.
+
+* **Listo cuando:** las dos tablas están en `main`.
+
+**Tarea 4 · Figura de comparación (tarde, 30 min)**
+
+- [ ] En `notebooks/03_comparacion_modelos.ipynb`: MAPE de cada fold por modelo (un punto por fold y la media marcada), ordenado de mejor a peor, con el ingenuo estacional como referencia. Un panel por escenario, legible a media página.
+
+* **Listo cuando:** la figura muestra de un vistazo qué modelos superan al ingenuo estacional.
+
+#### Aleja
+
+**Tarea 1 · Auditoría de fuga (mañana, 1 h)**
+
+- [ ] `tests/test_fuga.py`: `validar_base` falla con cualquier columna de auditoría; `cargar_entrenamiento` nunca devuelve meses desde agosto de 2025; ningún archivo salvo `scripts/evaluar_prueba.py` llama a `cargar_prueba` (buscarlo en el texto); `CVTemporalPorMes` no mezcla meses.
+
+* **Listo cuando:** `test_fuga.py` pasa en `main`.
+
+**Tarea 2 · Borrador de la 7.1 (mañana, 2 h)**
+
+- [ ] `docs/informe/borrador_7_1.md` (máximo una página): la base definitiva, cómo se generó la simulación, la tabla de verificación con una figura, la explicación de las dos verificaciones que no cumplen, el estado de calidad y las transformaciones.
+
+* **Listo cuando:** el borrador cita la tabla y la figura.
+
+**Tarea 3 · Escenarios (tarde, 1 h, cuando haya resultados)**
+
+- [ ] `results/tablas/escenarios.csv`: MAPE medio de validación de cada modelo en los tres escenarios.
+- [ ] Una frase en `docs/bitacora_resultados.md`: ¿cambia el orden de los modelos? ¿Por qué el MAPE nacional casi no debería variar (la serie nacional es real) mientras el del panel sí?
+
+* **Listo cuando:** la tabla tiene su frase.
+
+**Tarea 4 · Estabilidad de la selección (tarde, 1 h)**
+
+- [ ] `results/tablas/estabilidad_seleccion.csv`: en los 15 ajustes (5 folds × 3 escenarios), cuántas veces elige el stepwise cada variable y cuántas queda distinta de cero en Lasso.
+- [ ] Una frase en la bitácora: ¿la selección es estable o cambia según el periodo?
+
+* **Listo cuando:** la tabla cubre los 5 predictores rezagados y `covid`.
+
+#### Julián
+
+**Tarea 1 · Preparar la interpretación (mañana, 2 h)**
+
+- [ ] En `notebooks/04_interpretacion.ipynb`, dejar programado con la base pequeña lo que se correrá con los resultados: coeficientes por fold de MLR completa, Ridge y Lasso con `coeficientes_por_fold` y `estabilidad`, y el VIF de las variables elegidas, calculado solo con entrenamiento.
+
+* **Listo cuando:** el notebook corre de punta a punta con la base pequeña.
+
+**Tarea 2 · Curvas de validación (tarde, 1.5 h, cuando haya resultados)**
+
+- [ ] Una figura con tres paneles (Ridge, Lasso y KNN con una línea por tipo de peso): MAPE de validación con su banda de ±1 desviación, MAPE de entrenamiento en línea punteada y el valor elegido marcado.
+- [ ] En cada panel: dónde se abre la brecha entre entrenamiento y validación, y si un valor más simple (alpha mayor o k mayor) queda a menos de una desviación del mínimo; si es así, anotarlo y justificar cuál se usa.
+
+* **Listo cuando:** la figura está y cada panel tiene su lectura en una frase.
+
+**Tarea 3 · Primera corrida en la bitácora (tarde, 30 min)**
+
+- [ ] En `docs/bitacora_resultados.md`: ¿qué modelos superan al ingenuo estacional?, ¿qué variables elige el stepwise?
+
+**Tarea 4 · Tabla del artículo (tarde, 1 h)**
+
+- [ ] Llenar la tabla "artículo frente a este trabajo" de `borrador_7_3.md`: MAPE de ajuste (`mape_ajuste`) frente al 4,89 %, MAPE de validación por separado, variables retenidas, signo de cada coeficiente frente al esperado y VIF máximo.
+
+* **Listo cuando:** la tabla no tiene huecos.
+
+#### Todos
+
+**Punto de control (19:00, 1 h, en llamada):**
+
+- [ ] `cv_resultados.csv` y `comparacion_cv.csv` están en `main` y `pytest` pasa, incluido `test_fuga.py`.
+- [ ] Nadie ha corrido `evaluar_prueba.py` ni calculado nada con agosto de 2025 a julio de 2026.
+- [ ] Se elige el **modelo preliminar** por MAPE medio de validación en el escenario central, desempatando por la comparación por fold, la estabilidad (menor desviación entre folds) y la interpretabilidad. Se escribe en `docs/decisiones.md` con sus cifras.
+
+### Martes 27 de octubre
+
+**Objetivo del día:** el informe completo y ensayado.
+
+#### Juanes
+
+**Tarea 1 · Borrador de la 7.2 (1.5 h)**
+
+- [ ] `docs/informe/borrador_7_2.md` (máximo media página): las etapas del Pipeline en orden, en una lista numerada, y para cada una qué información del futuro se filtraría si estuviera fuera.
+- [ ] Decir qué se pronostica: el mes t con la información de t−1, es decir, un pronóstico a un mes; los 6 meses de cada fold son bloques de evaluación, no un horizonte de 6 meses.
+- [ ] En `docs/validacion.md`, ajustar el párrafo "Seis meses de validación y cinco folds" en el mismo sentido: los 6 meses se eligen para que cada mes del año se valide al menos dos veces, no como horizonte de planeación.
+
+* **Listo cuando:** el borrador explica por qué cada etapa va dentro del Pipeline.
+
+**Tarea 2 · Borrador de la 7.4 de validación y métricas (1.5 h)**
+
+- [ ] `docs/informe/borrador_7_4_metricas.md` (máximo media página): estrategia de validación, por qué MAPE con MAD y RMSE de contraste, resultados con su variabilidad (desviación entre folds y rango entre escenarios), comparación por fold y mejora frente a las líneas base.
+- [ ] Cerrar con un párrafo de limitaciones:
+    - El MAPE de validación del modelo elegido es algo optimista, porque se eligió con esos mismos folds; la evaluación en prueba queda para la entrega final.
+    - `_rez1` supone que el dato de t−1 ya está publicado al pronosticar t. Según las fechas de `data/raw/FUENTES.md`, importaciones y licencias salen unos 45 a 50 días después del cierre del mes.
+    - El ingenuo estacional usa t−12 y los modelos t−1, lo que favorece levemente a los modelos.
+
+* **Listo cuando:** cada cifra del borrador está en un CSV de `results/tablas/`.
+
+**Tarea 3 · Cuadre de cifras (1 h)**
+
+- [ ] `docs/cuadre_cifras.md`: cada número del informe con la sección donde aparece, el archivo CSV y la fila de donde sale.
+
+* **Listo cuando:** el 100 % de las cifras está rastreado.
+
+#### Aleja
+
+**Tarea 1 · Análisis de errores (1.5 h)**
+
+- [ ] Residuos de la línea nacional del modelo preliminar en los 30 meses de validación: ¿en qué meses se equivoca más?, ¿hay un patrón estacional que no capturó?
+- [ ] Meses de confinamiento de 2020 con los residuos de ajuste: comparar MAPE y MAD, como se anunció en la E1.
+- [ ] Agregar la limitación: esos meses pueden influir de más en los coeficientes; se tratan con `covid` y no se midió su influencia con distancia de Cook.
+
+* **Listo cuando:** hay una figura y tres hallazgos de una frase en la bitácora.
+
+**Tarea 2 · Armar el informe (2.5 h)**
+
+- [ ] Crear el Word con el formato de la Entrega 1: portada, introducción de 3 líneas, secciones 7.1 a 7.4 desde los borradores, conclusiones, referencias, declaración de IA y enlace al repositorio.
+- [ ] Máximo 6 figuras y 4 tablas, numeradas, cada una con su frase de lectura.
+- [ ] Contar las páginas del cuerpo (entre 3 y 5) y avisar por el chat. Si pasa de 5, recortar repeticiones y teoría antes que limitaciones.
+
+* **Listo cuando:** la versión 1 del Word está en la carpeta compartida con el número de páginas.
+
+**Tarea 3 · README (30 min)**
+
+- [ ] Agregar cómo correr `scripts/entrenar.py` y dónde quedan las tablas.
+
+#### Julián
+
+**Tarea 1 · Interpretación del modelo preliminar (1.5 h)**
+
+- [ ] Correr el notebook 04 con el modelo preliminar: coeficientes estandarizados con signo y magnitud, y estabilidad (media ± desviación entre folds) de MLR completa, Ridge y Lasso.
+- [ ] Guardar `results/tablas/coeficientes.csv` y una figura de coeficientes con barras de error.
+
+* **Listo cuando:** la tabla de coeficientes existe para los 3 modelos lineales.
+
+**Tarea 2 · Cerrar la 7.3 (1 h)**
+
+- [ ] `borrador_7_3.md` (máximo una página) con la figura de curvas, la de comparación y la tabla del artículo.
+
+* **Listo cuando:** la 7.3 cabe en una página con su tabla y sus figuras.
+
+**Tarea 3 · Borrador de la 7.4 de interpretación (1 h)**
+
+- [ ] `docs/informe/borrador_7_4_interpretacion.md` (máximo media página): variables relevantes, tipos de error e implicaciones para la planeación de inventarios, con los hallazgos de Aleja.
+- [ ] Cada coeficiente se lee como asociación condicional (manteniendo fijas las demás variables), no como efecto causal, y los p-valores del stepwise no se usan como prueba de que una variable predice.
+
+* **Listo cuando:** el borrador cita cada figura y tabla que usa.
+
+**Tarea 4 · Banco de preguntas (1 h)**
+
+- [ ] Una respuesta de máximo dos frases, con cifra, para cada pregunta del banco (abajo).
+
+* **Listo cuando:** las 13 preguntas tienen respuesta y responsable.
+
+#### Todos
+
+**Cierre del martes (19:00, 2 h, en llamada):**
+
+- [ ] (45 min) Lectura cruzada: cada quien lee las secciones que no escribió. ¿Cada decisión tiene su porqué?, ¿cada figura tiene su lectura?, ¿lo entiendo como para defenderlo?
+- [ ] (60 min) Ensayo de la sustentación con cronómetro; quien no habla hace de profesor con el banco de preguntas. Cada persona presenta una parte que **no** construyó.
+- [ ] (15 min) Una persona clona el repositorio en una carpeta nueva, instala y corre `python scripts/entrenar.py --escenario central`. Las tablas deben salir idénticas a las de `main`.
+
+### Miércoles 28 de octubre · entrega
+
+#### Juanes
+
+**Tarea 1 · Cuadre final (30 min)**
+
+- [ ] Comparar cada cifra del Word con las tablas de `main`.
+
+#### Aleja
+
+**Tarea 1 · Entregar (1 h)**
+
+- [ ] Exportar a PDF y etiquetar `v2.0` en `main`.
+- [ ] Comprobar en una ventana de incógnito que el enlace abre la etiqueta.
+- [ ] Entregar por el canal del curso antes de la hora límite y avisar en el chat.
+
+#### Julián
+
+**Tarea 1 · Revisión final de la 7.3 y la 7.4 (1 h)**
+
+- [ ] Atender los comentarios de la lectura cruzada y pasar el corrector del Word.
+
+#### Todos
+
+- [ ] (Mañana, 1 h) Cada dueño atiende los comentarios de su sección.
+- [ ] (30 min) Repaso del banco de preguntas si la sustentación es ese día.
+- [ ] Después de la sustentación, cada quien anota en `docs/decisiones.md` la retroalimentación del profesor sobre su parte.
+
+### Banco de preguntas
+
+1. ¿Qué parte de los datos es real y cuál simulada? ¿Cómo saben que la simulación es realista?
+2. ¿El resultado depende del componente simulado?
+3. ¿Por qué se parte por mes y no al azar? ¿Qué pasaría con `train_test_split`?
+4. ¿Por qué el stepwise y el escalamiento van dentro del Pipeline?
+5. ¿Los 5.096 registros son independientes? ¿Qué implica para los p-valores del stepwise?
+6. ¿Por qué MAPE? ¿Qué pasa cuando el valor observado es muy bajo?
+7. ¿Por qué el ingenuo estacional es una línea base más exigente que la media?
+8. ¿La regularización resolvió la multicolinealidad del artículo? ¿Cómo lo midieron?
+9. ¿Qué aporta KNN en un problema de regresión con series de tiempo? ¿Por qué sin `drop`?
+10. ¿Por qué modelar el logaritmo del índice?
+11. ¿Qué se pronostica exactamente: un mes o seis? ¿Los datos de t−1 están disponibles a tiempo?
+12. ¿Cómo se compara su MAPE con el 4,89 % del artículo y por qué no se compara con el de validación?
+13. ¿Por qué no evaluaron todavía en la prueba?
+
+### Pasa a la entrega final
+
+Se mueve, no se olvida. Todo esto queda para la Fase 3:
+
+- Evaluación única en prueba (`scripts/evaluar_prueba.py`), `prueba.csv` y la figura de la serie observada frente a las predicciones. La rúbrica la pide en la 8.1.
+- El intervalo bootstrap del MAPE de prueba, por bloques de meses o declarando que los meses seguidos no son independientes.
+- `scripts/reproducir.py` completo, con los hashes.
+- La reconstrucción de la base de la rama de Aleja: revisarla con calma y fusionarla solo si reproduce byte a byte la base verificada.
+- La trayectoria de Lasso, el mapa de calor de MAPE por línea y departamento, la figura del flujo del Pipeline y la figura de Spearman de los escenarios.
+- Una variante con importaciones y licencias rezagadas dos meses, para medir cuánto pesa el supuesto de disponibilidad.
 
 ## Lo que no está resuelto todavía
 
-- Fecha y duración de la sustentación: ajustar el bloque 7 cuando se sepa.
+- Fecha y duración de la sustentación: ajustar el miércoles cuando se sepa.
 - Confirmar desde un navegador que el enlace de `interes.xls` en `data/raw/FUENTES.md` sigue activo (Julián).
