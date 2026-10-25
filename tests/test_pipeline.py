@@ -109,3 +109,53 @@ def test_se_puede_clonar():
 def test_columnas_log_invalidas():
     with pytest.raises(ValueError):
         crear_preprocesador(columnas_log=["icc"])  # predictor del mismo mes: no está en el modelo
+
+
+# ---------------------------------------------------------------------------
+# drop_categorica (plan de cierre, 25 de octubre): KNN usa el one-hot sin drop
+# ---------------------------------------------------------------------------
+
+def test_drop_none_deja_todas_las_categorias(fold1):
+    ent, _ = fold1
+    con_drop = crear_preprocesador().fit(ent).get_feature_names_out()
+    sin_drop = crear_preprocesador(drop_categorica=None).fit(ent).get_feature_names_out()
+    # Con drop="first" se pierde una columna por cada variable categórica (mes, depto, línea)
+    assert len(sin_drop) == len(con_drop) + 3
+    # 12 meses + 2 departamentos + 2 líneas (todas) + 5 numéricos + covid
+    assert len(sin_drop) == 12 + 2 + 2 + 5 + 1
+
+
+def test_distancias_entre_categorias_con_y_sin_drop(fold1):
+    """La razón del cambio, verificada con números: distancia entre las dummies de dos meses.
+
+    Con drop="first", el mes de referencia queda a 1 de los demás y los demás a √2 entre
+    sí. Sin drop, todos quedan a √2: ningún mes queda artificialmente "más cerca"."""
+    ent, _ = fold1
+    meses = sorted(ent["mes"].unique())
+    filas = ent.drop_duplicates("mes").set_index("mes", drop=False).loc[meses[:3]]
+
+    def distancias(drop):
+        prep = crear_preprocesador(drop_categorica=drop).fit(ent)
+        nombres = prep.get_feature_names_out()
+        Z = prep.transform(filas)[:, [n.startswith("cat__mes_") for n in nombres]]
+        ref_a_1 = np.linalg.norm(Z[0] - Z[1])  # mes de referencia vs. segundo mes
+        uno_a_2 = np.linalg.norm(Z[1] - Z[2])  # segundo vs. tercer mes
+        return ref_a_1, uno_a_2
+
+    assert distancias("first") == pytest.approx((1.0, np.sqrt(2)))
+    assert distancias(None) == pytest.approx((np.sqrt(2), np.sqrt(2)))
+
+
+def test_pipeline_deja_pasar_drop_categorica(fold1):
+    ent, val = fold1
+    modelo = construir_pipeline(KNeighborsRegressor(n_neighbors=5), drop_categorica=None)
+    modelo.fit(ent, ent[OBJETIVO])
+    codificador = modelo.regressor_.named_steps["prep"].named_transformers_["cat"]
+    assert codificador.drop is None
+    assert np.isfinite(modelo.predict(val)).all()
+    # Por defecto sigue siendo "first": las llamadas que ya existían no cambian
+    por_defecto = construir_pipeline(LinearRegression()).fit(ent, ent[OBJETIVO])
+    assert por_defecto.regressor_.named_steps["prep"].named_transformers_["cat"].drop == "first"
+    # Y se puede ajustar desde GridSearchCV / set_params como cualquier otro parámetro
+    nombre = "regressor__prep__cat__drop"
+    assert construir_pipeline(Ridge(), drop_categorica=None).get_params()[nombre] is None

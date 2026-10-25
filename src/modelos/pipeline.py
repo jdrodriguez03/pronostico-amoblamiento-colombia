@@ -29,14 +29,19 @@ from src.modelos.preprocesamiento import crear_preprocesador
 
 
 def construir_pipeline(modelo, selector=None, log_objetivo: bool = LOG_OBJETIVO,
-                       columnas_log: list[str] | None = None):
+                       columnas_log: list[str] | None = None,
+                       drop_categorica: str | None = "first"):
     """Pipeline([prep, sel, modelo]), envuelto en TransformedTargetRegressor si log_objetivo.
 
     El paso "sel" siempre existe ("passthrough" si no hay selector) para que los nombres de
     los pasos sean iguales en los 5 modelos y las rejillas no cambien de un modelo a otro.
+
+    drop_categorica solo se deja pasar a crear_preprocesador(): "first" para los modelos
+    lineales y None para KNN (la explicación está en crear_preprocesador). Va al final y con
+    valor por defecto para que las llamadas que ya existen sigan funcionando igual.
     """
     pipe = Pipeline([
-        ("prep", crear_preprocesador(columnas_log)),
+        ("prep", crear_preprocesador(columnas_log, drop_categorica=drop_categorica)),
         ("sel", selector if selector is not None else "passthrough"),
         ("modelo", modelo),
     ])
