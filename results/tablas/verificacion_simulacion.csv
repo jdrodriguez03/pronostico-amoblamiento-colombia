@@ -1,0 +1,34 @@
+verificacion,objetivo,obtenido,escenario,cumple,detalle
+Magnitud de log(eta),sigma=2.00% (tolerancia ±20%),0.01903751496481275,bajo,True,desviación estándar poblacional; sigma=0.0200
+Magnitud de log(eta),sigma=7.00% (tolerancia ±20%),0.06661157534111625,central,True,desviación estándar poblacional; sigma=0.0700
+Magnitud de log(eta),sigma=13.00% (tolerancia ±20%),0.12369572233967904,alto,True,desviación estándar poblacional; sigma=0.1300
+Persistencia AR(1),media=0.60 ±0.10; referencia observada 0.50–0.66,0.5629930516663465,bajo,True,56 series; rango obtenido 0.396–0.756
+Persistencia AR(1),media=0.60 ±0.10; referencia observada 0.50–0.66,0.5625841474878536,central,True,56 series; rango obtenido 0.395–0.755
+Persistencia AR(1),media=0.60 ±0.10; referencia observada 0.50–0.66,0.5619552180561749,alto,True,56 series; rango obtenido 0.394–0.754
+Conservación nacional muebles,error absoluto máximo ≤1e-6,2.842170943040401e-14,bajo,True,pesos PESOS_DEPTO; unidades: puntos de índice
+Conservación nacional muebles,error absoluto máximo ≤1e-6,2.842170943040401e-14,central,True,pesos PESOS_DEPTO; unidades: puntos de índice
+Conservación nacional muebles,error absoluto máximo ≤1e-6,2.842170943040401e-14,alto,True,pesos PESOS_DEPTO; unidades: puntos de índice
+Correlación de cambios entre líneas,media en rango descriptivo 0.07–0.30; no es IC,0.6457127151485234,bajo,False,196 correlaciones de pares; rango de medias departamentales 0.565–0.713; pares en 0.07–0.30: 2/196; rango de pares 0.156–0.951; referencia no validable contra datos regionales observados
+Correlación de cambios entre líneas,media en rango descriptivo 0.07–0.30; no es IC,0.5937516359682117,central,False,196 correlaciones de pares; rango de medias departamentales 0.505–0.661; pares en 0.07–0.30: 7/196; rango de pares 0.088–0.917; referencia no validable contra datos regionales observados
+Correlación de cambios entre líneas,media en rango descriptivo 0.07–0.30; no es IC,0.4960809508791759,alto,False,196 correlaciones de pares; rango de medias departamentales 0.406–0.558; pares en 0.07–0.30: 16/196; rango de pares 0.046–0.837; referencia no validable contra datos regionales observados
+Proporción departamental promedio muebles,0.170438,0.17021324503486357,bajo,False,Antioquia; diferencia=-0.000224755; tolerancia numérica 1e-6
+Proporción departamental promedio muebles,0.057136,0.052137680015119627,bajo,False,Atlantico; diferencia=-0.00499832; tolerancia numérica 1e-6
+Proporción departamental promedio muebles,0.22554,0.23915881653517074,bajo,False,Bogota; diferencia=+0.0136188; tolerancia numérica 1e-6
+Proporción departamental promedio muebles,0.04996,0.056793470184152095,bajo,False,Cundinamarca; diferencia=+0.00683347; tolerancia numérica 1e-6
+Proporción departamental promedio muebles,0.04332,0.041621219551859746,bajo,False,Santander; diferencia=-0.00169878; tolerancia numérica 1e-6
+Proporción departamental promedio muebles,0.120603,0.1077777210227933,bajo,False,Valle del Cauca; diferencia=-0.0128253; tolerancia numérica 1e-6
+Proporción departamental promedio muebles,0.333003,0.3322978476560409,bajo,False,Otros departamentos; diferencia=-0.000705152; tolerancia numérica 1e-6
+Proporción departamental promedio muebles,0.170438,0.1693011893172327,central,False,Antioquia; diferencia=-0.00113681; tolerancia numérica 1e-6
+Proporción departamental promedio muebles,0.057136,0.05189902208702917,central,False,Atlantico; diferencia=-0.00523698; tolerancia numérica 1e-6
+Proporción departamental promedio muebles,0.22554,0.23779534586700837,central,False,Bogota; diferencia=+0.0122553; tolerancia numérica 1e-6
+Proporción departamental promedio muebles,0.04996,0.057269976753312954,central,False,Cundinamarca; diferencia=+0.00730998; tolerancia numérica 1e-6
+Proporción departamental promedio muebles,0.04332,0.04189679146929958,central,False,Santander; diferencia=-0.00142321; tolerancia numérica 1e-6
+Proporción departamental promedio muebles,0.120603,0.10761801590006533,central,False,Valle del Cauca; diferencia=-0.012985; tolerancia numérica 1e-6
+Proporción departamental promedio muebles,0.333003,0.33421965860605196,central,False,Otros departamentos; diferencia=+0.00121666; tolerancia numérica 1e-6
+Proporción departamental promedio muebles,0.170438,0.1682017616634643,alto,False,Antioquia; diferencia=-0.00223624; tolerancia numérica 1e-6
+Proporción departamental promedio muebles,0.057136,0.051648003405761554,alto,False,Atlantico; diferencia=-0.005488; tolerancia numérica 1e-6
+Proporción departamental promedio muebles,0.22554,0.23612712608391564,alto,False,Bogota; diferencia=+0.0105871; tolerancia numérica 1e-6
+Proporción departamental promedio muebles,0.04996,0.057940886485994575,alto,False,Cundinamarca; diferencia=+0.00798089; tolerancia numérica 1e-6
+Proporción departamental promedio muebles,0.04332,0.04226723725323766,alto,False,Santander; diferencia=-0.00105276; tolerancia numérica 1e-6
+Proporción departamental promedio muebles,0.120603,0.10761456123841542,alto,False,Valle del Cauca; diferencia=-0.0129884; tolerancia numérica 1e-6
+Proporción departamental promedio muebles,0.333003,0.33620042386921084,alto,False,Otros departamentos; diferencia=+0.00319742; tolerancia numérica 1e-6
