@@ -71,3 +71,21 @@ def test_construir_candidato_con_el_pipeline_de_juanes(base_pequena):
     n_dummies = sum(base_pequena[c].nunique() - 1 for c in PREDICTORES_CAT)
     assert sum(c.startswith("cat__") for c in nombres) == n_dummies
     assert rejilla == {}
+
+
+def test_knn_usa_one_hot_sin_drop():
+    """KNN pide el one-hot sin drop; los modelos lineales conservan drop="first"."""
+    pipe_knn, _ = construir_candidato("knn")
+    prep_knn = pipe_knn.regressor.named_steps["prep"]
+    assert {n: t for n, t, _ in prep_knn.transformers}["cat"].drop is None
+
+    pipe_ridge, _ = construir_candidato("ridge")
+    prep_ridge = pipe_ridge.regressor.named_steps["prep"]
+    assert {n: t for n, t, _ in prep_ridge.transformers}["cat"].drop == "first"
+
+
+def test_rejilla_de_ridge_pasa_del_viejo_borde():
+    """El tope de alpha supera 1000, donde caía el mínimo con la rejilla anterior."""
+    alphas = rejilla_pipeline("ridge")["regressor__modelo__alpha"]
+    assert min(alphas) == pytest.approx(1e-3)
+    assert max(alphas) == pytest.approx(1e5)

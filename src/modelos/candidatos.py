@@ -35,6 +35,16 @@ from src.modelos.stepwise import StepwiseSelector
 # departamento y línea). Son la estacionalidad y los efectos fijos: siempre quedan.
 PREFIJOS_FORZADOS = ["cat__"]
 
+# Opciones del Pipeline de Juanes que cambian según el modelo. KNN usa el one-hot sin
+# drop: con drop="first" la categoría de referencia (por ejemplo enero) queda a distancia 1
+# de todas las demás, mientras que dos categorías que no son la referencia quedan a √2
+# entre sí, y KNN vería a la referencia "más cerca" de todo sin ninguna razón. La regresión
+# lineal sí necesita el drop (si no, las dummies son colineales con el intercepto), así que
+# los demás modelos se quedan con el valor por defecto del Pipeline.
+OPCIONES_PIPELINE: dict = {
+    "knn": {"drop_categorica": None},
+}
+
 CANDIDATOS: dict = {
     # Sin rejilla: alfa = 0,25 es una decisión del artículo, no un hiperparámetro que
     # ajustemos (si lo ajustáramos ya no reproduciríamos su método).
@@ -44,9 +54,12 @@ CANDIDATOS: dict = {
         {},
     ),
     "mlr_completa": (LinearRegression(), None, {}),
-    # 13 valores de 0,001 a 1000 (4 por década en escala log): cubre desde "casi MLR"
-    # hasta "casi todo encogido a cero".
-    "ridge": (Ridge(), None, {"alpha": np.logspace(-3, 3, 13)}),
+    # 17 valores de 0,001 a 100.000 (2 por década en escala log): cubre desde "casi MLR"
+    # hasta "casi todo encogido a cero". Antes llegaba solo a 1000, y en la exploración del
+    # 26 de octubre el mínimo de validación caía justo en ese borde: con la rejilla cortada
+    # no se podía saber si el mínimo real estaba más allá. Con el tope en 100.000 la curva
+    # vuelve a subir después del mínimo y se ve que es un mínimo de verdad.
+    "ridge": (Ridge(), None, {"alpha": np.logspace(-3, 5, 17)}),
     # Lasso necesita alfas más pequeños que Ridge para no apagar todo: 0,0001 a 10.
     # max_iter alto porque con predictores correlacionados converge lento.
     "lasso": (Lasso(max_iter=20000), None, {"alpha": np.logspace(-4, 1, 11)}),
@@ -84,6 +97,7 @@ def construir_candidato(nombre: str, log_objetivo: bool = LOG_OBJETIVO):
         clone(modelo),
         clone(selector) if selector is not None else None,
         log_objetivo=log_objetivo,
+        **OPCIONES_PIPELINE.get(nombre, {}),
     )
     interno = pipe.regressor if log_objetivo else pipe
     interno.set_output(transform="pandas")
