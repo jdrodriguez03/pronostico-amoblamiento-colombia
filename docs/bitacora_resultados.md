@@ -43,3 +43,29 @@ Primeras lecturas (preliminares):
   quedan fuera de la tolerancia de igualdad de 1e-6; la diferencia absoluta máxima es 0,0136188
   (1,36 puntos porcentuales), en Bogotá para el escenario bajo. `PESOS_DEPTO` son coeficientes
   para agregar los índices, no participaciones observadas fijas que cada escenario deba reproducir.
+
+## 2026-10-26 · Curvas de validación y estabilidad de coeficientes, escenario central
+
+Corrida con `notebooks/04_interpretacion.ipynb`: mismo Pipeline, misma validación cruzada por
+mes y mismo `scorer_mape_nacional` que usará `scripts/entrenar.py`, solo con entrenamiento. Se
+debe comprobar contra `cv_resultados.csv` cuando exista (última sección del cuaderno).
+
+| Modelo | Elegido | MAPE nacional de validación |
+| --- | --- | --- |
+| Ridge | alpha = 1000 | 9,1 % ± 6,0 |
+| Lasso | alpha ≈ 0,032 | 9,4 % ± 5,7 |
+| KNN | k = 3, pesos uniformes | 9,0 % ± 4,6 |
+| Ridge con alpha casi cero (≈ MLR completa) | — | 14,8 % |
+
+- **Bordes de rejilla.** Ridge (alpha = 1000) y KNN (k = 3) caían en el borde de sus rejillas
+  anteriores. Se ampliaron (Ridge hasta 1e5, KNN desde k = 1) y en los dos casos la curva vuelve
+  a subir: son mínimos reales.
+- **Parsimonia.** Con la comparación pareada fold a fold (regla de un error estándar sobre las
+  diferencias), ningún valor más simple es equivalente al mínimo en los tres modelos. En Ridge,
+  3162 queda muy cerca (Δ 0,48 frente a un error estándar de 0,43).
+- **Sobreajuste.** KNN con pesos por distancia tiene MAPE de entrenamiento 0 para todo k, y con
+  k = 1 llega a 16,2 % en validación: memoriza. Con regularización fuerte el entrenamiento
+  (≈ 13 %) supera a la validación (≈ 9 %) porque solo el entrenamiento incluye los meses de
+  pandemia.
+- **Estabilidad.** En la MLR completa el área de vivienda cambia de signo entre folds; con Ridge
+  ningún coeficiente cambia de signo y la desviación entre folds es entre 1,6 y 25 veces menor.

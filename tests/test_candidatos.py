@@ -89,3 +89,10 @@ def test_rejilla_de_ridge_pasa_del_viejo_borde():
     alphas = rejilla_pipeline("ridge")["regressor__modelo__alpha"]
     assert min(alphas) == pytest.approx(1e-3)
     assert max(alphas) == pytest.approx(1e5)
+
+
+def test_rejilla_de_knn_empieza_en_k_igual_a_1():
+    """El mínimo de k caía en 3, el borde de la rejilla anterior: ahora se prueba desde 1."""
+    ks = rejilla_pipeline("knn")["regressor__modelo__n_neighbors"]
+    assert min(ks) == 1
+    assert 3 in ks

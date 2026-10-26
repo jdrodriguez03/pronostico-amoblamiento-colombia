@@ -63,10 +63,13 @@ CANDIDATOS: dict = {
     # Lasso necesita alfas más pequeños que Ridge para no apagar todo: 0,0001 a 10.
     # max_iter alto porque con predictores correlacionados converge lento.
     "lasso": (Lasso(max_iter=20000), None, {"alpha": np.logspace(-4, 1, 11)}),
+    # k desde 1: en la exploración del 26 de octubre el mínimo caía en k = 3, el valor más
+    # pequeño de la rejilla anterior (el mismo problema de borde que Ridge). Con 1 y 2 se ve
+    # que la curva vuelve a subir por la izquierda (k = 1 memoriza el entrenamiento).
     "knn": (
         KNeighborsRegressor(),
         None,
-        {"n_neighbors": [3, 5, 10, 20, 40], "weights": ["uniform", "distance"]},
+        {"n_neighbors": [1, 2, 3, 5, 10, 20, 40], "weights": ["uniform", "distance"]},
     ),
 }
 
