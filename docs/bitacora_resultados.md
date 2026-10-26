@@ -31,3 +31,15 @@ Primeras lecturas (preliminares):
   evidencia de que la regularización estabiliza los coeficientes.
 - Ridge y KNN superan a la MLR en el panel. Falta compararlos con el ingenuo estacional y en la
   escala nacional antes de concluir.
+
+## 2026-10-25 · Lectura de las verificaciones de la simulación
+
+- **Correlación entre líneas:** las medias de correlación de cambios son 0,646, 0,594 y 0,496
+  en los escenarios bajo, central y alto, respectivamente; las tres superan el rango descriptivo
+  de 0,07–0,30. No hay en las fuentes del proyecto series DANE comparables por departamento y
+  línea para validar ese rango empíricamente, así que se reporta como una limitación de la
+  simulación, sin cambiar el criterio.
+- **Participaciones departamentales:** las 21 comparaciones (7 departamentos por 3 escenarios)
+  quedan fuera de la tolerancia de igualdad de 1e-6; la diferencia absoluta máxima es 0,0136188
+  (1,36 puntos porcentuales), en Bogotá para el escenario bajo. `PESOS_DEPTO` son coeficientes
+  para agregar los índices, no participaciones observadas fijas que cada escenario deba reproducir.
