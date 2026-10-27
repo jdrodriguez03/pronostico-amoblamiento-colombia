@@ -34,6 +34,7 @@ Salidas (results/tablas/):
     cv_resultados.csv        una fila por escenario, modelo y fold (7 × 3 × 5 = 105)
     comparacion_cv.csv       una fila por escenario y modelo (21)
     comparacion_pareada.csv  diferencias de MAPE fold por fold frente a las referencias
+    rango_escenarios.csv     MAPE medio de cada modelo en los 3 escenarios, rango y puesto
 y las búsquedas ajustadas en results/modelos/ (en .gitignore), para que Julián dibuje las
 curvas de validación sin volver a entrenar.
 
@@ -72,6 +73,7 @@ from src.evaluacion.comparacion import (  # noqa: E402
     MEDIA,
     tabla_comparacion,
     tabla_pareada,
+    tabla_rango_escenarios,
 )
 from src.evaluacion.particion import CVTemporalPorMes  # noqa: E402
 from src.evaluacion.validar import (  # noqa: E402
@@ -212,7 +214,11 @@ def _guardar(cv_nuevo: pd.DataFrame, ruta_tablas: Path) -> pd.DataFrame:
     # Fechas como AAAA-MM-DD y 6 decimales: el CSV queda estable entre corridas y PCs
     opciones = {"index": False, "float_format": "%.6f", "date_format": "%Y-%m-%d"}
     cv_todo.to_csv(ruta_cv, **opciones)
-    tabla_comparacion(cv_todo).to_csv(ruta_tablas / "comparacion_cv.csv", **opciones)
+    comparacion = tabla_comparacion(cv_todo)
+    comparacion.to_csv(ruta_tablas / "comparacion_cv.csv", **opciones)
+    # Martes 27: el rango entre escenarios (variabilidad de la 7.4) también sale de un CSV
+    tabla_rango_escenarios(comparacion).to_csv(ruta_tablas / "rango_escenarios.csv",
+                                               **opciones)
     tabla_pareada(cv_todo).to_csv(ruta_tablas / "comparacion_pareada.csv", **opciones)
     return cv_todo
 
