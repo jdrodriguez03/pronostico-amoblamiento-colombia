@@ -71,6 +71,25 @@ def _filas_con_t_menos_12(df: pd.DataFrame) -> np.ndarray:
     return (fechas >= fechas.min() + pd.DateOffset(months=REZAGO_ESTACIONAL)).to_numpy()
 
 
+def mape_ajuste(modelo, df) -> float:
+    """MAPE nacional del modelo YA AJUSTADO sobre los mismos meses con que se ajustó.
+
+    Plan de cierre, lunes 26, tarea 2. Es el "MAPE de ajuste" (dentro de muestra): se usa
+    con el modelo que GridSearchCV reentrena con TODOS los meses de entrenamiento
+    (best_estimator_) y se calcula sobre esos mismos meses. Es la única cifra comparable
+    con el 4,89 % del artículo, que midió el error sobre sus propios meses de ajuste
+    (docs/decisiones.md, 25 de octubre). NO es un error de pronóstico: siempre sale más
+    bajo que el MAPE de validación, y por eso se reportan por separado.
+
+    Para el ingenuo estacional se usan solo los meses desde el 13: los 12 primeros no
+    tienen su mes t−12 y no se pueden predecir (la misma regla que en evaluar_cv).
+    """
+    if isinstance(modelo, IngenuoEstacional):
+        df = df[_filas_con_t_menos_12(df)]
+    # El scorer ya hace "predecir → agregar la línea 8 → MAPE" y devuelve −MAPE
+    return -scorer_mape_nacional(modelo, df, df[OBJETIVO].to_numpy(dtype=float))
+
+
 def evaluar_cv(pipeline, df, cv):
     """DataFrame fold × métrica: MAPE, MAD, MSD y RMSE nacionales y MAPE del panel.
 

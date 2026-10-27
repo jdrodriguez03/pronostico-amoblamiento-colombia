@@ -16,7 +16,7 @@ from src.datos.cargar import cargar_entrenamiento
 from src.evaluacion.agregacion import agregar_nacional
 from src.evaluacion.metricas import mape
 from src.evaluacion.particion import CVTemporalPorMes
-from src.evaluacion.validar import evaluar_cv, scorer_mape_nacional
+from src.evaluacion.validar import evaluar_cv, mape_ajuste, scorer_mape_nacional
 from src.modelos.lineas_base import IngenuoEstacional, PredictorMedia
 from src.modelos.pipeline import construir_pipeline, prefijo_parametros
 
@@ -120,3 +120,19 @@ def test_ingenuo_mape_entrena_usa_solo_meses_con_historia(mini):
     tabla = evaluar_cv(IngenuoEstacional(), mini, CVTemporalPorMes())
     assert tabla["mape_entrena"].notna().all()
     assert isinstance(tabla["valida_desde"].iloc[0], pd.Timestamp)
+
+
+def test_mape_ajuste_es_el_scorer_sobre_los_meses_de_ajuste(mini):
+    """mape_ajuste = MAPE nacional del modelo ajustado con todos los meses, sobre esos meses."""
+    y = mini[OBJETIVO]
+    modelo = PredictorMedia().fit(mini, y)
+    assert mape_ajuste(modelo, mini) == pytest.approx(-scorer_mape_nacional(modelo, mini, y))
+
+
+def test_mape_ajuste_del_ingenuo_empieza_en_el_mes_13(mini):
+    """El ingenuo no puede predecir los 12 primeros meses: se miden desde el 13 y no falla."""
+    modelo = IngenuoEstacional().fit(mini, mini[OBJETIVO])
+    fechas = pd.to_datetime(mini["fecha"])
+    desde_13 = mini[fechas >= fechas.min() + pd.DateOffset(months=12)]
+    esperado = -scorer_mape_nacional(modelo, desde_13, desde_13[OBJETIVO])
+    assert mape_ajuste(modelo, mini) == pytest.approx(esperado)
