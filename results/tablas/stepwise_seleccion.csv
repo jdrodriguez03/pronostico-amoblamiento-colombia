@@ -1,0 +1,7 @@
+accion,variable,p_valor,coeficiente
+entra,covid,3.96694e-176,-0.430767
+entra,importaciones_muebles_usd_miles_rez1,1.50226e-54,0.0234451
+entra,icc_rez1,1.20408e-21,-0.0359749
+entra,inflacion_anual_rez1,0.000102827,0.149453
+entra,tasa_consumo_rez1,1.32187e-53,-0.141091
+entra,area_vivienda_m2_rez1,1.49343e-05,-0.0257606

@@ -96,3 +96,21 @@ def test_rejilla_de_knn_empieza_en_k_igual_a_1():
     ks = rejilla_pipeline("knn")["regressor__modelo__n_neighbors"]
     assert min(ks) == 1
     assert 3 in ks
+
+
+def test_knn_reproducible_con_kd_tree(base_pequena):
+    """KNN usa kd_tree y da lo mismo en un proceso que en paralelo (los empates no cambian)."""
+    from sklearn.model_selection import cross_validate
+
+    from src.evaluacion.particion import CVTemporalPorMes
+    from src.evaluacion.validar import scorer_mape_nacional
+
+    pipe, _ = construir_candidato("knn")
+    assert pipe.regressor.named_steps["modelo"].algorithm == "kd_tree"
+    pipe.set_params(regressor__modelo__n_neighbors=3)
+    resultados = [
+        cross_validate(pipe, base_pequena, base_pequena[OBJETIVO], cv=CVTemporalPorMes(),
+                       scoring=scorer_mape_nacional, n_jobs=n)["test_score"]
+        for n in (1, 2)
+    ]
+    np.testing.assert_allclose(resultados[0], resultados[1])

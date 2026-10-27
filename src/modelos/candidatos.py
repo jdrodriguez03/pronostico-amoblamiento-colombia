@@ -66,8 +66,16 @@ CANDIDATOS: dict = {
     # k desde 1: en la exploración del 26 de octubre el mínimo caía en k = 3, el valor más
     # pequeño de la rejilla anterior (el mismo problema de borde que Ridge). Con 1 y 2 se ve
     # que la curva vuelve a subir por la izquierda (k = 1 memoriza el entrenamiento).
+    #
+    # algorithm="kd_tree" para que el resultado sea reproducible. En cerca de un tercio de
+    # las filas de validación el k-ésimo vecino empata en distancia con el siguiente (las
+    # filas de un mismo mes comparten los predictores nacionales). Con el algoritmo por
+    # defecto (fuerza bruta con multiplicación de matrices) el redondeo de las distancias
+    # cambia según si se corre en paralelo o no, y con él qué vecino gana el empate: el
+    # MAPE con k = 3 salía 9,23 % o 8,99 % según n_jobs. Con kd_tree las distancias se
+    # calculan punto a punto y el empate se resuelve siempre igual (9,00 % en los dos casos).
     "knn": (
-        KNeighborsRegressor(),
+        KNeighborsRegressor(algorithm="kd_tree"),
         None,
         {"n_neighbors": [1, 2, 3, 5, 10, 20, 40], "weights": ["uniform", "distance"]},
     ),

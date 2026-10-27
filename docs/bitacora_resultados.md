@@ -54,7 +54,7 @@ debe comprobar contra `cv_resultados.csv` cuando exista (última sección del cu
 | --- | --- | --- |
 | Ridge | alpha = 1000 | 9,1 % ± 6,0 |
 | Lasso | alpha ≈ 0,032 | 9,4 % ± 5,7 |
-| KNN | k = 3, pesos uniformes | 9,0 % ± 4,6 |
+| KNN | k = 3, pesos uniformes | 9,0 % ± 4,5 |
 | Ridge con alpha casi cero (≈ MLR completa) | — | 14,8 % |
 
 - **Bordes de rejilla.** Ridge (alpha = 1000) y KNN (k = 3) caían en el borde de sus rejillas
@@ -69,3 +69,23 @@ debe comprobar contra `cv_resultados.csv` cuando exista (última sección del cu
   pandemia.
 - **Estabilidad.** En la MLR completa el área de vivienda cambia de signo entre folds; con Ridge
   ningún coeficiente cambia de signo y la desviación entre folds es entre 1,6 y 25 veces menor.
+- **KNN reproducible.** En cerca de un tercio de las filas el k-ésimo vecino empata en distancia
+  con el siguiente, y con el algoritmo por defecto el MAPE con k = 3 salía 9,23 % o 8,99 % según
+  se corriera en paralelo o no. Con `algorithm="kd_tree"` da 9,00 % siempre.
+
+## 2026-10-26 · Comparación con el artículo y con las líneas base, escenario central
+
+Mismo cuaderno, sección 7 (`results/tablas/comparacion_articulo.csv` y `stepwise_seleccion.csv`).
+
+- **El predictor de la media es la línea base más exigente**, no el ingenuo estacional: 10,3 %
+  frente a 12,3 %, y le gana en 3 de 5 folds. El ingenuo falla sobre todo en el fold 1 (21,3 %).
+- **Ridge, Lasso y KNN superan a las dos líneas base en promedio, pero no en todos los folds.**
+  Frente a la media mejoran entre 8 % y 12 %; Ridge y KNN le ganan en 3 de 5 folds y Lasso en 4.
+  Frente al ingenuo, Ridge solo gana en 2 de 5: su ventaja media (26 %) descansa en el fold 1.
+- **El método del artículo no supera a ninguna línea base**: la MLR con stepwise queda en 15,0 %.
+  Retiene las 6 variables con p < 1e-4, y ICC, inflación y vivienda salen con el signo contrario.
+- **MAPE de ajuste** (comparable con el 4,89 % del artículo): 12,8 % la MLR con stepwise y 13,0 %
+  Ridge; sin abril a agosto de 2020, 11,4 % y 11,3 %. Es mayor que el de validación porque el
+  ajuste incluye la pandemia.
+- **Descartado:** dar a cada línea su propia estacionalidad (dummies mes × línea) no mejora a
+  Ridge (9,23 % frente a 9,08 %).

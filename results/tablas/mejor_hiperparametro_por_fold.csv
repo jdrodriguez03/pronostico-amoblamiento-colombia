@@ -9,8 +9,8 @@ lasso,2,0.0316228,5.9485
 lasso,3,0.0316228,5.0426
 lasso,4,0.001,8.5471
 lasso,5,0.0316228,17.5553
-knn,1,"k=1, uniform",6.7094
-knn,2,"k=1, uniform",3.9664
-knn,3,"k=3, uniform",4.9090
+knn,1,"k=2, distance",6.6711
+knn,2,"k=2, uniform",3.9130
+knn,3,"k=3, uniform",5.0346
 knn,4,"k=2, uniform",9.7947
-knn,5,"k=5, uniform",16.4498
+knn,5,"k=5, uniform",16.4149
