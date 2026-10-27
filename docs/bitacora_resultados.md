@@ -89,3 +89,7 @@ Mismo cuaderno, sección 7 (`results/tablas/comparacion_articulo.csv` y `stepwis
   ajuste incluye la pandemia.
 - **Descartado:** dar a cada línea su propia estacionalidad (dummies mes × línea) no mejora a
   Ridge (9,23 % frente a 9,08 %).
+
+## 2026-10-26 · Comparación entre escenarios
+
+El orden por MAPE nacional se mantiene entre bajo y central, pero cambia en alto: Ridge queda primero, KNN pasa del primer puesto al cuarto (10,261 %, apenas sobre la media con 10,257 %) y MLR stepwise supera por poco a MLR completa. El MAPE nacional varía poco porque la serie observada es la misma y la simulación conserva su agregado, aunque no es invariable: los modelos se ajustan sobre paneles distintos. El MAPE del panel sí cambia más al aumentar σ; por ejemplo, para la línea base de la media pasa de 13,204 % a 14,685 % y 17,255 % en bajo, central y alto (`results/tablas/escenarios.csv`).
