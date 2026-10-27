@@ -856,7 +856,7 @@ En `notebooks/04_interpretacion.ipynb`:
 4. ¿Por qué el stepwise y el escalamiento van dentro del Pipeline?
 5. ¿Los 5.096 registros son independientes? ¿Qué implica para los p-valores del stepwise?
 6. ¿Por qué MAPE? ¿Qué pasa cuando el valor observado es muy bajo?
-7. ¿Por qué el ingenuo estacional es una línea base más exigente que la media?
+7. ¿Por qué hay dos líneas base, y por qué la media de cada serie resultó más exigente que el ingenuo estacional?
 8. ¿La regularización resolvió la multicolinealidad del artículo? ¿Cómo lo midieron?
 9. ¿Qué aporta KNN en un problema de regresión con series de tiempo? ¿Por qué sin `drop`?
 10. ¿Por qué modelar el logaritmo del índice?
