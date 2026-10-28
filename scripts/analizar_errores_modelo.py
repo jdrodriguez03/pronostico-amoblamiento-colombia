@@ -24,15 +24,15 @@ RUTA_FIGURA = RUTA_FIGURAS / "analisis_errores_modelo.png"
 
 
 def _parametros_guardados() -> dict:
-    """Lee la configuración KNN elegida en la tabla de validación central."""
+    """Lee la configuración Ridge elegida en la tabla de validación central."""
     ruta = RUTA_TABLAS / "cv_resultados.csv"
     filas = pd.read_csv(ruta)
     filas = filas.loc[(filas["escenario"] == ESCENARIO) & (filas["modelo"] == MODELO)]
     if len(filas) != 5 or filas["fold"].nunique() != 5:
-        raise ValueError("Se esperaban cinco filas de validación central para KNN")
+        raise ValueError("Se esperaban cinco filas de validación central para Ridge")
     textos = filas["hiperparametros"].drop_duplicates().tolist()
     if len(textos) != 1:
-        raise ValueError("Los hiperparámetros KNN no son únicos entre los folds centrales")
+        raise ValueError("Los hiperparámetros Ridge no son únicos entre los folds centrales")
 
     parametros = {}
     for parte in textos[0].split(";"):
@@ -143,8 +143,8 @@ def _frase(validacion: pd.DataFrame, mensual: pd.DataFrame,
         )
     return (
         "El equipo eligió Ridge (alpha = 1000) como modelo preliminar: en central KNN "
-        "queda 0,09 puntos porcentuales por debajo de Ridge, diferencia pequeña frente al "
-        "error estándar pareado informado (0,87 puntos); se priorizaron la estabilidad de "
+        "queda 0,08 puntos porcentuales por debajo de Ridge, diferencia pequeña frente al "
+        "error estándar pareado informado (0,88 puntos); se priorizaron la estabilidad de "
         "Ridge entre escenarios (9,02–9,14 %) y sus coeficientes sin cambios de signo. "
         "Los residuos de validación se recalcularon con el pipeline actual. "
         f"Los residuos son observado menos predicho: positivos indican subestimación y "
