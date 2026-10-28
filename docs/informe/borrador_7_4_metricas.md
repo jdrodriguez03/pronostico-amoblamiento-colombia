@@ -49,8 +49,10 @@ Lasso gana en 4 de 5 folds, KNN y Ridge en 3 (1,25 y 1,18 puntos menos en promed
 también la media, ganan a la MLR con stepwise en 4 de 5. Con 5
 folds no hay potencia para una prueba de hipótesis, por eso se reporta el conteo y no p-valores.
 
-**Modelo preliminar.** [Pendiente: copiar la decisión del punto de control del 26 de octubre de
-`docs/decisiones.md`, con sus cifras de esta tabla.]
+**Modelo preliminar.** Ridge con alpha = 1000 (`docs/decisiones.md`, 27 de octubre). En el
+escenario central empata con KNN (9,08 % frente a 9,00 %, una diferencia menor que la desviación
+entre folds) y se prefiere por estabilidad: su MAPE varía 0,12 puntos entre escenarios y el de KNN
+1,22. Además, sus coeficientes se pueden interpretar (7.4, interpretación).
 
 **Limitaciones.**
 
@@ -66,4 +68,7 @@ folds no hay potencia para una prueba de hipótesis, por eso se reporta el conte
   distancia entre vecinos. `algorithm="kd_tree"` y un solo hilo hacen que el desempate sea siempre el
   mismo, pero la regla de desempate es arbitraria: otra igual de válida cambia el MAPE de KNN en
   centésimas a décimas de punto (`docs/decisiones.md`, 26 de octubre), lo bastante para alterar su
-  puesto en el escenario alto, donde queda a 0,03 puntos de la media.
+  puesto en el escenario alto, donde queda a 0,03 puntos de la media. Por la misma razón, KNN
+  depende del orden de las filas dentro de cada mes, que el ordenamiento por fecha de la carga no
+  fija y que puede variar entre computadores: las cifras oficiales son las de
+  `results/tablas/cv_resultados.csv`, que reproducen dos computadores distintos.

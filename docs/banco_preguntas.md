@@ -33,7 +33,7 @@ declaramos (correlación entre líneas 0,59 y participación ± 1,3 pts).
 
 **2. Dependencia de la simulación.** El MAPE nacional casi no cambia entre escenarios porque la serie
 nacional es real: Ridge da 9,02 %, 9,08 % y 9,14 % con ruido de 2 %, 7 % y 13 %. El orden sí cambia
-en el escenario alto, donde KNN cae al cuarto puesto (10,26 %); por eso no elegimos un modelo que
+en el escenario alto, donde KNN pasa del primer al tercer puesto (10,22 %, a 0,03 puntos de la media); por eso no elegimos un modelo que
 dependa del escenario.
 
 **3. Partición por mes.** Las 56 filas de un mes comparten los mismos predictores nacionales, así que
@@ -90,9 +90,9 @@ el stepwise da 15,0 %, peor que la media.
 (8.1). Se abre una sola vez y después de elegir el modelo: si la miráramos ahora, cualquier ajuste
 posterior la volvería optimista, porque la validación cruzada ya se usó para seleccionar.
 
-**14. Ridge y no KNN.** En el central empatan: KNN da 8,99 % y Ridge 9,08 %, una diferencia de
-−0,09 puntos con error estándar de 0,87 en la comparación fold a fold. Desempatamos por estabilidad
-(Ridge da 9,02–9,14 % en los tres escenarios; KNN llega a 10,26 % en el alto) e interpretabilidad,
+**14. Ridge y no KNN.** En el central empatan: KNN da 9,00 % y Ridge 9,08 %, una diferencia de
+−0,08 puntos con error estándar de 0,88 en la comparación fold a fold. Desempatamos por estabilidad
+(Ridge da 9,02–9,14 % en los tres escenarios; KNN llega a 10,22 % en el alto, casi igual que la media) e interpretabilidad,
 que pide la 7.4; KNN sigue como competidor y se evalúa en la prueba de la entrega final.
 
 **15. Ridge y no Lasso.** También empatan: Lasso da 9,40 % y Ridge 9,08 % (+0,32 ± 0,50), y Ridge le

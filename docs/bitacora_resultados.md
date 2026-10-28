@@ -117,5 +117,4 @@ escenario central, manteniendo fijas las demás variables (asociación, no causa
 - **Covid** pasa de −35 % en la MLR a −5,3 % en Ridge, encogido por la penalización.
 - **Estacionalidad**: diciembre +8,0 % y noviembre +4,4 % frente a enero; abril −5,7 %.
 - Los signos de Ridge son iguales en los 3 escenarios y los coeficientes cambian menos de 0,005.
-- KNN da 9,00 % en el cuaderno y 8,99 % en `cv_resultados.csv`, con las mismas librerías: los empates
-  de distancia se resuelven distinto según el computador. No cambia ninguna conclusión.
+- Ridge, Lasso y KNN coinciden exactamente con `cv_resultados.csv`.
