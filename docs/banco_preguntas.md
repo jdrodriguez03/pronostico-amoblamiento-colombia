@@ -21,6 +21,7 @@ no es el responsable. Las cifras son del escenario central salvo que se diga otr
 | 13 | ¿Por qué no evaluaron todavía en la prueba? | Juanes |
 | 14 | ¿Por qué eligieron Ridge si KNN tiene menor MAPE? | Julián |
 | 15 | ¿Por qué Ridge y no Lasso, si Lasso le gana a la media en más folds? | Julián |
+| 16 | ¿Por qué no reportan el R², si el artículo sí lo hace? | Julián |
 
 ## Respuestas
 
@@ -99,3 +100,9 @@ gana en 3 de 5 folds en los tres escenarios; Lasso es más consistente frente a 
 frente a 3 de 5). Elegimos Ridge porque con predictores correlacionados (inflación y tasa de consumo,
 0,85) la selección de Lasso cambia según el periodo (vivienda entra en 3 de 5 folds), mientras Ridge
 conserva las 6 variables con signos estables, que es lo que necesitamos para interpretar.
+
+**16. El R².** El del artículo (76,73 %; 63,01 % el predictivo) se calculó sobre una sola serie
+desestacionalizada, y en nuestro panel, con estacionalidad y 56 series de niveles distintos, saldría
+alto solo por esas diferencias; además, el R² de ajuste nunca baja al agregar variables, así que no
+mide capacidad predictiva. Su equivalente fuera de muestra es comparar con la media, y eso lo
+reportamos en MAPE: Ridge mejora a la media en 11,5 %.
