@@ -27,18 +27,26 @@ se abre en esta entrega.
    quita la parte del error que se debe a que un periodo es "difícil" para todos, y por eso
    es una comparación más justa que mirar solo las medias. Con 5 folds no hay potencia para
    una prueba de hipótesis seria: se reporta en cuántos folds gana cada uno, sin p-valores.
+
+3. tabla_rango_escenarios(): la segunda fuente de variabilidad que pide la 7.4 (plan de
+   cierre, martes 27). Una fila por modelo con su MAPE medio en cada escenario de η, el
+   mínimo, el máximo, el rango (máximo − mínimo) y su puesto en cada escenario. Responde
+   "¿el resultado depende de cuánta variación regional se simuló?" (pregunta 2 del banco).
 """
 
 import pandas as pd
 
+from src.config import ESCENARIOS
 from src.evaluacion.metricas import mejora_pct
 
 # Nombres de las líneas base tal como quedan en la columna "modelo" de cv_resultados.csv
 MEDIA = "media"
 INGENUO = "ingenuo_estacional"
-# Referencias de la comparación pareada (plan de cierre): la vara exigente y el método
-# del artículo
-REFERENCIAS_PAREADAS = (INGENUO, "mlr_stepwise")
+# Referencias de la comparación pareada: el ingenuo estacional (la vara que se suponía más
+# exigente), la MLR con stepwise (el método del artículo) y, desde el martes 27, la media,
+# que resultó ser la línea base más difícil de superar. Con la media aquí, el "gana a la
+# media en x de 5 folds" que cita la 7.3 sale de un CSV y no de una cuenta a mano.
+REFERENCIAS_PAREADAS = (INGENUO, "mlr_stepwise", MEDIA)
 
 # Columnas mínimas que deben venir en cv_resultados para armar las tablas
 COLUMNAS_CV = ["escenario", "modelo", "fold", "hiperparametros", "mape", "mad", "msd",
@@ -125,3 +133,43 @@ def tabla_pareada(cv_resultados: pd.DataFrame,
     return (pd.DataFrame(filas)
             .sort_values(["escenario", "referencia", "dif_media"])
             .reset_index(drop=True))
+
+
+def tabla_rango_escenarios(comparacion: pd.DataFrame) -> pd.DataFrame:
+    """Una fila por modelo: MAPE medio en cada escenario, rango entre escenarios y puesto.
+
+    Recibe la salida de tabla_comparacion() (comparacion_cv.csv), no cv_resultados: el
+    rango se calcula sobre el MAPE MEDIO de validación de cada escenario, que es la cifra
+    con que se ordenan los modelos.
+
+    Columnas:
+      mape_<escenario>    MAPE medio de validación en ese escenario (una columna por escenario)
+      mape_min, mape_max  el menor y el mayor de esos MAPE
+      rango               mape_max − mape_min, en puntos porcentuales. Pequeño = el resultado
+                          casi no depende del componente simulado
+      puesto_<escenario>  1 = el mejor modelo de ese escenario. Si el puesto cambia entre
+                          escenarios, el orden de los modelos depende de la simulación
+
+    Ejemplo: si Ridge tiene 9,02 % en bajo, 9,08 % en central y 9,14 % en alto, su fila
+    queda con mape_min = 9,02, mape_max = 9,14 y rango = 0,12 puntos.
+    """
+    faltan = [c for c in ("escenario", "modelo", "mape_media") if c not in comparacion.columns]
+    if faltan:
+        raise ValueError(f"a comparacion le faltan las columnas {faltan}")
+    # Puesto dentro de cada escenario: el MAPE más bajo es el 1. method="min" da el mismo
+    # puesto a dos modelos empatados (no pasa con estas cifras, pero así no se inventa orden)
+    puestos = comparacion.assign(
+        puesto=comparacion.groupby("escenario")["mape_media"].rank(method="min").astype(int))
+    anchas = puestos.pivot(index="modelo", columns="escenario", values=["mape_media", "puesto"])
+    # Escenarios en el orden de config (bajo, central, alto); solo los que vengan en la tabla
+    escenarios = [e for e in ESCENARIOS if e in anchas["mape_media"].columns]
+    mape = anchas["mape_media"][escenarios]
+    tabla = mape.add_prefix("mape_")
+    tabla["mape_min"] = mape.min(axis=1)
+    tabla["mape_max"] = mape.max(axis=1)
+    tabla["rango"] = tabla["mape_max"] - tabla["mape_min"]
+    tabla = tabla.join(anchas["puesto"][escenarios].astype(int).add_prefix("puesto_"))
+    # Orden: como en el escenario central si existe (es el de referencia), si no por el mínimo
+    orden = "mape_central" if "mape_central" in tabla.columns else "mape_min"
+    tabla.columns.name = None
+    return tabla.sort_values(orden).reset_index()

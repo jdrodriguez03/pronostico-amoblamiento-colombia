@@ -32,10 +32,14 @@ vería en entrenamiento otras filas del mismo mes que luego valida y el error sa
 fuga de información. Por eso las 56 filas de un mes siempre quedan juntas, en entrenamiento o en
 validación, y nunca se usa `shuffle=True`.
 
-**Seis meses de validación y cinco folds.** Seis meses es un horizonte de planeación realista para
-inventarios de muebles. Con 5 folds los 30 meses de validación (febrero de 2023 a julio de 2025)
-cubren dos años y medio: cada mes del año se valida al menos dos veces, así que la estacionalidad pesa
-igual en la comparación. Además, la variación del error entre folds mide qué tan estable es cada
+**Seis meses de validación y cinco folds.** Los 6 meses de cada fold son un **bloque de
+evaluación, no un horizonte de pronóstico**. El problema es un pronóstico a un mes (decisión del 25
+de octubre): cada mes t de la ventana se predice con los predictores de t−1 (`_rez1`), que son datos
+reales ya observados, y no con lo que se sabía 6 meses antes. Se eligieron bloques de 6 meses para
+que, con 5 folds, los 30 meses de validación (febrero de 2023 a julio de 2025) cubran dos años y
+medio y **cada mes del año se valide al menos dos veces**: así la estacionalidad pesa igual en la
+comparación y ningún mes difícil (como diciembre) queda fuera. Pronosticar a 6 meses exigiría
+rehacer los predictores con 6 meses de rezago. Además, la variación del error entre folds mide qué tan estable es cada
 modelo, que es uno de los criterios de desempate del día 11.
 
 **El ingenuo estacional siempre tiene su t−12.** Esta línea base pronostica el mes t con el valor

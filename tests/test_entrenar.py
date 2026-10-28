@@ -66,8 +66,14 @@ def test_tablas_de_comparacion(corrida):
     comparacion = pd.read_csv(carpeta / "comparacion_cv.csv")
     assert len(comparacion) == N_MODELOS * len(ESCENARIOS)
     pareada = pd.read_csv(carpeta / "comparacion_pareada.csv")
-    # 2 referencias; cada una se compara con los otros 6 modelos en cada escenario
-    assert len(pareada) == 2 * (N_MODELOS - 1) * len(ESCENARIOS)
+    # 3 referencias (ingenuo, stepwise y media); cada una se compara con los otros 6
+    # modelos en cada escenario
+    assert len(pareada) == 3 * (N_MODELOS - 1) * len(ESCENARIOS)
+    # rango_escenarios (martes 27): una fila por modelo, con su MAPE en cada escenario
+    rango = pd.read_csv(carpeta / "rango_escenarios.csv")
+    assert len(rango) == N_MODELOS
+    assert {f"mape_{e}" for e in ESCENARIOS} <= set(rango.columns)
+    assert (rango["rango"] >= 0).all()
 
 
 def test_busquedas_guardadas_con_resultados_de_entrenamiento(corrida):
