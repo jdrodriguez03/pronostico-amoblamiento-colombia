@@ -18,7 +18,7 @@ Tabla 1. Comparación de modelos por validación cruzada (escenario central)
 
 | Modelo | Hiperparámetro elegido | MAPE nacional (media ± desv.) | Mejora frente a la media | Folds en que gana a la media |
 | --- | --- | --- | --- | --- |
-| KNN | k = 3, pesos uniformes | 9,0 % ± 4,6 | 12,3 % | 3 de 5 |
+| KNN | k = 3, pesos uniformes | 9,0 % ± 4,5 | 12,2 % | 3 de 5 |
 | Ridge (modelo preliminar) | alpha = 1000 | 9,1 % ± 6,0 | 11,5 % | 3 de 5 |
 | Lasso | alpha ≈ 0,032 | 9,4 % ± 5,7 | 8,3 % | 4 de 5 |
 | Media (línea base) | — | 10,3 % ± 5,9 | — | — |
@@ -43,10 +43,10 @@ método del artículo, en cambio, queda por debajo de las dos.
 Figura 2. MAPE de cada partición por modelo, en los tres escenarios de ruido.
 
 Entre KNN, Ridge y Lasso las diferencias son menores que la variación entre particiones: KNN y Ridge
-se separan apenas 0,09 puntos, con un error estándar de 0,87 cuando se comparan partición por
+se separan apenas 0,08 puntos, con un error estándar de 0,88 cuando se comparan partición por
 partición. Con un empate así, elegimos el modelo preliminar por estabilidad e interpretabilidad.
 Ridge da entre 9,0 % y 9,1 % en los tres escenarios y sus coeficientes no cambian de signo de una
-partición a otra; KNN, en cambio, sube a 10,3 % en el escenario de ruido alto, igual que la media, y
+partición a otra; KNN, en cambio, sube a 10,2 % en el escenario de ruido alto, apenas 0,03 puntos por debajo de la media, y
 no tiene coeficientes que interpretar. Lasso le gana a la media en más particiones, pero con
 predictores correlacionados la variable que conserva cambia según el periodo. Fuera de KNN, el orden
 de los modelos casi no se mueve entre escenarios.
