@@ -1,0 +1,271 @@
+escenario,modelo,variable,tipo,coeficiente,efecto_pct,signo_esperado,signo_coincide
+bajo,mlr_completa,mes_2,categorica,-0.06506,-6.29858,,
+bajo,mlr_completa,mes_3,categorica,0.01507,1.51811,,
+bajo,mlr_completa,mes_4,categorica,-0.15058,-13.97886,,
+bajo,mlr_completa,mes_5,categorica,-0.01779,-1.76346,,
+bajo,mlr_completa,mes_6,categorica,0.09994,10.51055,,
+bajo,mlr_completa,mes_7,categorica,0.13413,14.35381,,
+bajo,mlr_completa,mes_8,categorica,0.10285,10.83218,,
+bajo,mlr_completa,mes_9,categorica,-0.00714,-0.71138,,
+bajo,mlr_completa,mes_10,categorica,0.08249,8.59907,,
+bajo,mlr_completa,mes_11,categorica,0.23288,26.22253,,
+bajo,mlr_completa,mes_12,categorica,0.37676,45.75482,,
+bajo,mlr_completa,departamento_Atlantico,categorica,-0.11753,-11.08876,,
+bajo,mlr_completa,departamento_Bogota,categorica,0.05143,5.27759,,
+bajo,mlr_completa,departamento_Cundinamarca,categorica,0.09911,10.41830,,
+bajo,mlr_completa,departamento_Otros departamentos,categorica,0.00638,0.63979,,
+bajo,mlr_completa,departamento_Santander,categorica,-0.07926,-7.61992,,
+bajo,mlr_completa,departamento_Valle del Cauca,categorica,-0.12025,-11.33057,,
+bajo,mlr_completa,linea_Aseo del hogar,categorica,0.03463,3.52361,,
+bajo,mlr_completa,linea_Electrodomesticos y muebles,categorica,-0.01578,-1.56561,,
+bajo,mlr_completa,"linea_Ferreteria, vidrios y pinturas",categorica,-0.12072,-11.37188,,
+bajo,mlr_completa,linea_Informatica y telecomunicaciones,categorica,0.27364,31.47412,,
+bajo,mlr_completa,linea_Otras mercancias de uso domestico,categorica,-0.10759,-10.20014,,
+bajo,mlr_completa,linea_Prendas de vestir y textiles,categorica,-0.23025,-20.56672,,
+bajo,mlr_completa,linea_Sonido y video,categorica,-0.02214,-2.18985,,
+bajo,mlr_completa,area_vivienda_m2_rez1,numerica,-0.02473,-2.44311,1.00000,0.00000
+bajo,mlr_completa,icc_rez1,numerica,-0.03668,-3.60113,1.00000,0.00000
+bajo,mlr_completa,inflacion_anual_rez1,numerica,0.14926,16.09769,-1.00000,0.00000
+bajo,mlr_completa,tasa_consumo_rez1,numerica,-0.13903,-12.98017,-1.00000,1.00000
+bajo,mlr_completa,importaciones_muebles_usd_miles_rez1,numerica,0.02536,2.56813,1.00000,1.00000
+bajo,mlr_completa,covid,binaria,-0.42725,-34.77011,-1.00000,1.00000
+bajo,ridge,mes_2,categorica,-0.03038,-2.99236,,
+bajo,ridge,mes_3,categorica,-0.00602,-0.59979,,
+bajo,ridge,mes_4,categorica,-0.05939,-5.76567,,
+bajo,ridge,mes_5,categorica,-0.01188,-1.18141,,
+bajo,ridge,mes_6,categorica,0.01946,1.96549,,
+bajo,ridge,mes_7,categorica,0.01598,1.61090,,
+bajo,ridge,mes_8,categorica,-0.00079,-0.07934,,
+bajo,ridge,mes_9,categorica,-0.01999,-1.97932,,
+bajo,ridge,mes_10,categorica,0.00447,0.44813,,
+bajo,ridge,mes_11,categorica,0.04322,4.41654,,
+bajo,ridge,mes_12,categorica,0.07749,8.05671,,
+bajo,ridge,departamento_Atlantico,categorica,-0.01943,-1.92399,,
+bajo,ridge,departamento_Bogota,categorica,0.02232,2.25706,,
+bajo,ridge,departamento_Cundinamarca,categorica,0.04706,4.81848,,
+bajo,ridge,departamento_Otros departamentos,categorica,-0.00941,-0.93676,,
+bajo,ridge,departamento_Santander,categorica,-0.00701,-0.69833,,
+bajo,ridge,departamento_Valle del Cauca,categorica,-0.03469,-3.40966,,
+bajo,ridge,linea_Aseo del hogar,categorica,0.02001,2.02096,,
+bajo,ridge,linea_Electrodomesticos y muebles,categorica,0.00221,0.22075,,
+bajo,ridge,"linea_Ferreteria, vidrios y pinturas",categorica,-0.03486,-3.42564,,
+bajo,ridge,linea_Informatica y telecomunicaciones,categorica,0.10442,11.00658,,
+bajo,ridge,linea_Otras mercancias de uso domestico,categorica,-0.03022,-2.97663,,
+bajo,ridge,linea_Prendas de vestir y textiles,categorica,-0.07354,-7.09012,,
+bajo,ridge,linea_Sonido y video,categorica,-0.00004,-0.00418,,
+bajo,ridge,area_vivienda_m2_rez1,numerica,0.01629,1.64203,1.00000,1.00000
+bajo,ridge,icc_rez1,numerica,0.00447,0.44841,1.00000,1.00000
+bajo,ridge,inflacion_anual_rez1,numerica,0.05059,5.18901,-1.00000,0.00000
+bajo,ridge,tasa_consumo_rez1,numerica,-0.01990,-1.97049,-1.00000,1.00000
+bajo,ridge,importaciones_muebles_usd_miles_rez1,numerica,0.07378,7.65710,1.00000,1.00000
+bajo,ridge,covid,binaria,-0.05392,-5.24932,-1.00000,1.00000
+bajo,lasso,mes_2,categorica,-0.00000,-0.00000,,
+bajo,lasso,mes_3,categorica,-0.00000,-0.00000,,
+bajo,lasso,mes_4,categorica,-0.00000,-0.00000,,
+bajo,lasso,mes_5,categorica,-0.00000,-0.00000,,
+bajo,lasso,mes_6,categorica,0.00000,0.00000,,
+bajo,lasso,mes_7,categorica,0.00000,0.00000,,
+bajo,lasso,mes_8,categorica,-0.00000,-0.00000,,
+bajo,lasso,mes_9,categorica,-0.00000,-0.00000,,
+bajo,lasso,mes_10,categorica,0.00000,0.00000,,
+bajo,lasso,mes_11,categorica,0.00000,0.00000,,
+bajo,lasso,mes_12,categorica,0.00000,0.00000,,
+bajo,lasso,departamento_Atlantico,categorica,-0.00000,-0.00000,,
+bajo,lasso,departamento_Bogota,categorica,0.00000,0.00000,,
+bajo,lasso,departamento_Cundinamarca,categorica,0.00000,0.00000,,
+bajo,lasso,departamento_Otros departamentos,categorica,-0.00000,-0.00000,,
+bajo,lasso,departamento_Santander,categorica,-0.00000,-0.00000,,
+bajo,lasso,departamento_Valle del Cauca,categorica,-0.00000,-0.00000,,
+bajo,lasso,linea_Aseo del hogar,categorica,0.00000,0.00000,,
+bajo,lasso,linea_Electrodomesticos y muebles,categorica,0.00000,0.00000,,
+bajo,lasso,"linea_Ferreteria, vidrios y pinturas",categorica,-0.00000,-0.00000,,
+bajo,lasso,linea_Informatica y telecomunicaciones,categorica,0.05050,5.17929,,
+bajo,lasso,linea_Otras mercancias de uso domestico,categorica,-0.00000,-0.00000,,
+bajo,lasso,linea_Prendas de vestir y textiles,categorica,-0.00000,-0.00000,,
+bajo,lasso,linea_Sonido y video,categorica,0.00000,0.00000,,
+bajo,lasso,area_vivienda_m2_rez1,numerica,0.00000,0.00000,1.00000,0.00000
+bajo,lasso,icc_rez1,numerica,0.00000,0.00000,1.00000,0.00000
+bajo,lasso,inflacion_anual_rez1,numerica,0.01399,1.40907,-1.00000,0.00000
+bajo,lasso,tasa_consumo_rez1,numerica,0.00000,0.00000,-1.00000,0.00000
+bajo,lasso,importaciones_muebles_usd_miles_rez1,numerica,0.08808,9.20723,1.00000,1.00000
+bajo,lasso,covid,binaria,-0.00000,-0.00000,-1.00000,0.00000
+central,mlr_completa,mes_2,categorica,-0.06494,-6.28797,,
+central,mlr_completa,mes_3,categorica,0.01685,1.69910,,
+central,mlr_completa,mes_4,categorica,-0.15158,-14.06470,,
+central,mlr_completa,mes_5,categorica,-0.01689,-1.67495,,
+central,mlr_completa,mes_6,categorica,0.09726,10.21451,,
+central,mlr_completa,mes_7,categorica,0.13052,13.94235,,
+central,mlr_completa,mes_8,categorica,0.09882,10.38717,,
+central,mlr_completa,mes_9,categorica,-0.01080,-1.07435,,
+central,mlr_completa,mes_10,categorica,0.07791,8.10210,,
+central,mlr_completa,mes_11,categorica,0.23051,25.92393,,
+central,mlr_completa,mes_12,categorica,0.37435,45.40429,,
+central,mlr_completa,departamento_Atlantico,categorica,-0.12482,-11.73416,,
+central,mlr_completa,departamento_Bogota,categorica,0.05253,5.39324,,
+central,mlr_completa,departamento_Cundinamarca,categorica,0.10611,11.19388,,
+central,mlr_completa,departamento_Otros departamentos,categorica,0.00666,0.66854,,
+central,mlr_completa,departamento_Santander,categorica,-0.07883,-7.58006,,
+central,mlr_completa,departamento_Valle del Cauca,categorica,-0.11335,-10.71631,,
+central,mlr_completa,linea_Aseo del hogar,categorica,0.02712,2.74928,,
+central,mlr_completa,linea_Electrodomesticos y muebles,categorica,-0.02235,-2.20990,,
+central,mlr_completa,"linea_Ferreteria, vidrios y pinturas",categorica,-0.11600,-10.95203,,
+central,mlr_completa,linea_Informatica y telecomunicaciones,categorica,0.27533,31.69640,,
+central,mlr_completa,linea_Otras mercancias de uso domestico,categorica,-0.10873,-10.30253,,
+central,mlr_completa,linea_Prendas de vestir y textiles,categorica,-0.23044,-20.58149,,
+central,mlr_completa,linea_Sonido y video,categorica,-0.02882,-2.84085,,
+central,mlr_completa,area_vivienda_m2_rez1,numerica,-0.02576,-2.54316,1.00000,0.00000
+central,mlr_completa,icc_rez1,numerica,-0.03597,-3.53354,1.00000,0.00000
+central,mlr_completa,inflacion_anual_rez1,numerica,0.14945,16.11988,-1.00000,0.00000
+central,mlr_completa,tasa_consumo_rez1,numerica,-0.14109,-13.15900,-1.00000,1.00000
+central,mlr_completa,importaciones_muebles_usd_miles_rez1,numerica,0.02345,2.37221,1.00000,1.00000
+central,mlr_completa,covid,binaria,-0.43077,-34.99895,-1.00000,1.00000
+central,ridge,mes_2,categorica,-0.02976,-2.93251,,
+central,ridge,mes_3,categorica,-0.00496,-0.49431,,
+central,ridge,mes_4,categorica,-0.05912,-5.74045,,
+central,ridge,mes_5,categorica,-0.01108,-1.10237,,
+central,ridge,mes_6,categorica,0.01928,1.94637,,
+central,ridge,mes_7,categorica,0.01548,1.55991,,
+central,ridge,mes_8,categorica,-0.00147,-0.14723,,
+central,ridge,mes_9,categorica,-0.02056,-2.03464,,
+central,ridge,mes_10,categorica,0.00371,0.37130,,
+central,ridge,mes_11,categorica,0.04307,4.40140,,
+central,ridge,mes_12,categorica,0.07724,8.03050,,
+central,ridge,departamento_Atlantico,categorica,-0.02226,-2.20135,,
+central,ridge,departamento_Bogota,categorica,0.02219,2.24422,,
+central,ridge,departamento_Cundinamarca,categorica,0.04934,5.05822,,
+central,ridge,departamento_Otros departamentos,categorica,-0.01017,-1.01182,,
+central,ridge,departamento_Santander,categorica,-0.00693,-0.69016,,
+central,ridge,departamento_Valle del Cauca,categorica,-0.03239,-3.18684,,
+central,ridge,linea_Aseo del hogar,categorica,0.01800,1.81670,,
+central,ridge,linea_Electrodomesticos y muebles,categorica,0.00053,0.05333,,
+central,ridge,"linea_Ferreteria, vidrios y pinturas",categorica,-0.03254,-3.20168,,
+central,ridge,linea_Informatica y telecomunicaciones,categorica,0.10566,11.14475,,
+central,ridge,linea_Otras mercancias de uso domestico,categorica,-0.02997,-2.95291,,
+central,ridge,linea_Prendas de vestir y textiles,categorica,-0.07296,-7.03607,,
+central,ridge,linea_Sonido y video,categorica,-0.00175,-0.17514,,
+central,ridge,area_vivienda_m2_rez1,numerica,0.01617,1.63036,1.00000,1.00000
+central,ridge,icc_rez1,numerica,0.00502,0.50367,1.00000,1.00000
+central,ridge,inflacion_anual_rez1,numerica,0.04988,5.11498,-1.00000,0.00000
+central,ridge,tasa_consumo_rez1,numerica,-0.02087,-2.06582,-1.00000,1.00000
+central,ridge,importaciones_muebles_usd_miles_rez1,numerica,0.07258,7.52748,1.00000,1.00000
+central,ridge,covid,binaria,-0.05439,-5.29355,-1.00000,1.00000
+central,lasso,mes_2,categorica,-0.00000,-0.00000,,
+central,lasso,mes_3,categorica,-0.00000,-0.00000,,
+central,lasso,mes_4,categorica,-0.00000,-0.00000,,
+central,lasso,mes_5,categorica,-0.00000,-0.00000,,
+central,lasso,mes_6,categorica,0.00000,0.00000,,
+central,lasso,mes_7,categorica,0.00000,0.00000,,
+central,lasso,mes_8,categorica,-0.00000,-0.00000,,
+central,lasso,mes_9,categorica,-0.00000,-0.00000,,
+central,lasso,mes_10,categorica,0.00000,0.00000,,
+central,lasso,mes_11,categorica,0.00000,0.00000,,
+central,lasso,mes_12,categorica,0.00000,0.00000,,
+central,lasso,departamento_Atlantico,categorica,-0.00000,-0.00000,,
+central,lasso,departamento_Bogota,categorica,0.00000,0.00000,,
+central,lasso,departamento_Cundinamarca,categorica,0.00000,0.00000,,
+central,lasso,departamento_Otros departamentos,categorica,-0.00000,-0.00000,,
+central,lasso,departamento_Santander,categorica,-0.00000,-0.00000,,
+central,lasso,departamento_Valle del Cauca,categorica,-0.00000,-0.00000,,
+central,lasso,linea_Aseo del hogar,categorica,0.00000,0.00000,,
+central,lasso,linea_Electrodomesticos y muebles,categorica,0.00000,0.00000,,
+central,lasso,"linea_Ferreteria, vidrios y pinturas",categorica,-0.00000,-0.00000,,
+central,lasso,linea_Informatica y telecomunicaciones,categorica,0.05466,5.61863,,
+central,lasso,linea_Otras mercancias de uso domestico,categorica,-0.00000,-0.00000,,
+central,lasso,linea_Prendas de vestir y textiles,categorica,-0.00000,-0.00000,,
+central,lasso,linea_Sonido y video,categorica,0.00000,0.00000,,
+central,lasso,area_vivienda_m2_rez1,numerica,0.00000,0.00000,1.00000,0.00000
+central,lasso,icc_rez1,numerica,0.00000,0.00000,1.00000,0.00000
+central,lasso,inflacion_anual_rez1,numerica,0.01212,1.21931,-1.00000,0.00000
+central,lasso,tasa_consumo_rez1,numerica,0.00000,0.00000,-1.00000,0.00000
+central,lasso,importaciones_muebles_usd_miles_rez1,numerica,0.08722,9.11375,1.00000,1.00000
+central,lasso,covid,binaria,-0.00000,-0.00000,-1.00000,0.00000
+alto,mlr_completa,mes_2,categorica,-0.05654,-5.49711,,
+alto,mlr_completa,mes_3,categorica,0.02276,2.30230,,
+alto,mlr_completa,mes_4,categorica,-0.13842,-12.92703,,
+alto,mlr_completa,mes_5,categorica,-0.01186,-1.17921,,
+alto,mlr_completa,mes_6,categorica,0.11011,11.63966,,
+alto,mlr_completa,mes_7,categorica,0.14181,15.23552,,
+alto,mlr_completa,mes_8,categorica,0.10544,11.11962,,
+alto,mlr_completa,mes_9,categorica,-0.00887,-0.88308,,
+alto,mlr_completa,mes_10,categorica,0.08972,9.38630,,
+alto,mlr_completa,mes_11,categorica,0.24122,27.28031,,
+alto,mlr_completa,mes_12,categorica,0.38079,46.34371,,
+alto,mlr_completa,departamento_Atlantico,categorica,-0.10242,-9.73452,,
+alto,mlr_completa,departamento_Bogota,categorica,0.04844,4.96375,,
+alto,mlr_completa,departamento_Cundinamarca,categorica,0.11064,11.69931,,
+alto,mlr_completa,departamento_Otros departamentos,categorica,0.01697,1.71101,,
+alto,mlr_completa,departamento_Santander,categorica,-0.08545,-8.19009,,
+alto,mlr_completa,departamento_Valle del Cauca,categorica,-0.11225,-10.61820,,
+alto,mlr_completa,linea_Aseo del hogar,categorica,0.03865,3.94016,,
+alto,mlr_completa,linea_Electrodomesticos y muebles,categorica,-0.02242,-2.21738,,
+alto,mlr_completa,"linea_Ferreteria, vidrios y pinturas",categorica,-0.11553,-10.91046,,
+alto,mlr_completa,linea_Informatica y telecomunicaciones,categorica,0.26365,30.16680,,
+alto,mlr_completa,linea_Otras mercancias de uso domestico,categorica,-0.11548,-10.90620,,
+alto,mlr_completa,linea_Prendas de vestir y textiles,categorica,-0.23647,-21.05885,,
+alto,mlr_completa,linea_Sonido y video,categorica,-0.03906,-3.83103,,
+alto,mlr_completa,area_vivienda_m2_rez1,numerica,-0.01968,-1.94914,1.00000,0.00000
+alto,mlr_completa,icc_rez1,numerica,-0.03625,-3.56013,1.00000,0.00000
+alto,mlr_completa,inflacion_anual_rez1,numerica,0.15850,17.17520,-1.00000,0.00000
+alto,mlr_completa,tasa_consumo_rez1,numerica,-0.14603,-13.58665,-1.00000,1.00000
+alto,mlr_completa,importaciones_muebles_usd_miles_rez1,numerica,0.02739,2.77684,1.00000,1.00000
+alto,mlr_completa,covid,binaria,-0.43346,-35.17407,-1.00000,1.00000
+alto,ridge,mes_2,categorica,-0.02968,-2.92465,,
+alto,ridge,mes_3,categorica,-0.00558,-0.55688,,
+alto,ridge,mes_4,categorica,-0.05780,-5.61593,,
+alto,ridge,mes_5,categorica,-0.01188,-1.18105,,
+alto,ridge,mes_6,categorica,0.02072,2.09355,,
+alto,ridge,mes_7,categorica,0.01633,1.64629,,
+alto,ridge,mes_8,categorica,-0.00181,-0.18036,,
+alto,ridge,mes_9,categorica,-0.02195,-2.17140,,
+alto,ridge,mes_10,categorica,0.00478,0.47895,,
+alto,ridge,mes_11,categorica,0.04377,4.47378,,
+alto,ridge,mes_12,categorica,0.07704,8.00892,,
+alto,ridge,departamento_Atlantico,categorica,-0.01598,-1.58516,,
+alto,ridge,departamento_Bogota,categorica,0.01952,1.97159,,
+alto,ridge,departamento_Cundinamarca,categorica,0.04965,5.08994,,
+alto,ridge,departamento_Otros departamentos,categorica,-0.00655,-0.65282,,
+alto,ridge,departamento_Santander,categorica,-0.01168,-1.16081,,
+alto,ridge,departamento_Valle del Cauca,categorica,-0.03354,-3.29838,,
+alto,ridge,linea_Aseo del hogar,categorica,0.02302,2.32825,,
+alto,ridge,linea_Electrodomesticos y muebles,categorica,0.00145,0.14492,,
+alto,ridge,"linea_Ferreteria, vidrios y pinturas",categorica,-0.03143,-3.09448,,
+alto,ridge,linea_Informatica y telecomunicaciones,categorica,0.10248,10.79143,,
+alto,ridge,linea_Otras mercancias de uso domestico,categorica,-0.03142,-3.09284,,
+alto,ridge,linea_Prendas de vestir y textiles,categorica,-0.07415,-7.14637,,
+alto,ridge,linea_Sonido y video,categorica,-0.00443,-0.44188,,
+alto,ridge,area_vivienda_m2_rez1,numerica,0.02008,2.02820,1.00000,1.00000
+alto,ridge,icc_rez1,numerica,0.00587,0.58881,1.00000,1.00000
+alto,ridge,inflacion_anual_rez1,numerica,0.05478,5.63118,-1.00000,0.00000
+alto,ridge,tasa_consumo_rez1,numerica,-0.02173,-2.14989,-1.00000,1.00000
+alto,ridge,importaciones_muebles_usd_miles_rez1,numerica,0.07630,7.92842,1.00000,1.00000
+alto,ridge,covid,binaria,-0.05495,-5.34655,-1.00000,1.00000
+alto,lasso,mes_2,categorica,-0.00000,-0.00000,,
+alto,lasso,mes_3,categorica,-0.00000,-0.00000,,
+alto,lasso,mes_4,categorica,-0.00000,-0.00000,,
+alto,lasso,mes_5,categorica,-0.00000,-0.00000,,
+alto,lasso,mes_6,categorica,0.00000,0.00000,,
+alto,lasso,mes_7,categorica,0.00000,0.00000,,
+alto,lasso,mes_8,categorica,-0.00000,-0.00000,,
+alto,lasso,mes_9,categorica,-0.00000,-0.00000,,
+alto,lasso,mes_10,categorica,0.00000,0.00000,,
+alto,lasso,mes_11,categorica,0.00000,0.00000,,
+alto,lasso,mes_12,categorica,0.00000,0.00000,,
+alto,lasso,departamento_Atlantico,categorica,-0.00000,-0.00000,,
+alto,lasso,departamento_Bogota,categorica,0.00000,0.00000,,
+alto,lasso,departamento_Cundinamarca,categorica,0.00000,0.00000,,
+alto,lasso,departamento_Otros departamentos,categorica,0.00000,0.00000,,
+alto,lasso,departamento_Santander,categorica,-0.00000,-0.00000,,
+alto,lasso,departamento_Valle del Cauca,categorica,-0.00000,-0.00000,,
+alto,lasso,linea_Aseo del hogar,categorica,0.00000,0.00000,,
+alto,lasso,linea_Electrodomesticos y muebles,categorica,0.00000,0.00000,,
+alto,lasso,"linea_Ferreteria, vidrios y pinturas",categorica,-0.00000,-0.00000,,
+alto,lasso,linea_Informatica y telecomunicaciones,categorica,0.04457,4.55775,,
+alto,lasso,linea_Otras mercancias de uso domestico,categorica,-0.00000,-0.00000,,
+alto,lasso,linea_Prendas de vestir y textiles,categorica,-0.00000,-0.00000,,
+alto,lasso,linea_Sonido y video,categorica,-0.00000,-0.00000,,
+alto,lasso,area_vivienda_m2_rez1,numerica,0.00213,0.21327,1.00000,1.00000
+alto,lasso,icc_rez1,numerica,0.00000,0.00000,1.00000,0.00000
+alto,lasso,inflacion_anual_rez1,numerica,0.01696,1.71090,-1.00000,0.00000
+alto,lasso,tasa_consumo_rez1,numerica,0.00000,0.00000,-1.00000,0.00000
+alto,lasso,importaciones_muebles_usd_miles_rez1,numerica,0.09264,9.70665,1.00000,1.00000
+alto,lasso,covid,binaria,-0.00000,-0.00000,-1.00000,0.00000

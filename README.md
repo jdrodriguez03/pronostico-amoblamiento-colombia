@@ -78,6 +78,33 @@ from src.datos.cargar import cargar_entrenamiento
 df = cargar_entrenamiento("central")    # valida el contrato y devuelve feb 2019 – jul 2025
 ```
 
+## Entrenar y comparar modelos
+
+Desde la raíz del repositorio, ejecuta la validación cruzada de un escenario o de los tres:
+
+```bash
+python scripts/entrenar.py --escenario central
+python scripts/entrenar.py --escenario bajo
+python scripts/entrenar.py --escenario alto
+python scripts/entrenar.py --escenario todos
+```
+
+Si omites `--escenario`, se usa `central`. El script compara los cinco modelos candidatos y las dos líneas base con validación temporal por mes. Los ajustes y los folds trabajan con las fechas que devuelve `cargar_entrenamiento` (anteriores a agosto de 2025); este comando no ejecuta la evaluación del conjunto final.
+
+Las tablas oficiales quedan en `results/tablas/`:
+
+- `cv_resultados.csv`: métricas e hiperparámetros por escenario, modelo y fold.
+- `comparacion_cv.csv`: resumen por escenario y modelo.
+- `comparacion_pareada.csv`: diferencias de MAPE por fold frente a los modelos de referencia.
+
+Los modelos ajustados se guardan en `results/modelos/`. Para comprobar el flujo con la base pequeña y una rejilla reducida, usa:
+
+```bash
+python scripts/entrenar.py --rapido
+```
+
+La corrida rápida escribe sus tablas y modelos en `results/modelos/rapido/`; esos resultados son de prueba del flujo, no sustituyen las tablas oficiales.
+
 ## Estructura
 
 ```
