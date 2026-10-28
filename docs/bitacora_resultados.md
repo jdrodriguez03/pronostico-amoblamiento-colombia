@@ -101,3 +101,21 @@ La selección cambia entre folds o escenarios para: importaciones_muebles_usd_mi
 ## 2026-10-27 · Análisis de errores del modelo preliminar
 
 El equipo eligió Ridge (alpha = 1000) como modelo preliminar: en central KNN queda 0,09 puntos porcentuales por debajo de Ridge, diferencia pequeña frente al error estándar pareado informado (0,87 puntos); se priorizaron la estabilidad de Ridge entre escenarios (9,02–9,14 %) y sus coeficientes sin cambios de signo. Los residuos de validación se recalcularon con el pipeline actual. Los residuos son observado menos predicho: positivos indican subestimación y negativos, sobreestimación. Los tres mayores errores absolutos fueron Jul 2025: +46.93 puntos; May 2025: +32.85 puntos; Nov 2024: +29.21 puntos. El error absoluto medio por mes calendario fue mayor en julio (23.09 puntos; solo 2 o 3 observaciones por mes), por lo que no basta para afirmar un patrón estacional recurrente. En ajuste dentro de muestra, los cinco meses con `covid=1` tuvieron MAPE 37.85 % y MAD 27.59, frente a 11.28 % y 14.01 en los demás meses. Son residuos dentro de muestra, no errores de pronóstico. Los meses se conservaron y se identifican con `covid`; no se calculó distancia de Cook. El MAPE medio recalculado (9.079339 %) coincide con el guardado (9.079339 %).
+
+## 2026-10-27 · Modelo preliminar: Ridge reentrenado con todo el entrenamiento
+
+`notebooks/04_interpretacion.ipynb`, sección 8 (`results/tablas/coeficientes.csv`: MLR completa,
+Ridge y Lasso en los 3 escenarios). Efecto en el índice por una desviación estándar del predictor,
+escenario central, manteniendo fijas las demás variables (asociación, no causa):
+
+- **Importaciones de muebles pesa más**: +7,5 % por unos 7.500 miles de USD más en el mes anterior,
+  con el signo esperado. Lasso también la conserva (+0,087).
+- **Tasa de consumo (−2,1 %) y área de vivienda (+1,6 %)** tienen el signo esperado y efectos pequeños.
+- **Inflación sale al revés** (+5,1 %): recoge que la inflación alta de 2021 a 2023 coincidió con la
+  recuperación del consumo, y se correlaciona 0,85 con la tasa. **ICC queda en cero** (+0,5 %) y su
+  signo cambia entre el ajuste completo y la media de los folds: no se interpreta.
+- **Covid** pasa de −35 % en la MLR a −5,3 % en Ridge, encogido por la penalización.
+- **Estacionalidad**: diciembre +8,0 % y noviembre +4,4 % frente a enero; abril −5,7 %.
+- Los signos de Ridge son iguales en los 3 escenarios y los coeficientes cambian menos de 0,005.
+- KNN da 9,00 % en el cuaderno y 8,99 % en `cv_resultados.csv`, con las mismas librerías: los empates
+  de distancia se resuelven distinto según el computador. No cambia ninguna conclusión.
