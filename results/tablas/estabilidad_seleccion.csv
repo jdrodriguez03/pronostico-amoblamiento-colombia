@@ -1,0 +1,7 @@
+variable,stepwise_veces_seleccionada,lasso_coeficiente_no_nulo,pares_fold_escenario
+icc_rez1,15,0,15
+inflacion_anual_rez1,15,15,15
+tasa_consumo_rez1,15,0,15
+importaciones_muebles_usd_miles_rez1,14,15,15
+area_vivienda_m2_rez1,6,9,15
+covid,15,0,15
