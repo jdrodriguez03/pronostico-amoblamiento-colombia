@@ -34,10 +34,11 @@ se abre en esta entrega.
    "¿el resultado depende de cuánta variación regional se simuló?" (pregunta 2 del banco).
 """
 
+import numpy as np
 import pandas as pd
 
 from src.config import ESCENARIOS
-from src.evaluacion.metricas import mejora_pct
+from src.evaluacion.metricas import mape, mejora_pct
 
 # Nombres de las líneas base tal como quedan en la columna "modelo" de cv_resultados.csv
 MEDIA = "media"
@@ -173,3 +174,52 @@ def tabla_rango_escenarios(comparacion: pd.DataFrame) -> pd.DataFrame:
     orden = "mape_central" if "mape_central" in tabla.columns else "mape_min"
     tabla.columns.name = None
     return tabla.sort_values(orden).reset_index()
+
+
+# ---------------------------------------------------------------------------
+# Regla para escoger el modelo final (entrega final, lunes 9: congelamiento)
+# ---------------------------------------------------------------------------
+# Escrita ANTES de abrir la prueba (docs/especificacion_final.md). No se cambia después.
+MODELO_POR_DEFECTO = "ridge"
+MODELO_RETADOR = "knn"
+MESES_MINIMOS_RETADOR = 8  # de 12 meses de prueba
+
+
+def regla_modelo_final(y_real, pred_ridge, pred_knn, desv_cv_ridge: float,
+                       meses_minimos: int = MESES_MINIMOS_RETADOR) -> dict:
+    """Aplica la regla congelada sobre la serie NACIONAL de prueba (un valor por mes).
+
+    El modelo final es Ridge. Se cambia a KNN solo si se cumplen LAS DOS condiciones:
+      (a) MAPE_ridge − MAPE_knn > desv_cv_ridge, es decir, KNN gana en prueba por más que la
+          desviación entre folds del MAPE de validación de Ridge (lo que Ridge "se mueve"
+          solo por cambiar de periodo). Desigualdad estricta.
+      (b) KNN tiene MENOR error absoluto que Ridge en al menos 8 de los 12 meses. Un empate
+          exacto en un mes no cuenta como mes ganado por KNN.
+    A igualdad práctica se queda Ridge, por estabilidad e interpretabilidad.
+
+    Ejemplo: Ridge 8,0 %, KNN 7,0 %, desviación de Ridge 0,9 → (a) se cumple (1,0 > 0,9);
+    si KNN gana solo 7 meses, (b) no se cumple → el modelo final sigue siendo Ridge.
+
+    Devuelve {"mape_ridge", "mape_knn", "dif_mape", "desv_cv_ridge", "condicion_a",
+              "meses_knn_gana", "n_meses", "condicion_b", "modelo_final"}.
+    """
+    y = np.asarray(y_real, dtype=float)
+    r = np.asarray(pred_ridge, dtype=float)
+    k = np.asarray(pred_knn, dtype=float)
+    if not (y.shape == r.shape == k.shape):
+        raise ValueError("observado, Ridge y KNN deben tener los mismos meses")
+    mape_r, mape_k = mape(y, r), mape(y, k)
+    meses_knn = int((np.abs(y - k) < np.abs(y - r)).sum())
+    a = bool(mape_r - mape_k > desv_cv_ridge)
+    b = meses_knn >= meses_minimos
+    return {
+        "mape_ridge": mape_r,
+        "mape_knn": mape_k,
+        "dif_mape": mape_r - mape_k,
+        "desv_cv_ridge": float(desv_cv_ridge),
+        "condicion_a": a,
+        "meses_knn_gana": meses_knn,
+        "n_meses": int(y.size),
+        "condicion_b": b,
+        "modelo_final": MODELO_RETADOR if (a and b) else MODELO_POR_DEFECTO,
+    }
