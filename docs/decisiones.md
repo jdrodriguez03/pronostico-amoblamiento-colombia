@@ -45,3 +45,11 @@ Formato: fecha · quién · decisión · por qué (una o dos líneas).
 ## 9 de noviembre de 2026 · Rezagos realistas (Julián)
 
 El pronóstico del mes t se emite el primer día hábil del mes t y solo usa lo publicado ese día. Rezagos: ICC 2, inflación 2, tasa de consumo 1 (promedio de las semanas publicadas), importaciones 3, área de vivienda 3. Se adopta esta especificación aunque pierda desempeño frente a `_rez1`, porque un modelo con datos no publicados no se puede usar en producción. Detalle en `docs/disponibilidad_datos.md`.
+
+## 9 de noviembre de 2026 · Congelamiento de la especificación (Juanes)
+
+Antes de abrir la prueba se congela la especificación completa en `docs/especificacion_final.md`: predictores con los rezagos realistas de Julián, objetivo en logaritmo, one-hot con `drop="first"` para lineales y sin `drop` para KNN, `StandardScaler`, rejillas de Ridge y KNN sin cambios, `CVTemporalPorMes`, agregación nacional de la línea 8 con `PESOS_DEPTO`, MAPE como métrica principal con MAD y RMSE de contraste, bootstrap de bloques de 3 meses para la incertidumbre y escenario central para decidir. Se fija también el orden de las filas (fecha, departamento, línea) en `preparar_datos`, que estaba pendiente desde el 27 de octubre: KNN deja de depender del computador. Regla para escoger el modelo final, escrita antes de abrir la prueba:
+
+> El modelo final es Ridge. Se cambia a KNN solo si se cumplen las dos condiciones en el escenario central: (a) el MAPE nacional de prueba de KNN es menor que el de Ridge por más de la desviación estándar entre folds del MAPE de validación de Ridge, y (b) KNN tiene menor error absoluto que Ridge en al menos 8 de los 12 meses de prueba. Ridge se prefiere a igualdad práctica por estabilidad e interpretabilidad.
+
+Commit de congelamiento: `________` (hash del merge a `main`; se anota antes de correr `evaluar_prueba.py`).
