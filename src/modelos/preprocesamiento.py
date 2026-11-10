@@ -15,6 +15,13 @@ Julián del 10 de octubre):
 | los otros 4 predictores _rez1    | estandarizar                             |
 | covid                            | pasa sin cambios (ya es 0/1)             |
 | fecha, anio, linea_codigo, ...   | se descartan (remainder="drop")          |
+
+Entrega final (lunes 9 de noviembre, contrato de la sección 3): crear_preprocesador recibe
+el parámetro opcional predictores. Con None usa config.predictores_modelo() (los _rez1, como
+hasta la Entrega 2); con los rezagos realistas de Julián se le pasa
+columnas_predictoras() (icc_rez2, inflacion_anual_rez2, tasa_consumo_rez1,
+importaciones_muebles_usd_miles_rez3, area_vivienda_m2_rez3). La tabla de arriba no cambia:
+el área de vivienda sigue llevando logaritmo, tenga el rezago que tenga.
 """
 
 import numpy as np
@@ -31,8 +38,17 @@ def columnas_log_por_defecto() -> list[str]:
 
 
 def crear_preprocesador(columnas_log: list[str] | None = None,
-                        drop_categorica: str | None = "first") -> ColumnTransformer:
+                        drop_categorica: str | None = "first",
+                        predictores: list[str] | None = None) -> ColumnTransformer:
     """OneHotEncoder para mes, departamento y linea; StandardScaler para los numéricos.
+
+    predictores: columnas numéricas que entran al modelo. None (por defecto) = las de
+        config.predictores_modelo(), exactamente como antes del 9 de noviembre, así que
+        todas las llamadas que ya existen dan el mismo resultado. Para la especificación
+        final se pasa columnas_predictoras() de src/features/rezagos.py. Va al final y con
+        valor por defecto para no cambiar ninguna llamada existente (regla 7).
+        Ejemplo: predictores=["icc_rez2", "area_vivienda_m2_rez3"] → el escalador ve solo
+        icc_rez2 y el logaritmo se aplica a area_vivienda_m2_rez3.
 
     columnas_log: predictores numéricos a los que se aplica logaritmo antes de escalar.
     Por defecto, solo el área de vivienda (docs/diccionario_datos.md). Se deja como
@@ -51,9 +67,13 @@ def crear_preprocesador(columnas_log: list[str] | None = None,
           "más cerca" de todos los meses que los demás meses entre sí, sin ninguna razón.
           Sin drop, todas las categorías quedan a √2 entre sí: todas son igual de distintas.
     """
+    numericas = list(predictores) if predictores is not None else predictores_modelo()
     if columnas_log is None:
-        columnas_log = columnas_log_por_defecto()
-    numericas = predictores_modelo()
+        # Misma regla que columnas_log_por_defecto() (el área de vivienda lleva logaritmo),
+        # pero aplicada a los predictores que de verdad entran: con los rezagos realistas
+        # la columna se llama area_vivienda_m2_rez3 y no area_vivienda_m2_rez1. Con
+        # predictores=None da exactamente columnas_log_por_defecto().
+        columnas_log = [c for c in numericas if c.startswith("area_vivienda_m2")]
     faltan = [c for c in columnas_log if c not in numericas]
     if faltan:
         raise ValueError(f"columnas_log no son predictores del modelo: {faltan}")

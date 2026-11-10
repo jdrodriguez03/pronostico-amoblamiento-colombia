@@ -90,3 +90,36 @@ def test_rejilla_rapida_y_texto_de_hiperparametros():
         {"regressor__modelo__n_neighbors": 3, "regressor__modelo__weights": "uniform"})
     assert texto == "n_neighbors=3; weights=uniform"
     assert entrenar.texto_hiperparametros({}) == "sin hiperparámetros"
+
+
+# ---------------------------------------------------------------------------
+# --rezagos (entrega final, lunes 9 de noviembre, tarea 2)
+# ---------------------------------------------------------------------------
+
+def test_por_defecto_usa_rezagos_reales(corrida):
+    """La corrida sin --rezagos es la especificación final: el primer fold entrena desde
+    mayo de 2019 (se pierden los 3 meses sin dato de t−3) y valida los mismos meses."""
+    entrenar, carpeta, cv = corrida
+    busqueda = joblib.load(carpeta / "central_ridge.joblib")
+    prep = busqueda.best_estimator_.regressor_.named_steps["prep"]
+    assert "icc_rez2" in prep.named_transformers_["num"].feature_names_in_
+    assert pd.Timestamp(cv["valida_desde"].min()) == pd.Timestamp("2023-02-01")
+    assert entrenar.sufijo_rezagos("reales") == ""
+
+
+def test_rez1_escribe_con_sufijo_y_no_pisa_las_oficiales(tmp_path):
+    entrenar = _cargar_script()
+    mp = pytest.MonkeyPatch()
+    mp.setattr(entrenar, "RUTA_MODELOS", tmp_path)
+    try:
+        entrenar.main(["--rapido", "--escenario", "central", "--rezagos", "rez1"])
+    finally:
+        mp.undo()
+    carpeta = tmp_path / "rapido"
+    for nombre in ["cv_resultados", "comparacion_cv", "comparacion_pareada",
+                   "rango_escenarios"]:
+        assert (carpeta / f"{nombre}_rez1.csv").exists()
+        assert not (carpeta / f"{nombre}.csv").exists()
+    busqueda = joblib.load(carpeta / "central_ridge_rez1.joblib")
+    prep = busqueda.best_estimator_.regressor_.named_steps["prep"]
+    assert "icc_rez1" in prep.named_transformers_["num"].feature_names_in_

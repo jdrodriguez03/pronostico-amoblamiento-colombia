@@ -2,6 +2,7 @@
 """Pruebas del preprocesador y del Pipeline, incluida la prueba de fuga del día 4."""
 
 import numpy as np
+import pandas as pd
 import pytest
 from sklearn.base import clone
 from sklearn.linear_model import LinearRegression, Ridge
@@ -11,7 +12,14 @@ from sklearn.neighbors import KNeighborsRegressor
 from src.config import OBJETIVO, predictores_modelo
 from src.datos.cargar import cargar_entrenamiento
 from src.evaluacion.particion import CVTemporalPorMes
-from src.modelos.pipeline import construir_pipeline, prefijo_parametros
+from src.features.rezagos import columnas_predictoras
+from src.modelos.candidatos import CANDIDATOS, construir_candidato
+from src.modelos.pipeline import (
+    candidato_con_predictores,
+    construir_pipeline,
+    prefijo_parametros,
+    preparar_datos,
+)
 from src.modelos.preprocesamiento import columnas_log_por_defecto, crear_preprocesador
 
 
@@ -159,3 +167,84 @@ def test_pipeline_deja_pasar_drop_categorica(fold1):
     # Y se puede ajustar desde GridSearchCV / set_params como cualquier otro parámetro
     nombre = "regressor__prep__cat__drop"
     assert construir_pipeline(Ridge(), drop_categorica=None).get_params()[nombre] is None
+
+
+# ---------------------------------------------------------------------------
+# predictores (entrega final, lunes 9 de noviembre, tarea 2): rezagos realistas
+# ---------------------------------------------------------------------------
+
+def test_predictores_none_es_identico_al_actual(fold1):
+    """Con predictores=None el preprocesador da exactamente lo mismo que antes del cambio
+    (mismas columnas, mismos números), y lo mismo el Pipeline completo."""
+    ent, val = fold1
+    antes = crear_preprocesador(columnas_log=columnas_log_por_defecto(),
+                                predictores=predictores_modelo()).fit(ent)
+    ahora = crear_preprocesador().fit(ent)
+    assert list(ahora.get_feature_names_out()) == list(antes.get_feature_names_out())
+    np.testing.assert_array_equal(ahora.transform(val), antes.transform(val))
+
+    pred_antes = construir_pipeline(Ridge(alpha=10.0), predictores=predictores_modelo())
+    pred_ahora = construir_pipeline(Ridge(alpha=10.0))
+    np.testing.assert_array_equal(pred_ahora.fit(ent, ent[OBJETIVO]).predict(val),
+                                  pred_antes.fit(ent, ent[OBJETIVO]).predict(val))
+
+
+def test_predictores_realistas_entran_y_vivienda_lleva_log(mini):
+    datos, predictores = preparar_datos(mini, "reales")
+    assert predictores == columnas_predictoras()
+    prep = crear_preprocesador(predictores=predictores).fit(datos)
+    nombres = [n.split("__", 1)[1] for n in prep.get_feature_names_out()]
+    assert set(predictores) <= set(nombres)
+    # Ningún _rez1 salvo la tasa de consumo, que es la única con k = 1
+    assert [n for n in nombres if n.endswith("_rez1")] == ["tasa_consumo_rez1"]
+    # El logaritmo se aplica al área de vivienda con su rezago real (t−3)
+    assert list(prep.named_transformers_["log"].feature_names_in_) == ["area_vivienda_m2_rez3"]
+
+
+def test_preparar_datos_reales_descarta_los_meses_sin_rezago(mini):
+    """mini empieza en febrero de 2019; con k máximo 3 se pierden feb, mar y abr de 2019."""
+    datos, _ = preparar_datos(mini, "reales")
+    assert datos["fecha"].min() == pd.Timestamp("2019-05-01")
+    assert datos["fecha"].nunique() == mini["fecha"].nunique() - 3
+    assert datos[columnas_predictoras()].notna().all().all()
+    # El objetivo no cambia: mismas filas, mismo valor
+    junto = datos.merge(mini, on=["fecha", "departamento", "linea_codigo"],
+                        suffixes=("", "_orig"))
+    np.testing.assert_array_equal(junto[OBJETIVO], junto[f"{OBJETIVO}_orig"])
+
+
+def test_preparar_datos_rez1_no_pierde_meses_y_ordena(mini):
+    revuelto = mini.sample(frac=1.0, random_state=0)
+    datos, predictores = preparar_datos(revuelto, "rez1")
+    assert predictores == predictores_modelo()
+    assert len(datos) == len(mini)
+    # Orden fijo: fecha, departamento, línea (KNN depende del orden dentro de cada mes)
+    esperado = mini.sort_values(["fecha", "departamento", "linea_codigo"]).reset_index(drop=True)
+    pd.testing.assert_frame_equal(datos[esperado.columns], esperado)
+
+
+def test_preparar_datos_rechaza_opcion_desconocida(mini):
+    with pytest.raises(ValueError, match="rezagos"):
+        preparar_datos(mini, "rez2")
+
+
+@pytest.mark.parametrize("nombre", list(CANDIDATOS))
+def test_candidato_con_predictores_none_igual_a_construir_candidato(fold1, nombre):
+    """candidato_con_predictores repite construir_candidato de Julián: si alguien cambia
+    una sin la otra, esta prueba avisa."""
+    ent, val = fold1
+    nuestro, rejilla = candidato_con_predictores(nombre)
+    suyo, rejilla_suya = construir_candidato(nombre)
+    assert rejilla == rejilla_suya
+    assert repr(nuestro) == repr(suyo)
+    np.testing.assert_allclose(nuestro.fit(ent, ent[OBJETIVO]).predict(val),
+                               suyo.fit(ent, ent[OBJETIVO]).predict(val))
+
+
+def test_candidato_knn_realista_sin_drop_y_con_sus_predictores(mini):
+    datos, predictores = preparar_datos(mini, "reales")
+    pipe, _ = candidato_con_predictores("knn", predictores)
+    pipe.fit(datos, datos[OBJETIVO])
+    prep = pipe.regressor_.named_steps["prep"]
+    assert prep.named_transformers_["cat"].drop is None
+    assert "icc_rez2" in prep.named_transformers_["num"].feature_names_in_

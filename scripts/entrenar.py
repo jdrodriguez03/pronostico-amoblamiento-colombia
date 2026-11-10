@@ -7,11 +7,26 @@ Uso:
     python scripts/entrenar.py --escenario todos      # corrida oficial (3 escenarios)
     python scripts/entrenar.py --escenario central    # un solo escenario
     python scripts/entrenar.py --rapido               # base pequeña, para probar (< 1 min)
+    python scripts/entrenar.py --escenario todos --rezagos rez1   # especificación E2
+
+Entrega final (lunes 9 de noviembre, tarea 2): opción --rezagos.
+    --rezagos reales (por defecto): la especificación final. Los predictores entran con el
+        rezago con que de verdad están publicados el día del pronóstico (REZAGOS_REALES de
+        src/features/rezagos.py, Julián): icc y inflación t−2, tasa de consumo t−1,
+        importaciones y área de vivienda t−3. Escribe las tablas oficiales
+        (cv_resultados.csv, comparacion_cv.csv, ...).
+    --rezagos rez1: la especificación de la Entrega 2 (todo en t−1). Solo sirve para medir
+        cuánto MAPE cuesta ser realistas; escribe las mismas tablas con el sufijo _rez1
+        (cv_resultados_rez1.csv, ...), para que nunca pise las oficiales.
+    En los dos casos la base pasa por preparar_datos() (src/modelos/pipeline.py), que aplica
+    agregar_rezagos_reales a lo que devuelve cargar_entrenamiento y fija el orden de las filas.
 
 Qué hace, para cada escenario:
 
 1. Carga SOLO el entrenamiento (febrero de 2019 a julio de 2025) con cargar_entrenamiento.
    La prueba (agosto de 2025 a julio de 2026) no se lee aquí: solo evaluar_prueba.py.
+   Con --rezagos reales se pierden además los meses sin dato rezagado (empieza en mayo de
+   2019); los folds validan los mismos 30 meses en las dos especificaciones.
 2. Para cada uno de los 5 candidatos de candidatos.py (Julián):
        GridSearchCV(pipeline, rejilla, cv=CVTemporalPorMes(), scoring=scorer_mape_nacional,
                     refit=True, return_train_score=True)
@@ -30,7 +45,7 @@ Qué hace, para cada escenario:
 4. Las dos líneas base (media e ingenuo estacional) no tienen hiperparámetros: entran
    directo por evaluar_cv.
 
-Salidas (results/tablas/):
+Salidas (results/tablas/; con --rezagos rez1 llevan el sufijo _rez1):
     cv_resultados.csv        una fila por escenario, modelo y fold (7 × 3 × 5 = 105)
     comparacion_cv.csv       una fila por escenario y modelo (21)
     comparacion_pareada.csv  diferencias de MAPE fold por fold frente a las referencias
@@ -77,12 +92,17 @@ from src.evaluacion.comparacion import (  # noqa: E402
 )
 from src.evaluacion.particion import CVTemporalPorMes  # noqa: E402
 from src.evaluacion.validar import (  # noqa: E402
+    buscar_hiperparametros,
     evaluar_cv,
     mape_ajuste,
-    scorer_mape_nacional,
 )
-from src.modelos.candidatos import CANDIDATOS, construir_candidato, prefijo  # noqa: E402
+from src.modelos.candidatos import CANDIDATOS, prefijo  # noqa: E402
 from src.modelos.lineas_base import IngenuoEstacional, PredictorMedia  # noqa: E402
+from src.modelos.pipeline import (  # noqa: E402
+    REZAGOS,
+    candidato_con_predictores,
+    preparar_datos,
+)
 
 # Orden de las columnas de cv_resultados.csv
 COLUMNAS = ["escenario", "modelo", "fold", "valida_desde", "valida_hasta", "hiperparametros",
@@ -139,11 +159,18 @@ def _comprobar_igual_a_gridsearch(busqueda: GridSearchCV, por_fold: pd.DataFrame
 # ---------------------------------------------------------------------------
 # Entrenamiento de un escenario
 # ---------------------------------------------------------------------------
+def sufijo_rezagos(rezagos: str) -> str:
+    """"" para la especificación oficial (reales) y "_rez1" para la de comparación."""
+    return "" if rezagos == "reales" else f"_{rezagos}"
+
+
 def entrenar_escenario(escenario: str, rapido: bool = False,
-                       ruta_modelos: Path = RUTA_MODELOS) -> pd.DataFrame:
+                       ruta_modelos: Path = RUTA_MODELOS,
+                       rezagos: str = "reales") -> pd.DataFrame:
     """cv_resultados de un escenario: 7 modelos × 5 folds."""
-    df = cargar_entrenamiento(escenario, fixture=rapido)
+    df, predictores = preparar_datos(cargar_entrenamiento(escenario, fixture=rapido), rezagos)
     y = df[OBJETIVO]
+    sufijo = sufijo_rezagos(rezagos)
     cv = CVTemporalPorMes()
     ruta_modelos.mkdir(parents=True, exist_ok=True)
     tablas = []
@@ -156,32 +183,32 @@ def entrenar_escenario(escenario: str, rapido: bool = False,
         por_fold["hiperparametros"] = texto_hiperparametros({})
         por_fold["mape_ajuste"] = mape_ajuste(ajustado, df)
         tablas.append(por_fold.assign(escenario=escenario, modelo=nombre))
-        joblib.dump(ajustado, ruta_modelos / f"{escenario}_{nombre}.joblib")
+        joblib.dump(ajustado, ruta_modelos / f"{escenario}_{nombre}{sufijo}.joblib")
         print(f"  {nombre:20} MAPE {por_fold['mape'].mean():6.2f} %  "
               f"({time.perf_counter() - inicio:.0f} s)")
 
     # 2. Los 5 candidatos: GridSearchCV elige hiperparámetros por el MAPE nacional
     for nombre in CANDIDATOS:
         inicio = time.perf_counter()
-        pipeline, rejilla = construir_candidato(nombre)
+        _, rejilla = candidato_con_predictores(nombre, predictores)
         if rapido:
             rejilla = rejilla_rapida(rejilla)
         # Sin rejilla (MLR stepwise y completa), {} es "probar solo la configuración por
-        # defecto": GridSearchCV hace un único ajuste por fold y sirve igual
-        busqueda = GridSearchCV(
-            pipeline, rejilla, cv=cv, scoring=scorer_mape_nacional,
-            refit=True, return_train_score=True, n_jobs=1,
-        ).fit(df, y)
+        # defecto": GridSearchCV hace un único ajuste por fold y sirve igual.
+        # buscar_hiperparametros (validar.py) es la misma búsqueda que usa evaluar_prueba.py:
+        # GridSearchCV con cv, scorer_mape_nacional, refit=True y un solo hilo.
+        busqueda = buscar_hiperparametros(nombre, df, predictores, rejilla, cv)
 
         # Métricas por fold con los hiperparámetros ganadores (mismos folds, mismas cuentas)
-        elegido = construir_candidato(nombre)[0].set_params(**busqueda.best_params_)
+        elegido = candidato_con_predictores(nombre, predictores)[0].set_params(
+            **busqueda.best_params_)
         por_fold = evaluar_cv(elegido, df, cv)
         _comprobar_igual_a_gridsearch(busqueda, por_fold, nombre)
 
         por_fold["hiperparametros"] = texto_hiperparametros(busqueda.best_params_)
         por_fold["mape_ajuste"] = mape_ajuste(busqueda.best_estimator_, df)
         tablas.append(por_fold.assign(escenario=escenario, modelo=nombre))
-        joblib.dump(busqueda, ruta_modelos / f"{escenario}_{nombre}.joblib")
+        joblib.dump(busqueda, ruta_modelos / f"{escenario}_{nombre}{sufijo}.joblib")
         print(f"  {nombre:20} MAPE {por_fold['mape'].mean():6.2f} %  "
               f"[{por_fold['hiperparametros'].iloc[0]}]  "
               f"({time.perf_counter() - inicio:.0f} s)")
@@ -192,11 +219,14 @@ def entrenar_escenario(escenario: str, rapido: bool = False,
 # ---------------------------------------------------------------------------
 # Guardado
 # ---------------------------------------------------------------------------
-def _guardar(cv_nuevo: pd.DataFrame, ruta_tablas: Path) -> pd.DataFrame:
-    """Escribe las tres tablas. Si ya existe cv_resultados.csv, reemplaza solo los
-    escenarios que se acaban de correr y conserva los demás."""
+def _guardar(cv_nuevo: pd.DataFrame, ruta_tablas: Path, sufijo: str = "") -> pd.DataFrame:
+    """Escribe las cuatro tablas. Si ya existe cv_resultados.csv, reemplaza solo los
+    escenarios que se acaban de correr y conserva los demás.
+
+    sufijo: "" para la especificación oficial y "_rez1" para la de comparación
+    (cv_resultados_rez1.csv, comparacion_cv_rez1.csv, ...)."""
     ruta_tablas.mkdir(parents=True, exist_ok=True)
-    ruta_cv = ruta_tablas / "cv_resultados.csv"
+    ruta_cv = ruta_tablas / f"cv_resultados{sufijo}.csv"
     if ruta_cv.exists():
         anterior = pd.read_csv(ruta_cv, parse_dates=["valida_desde", "valida_hasta"])
         anterior = anterior[~anterior["escenario"].isin(cv_nuevo["escenario"].unique())]
@@ -215,11 +245,12 @@ def _guardar(cv_nuevo: pd.DataFrame, ruta_tablas: Path) -> pd.DataFrame:
     opciones = {"index": False, "float_format": "%.6f", "date_format": "%Y-%m-%d"}
     cv_todo.to_csv(ruta_cv, **opciones)
     comparacion = tabla_comparacion(cv_todo)
-    comparacion.to_csv(ruta_tablas / "comparacion_cv.csv", **opciones)
+    comparacion.to_csv(ruta_tablas / f"comparacion_cv{sufijo}.csv", **opciones)
     # Martes 27: el rango entre escenarios (variabilidad de la 7.4) también sale de un CSV
-    tabla_rango_escenarios(comparacion).to_csv(ruta_tablas / "rango_escenarios.csv",
-                                               **opciones)
-    tabla_pareada(cv_todo).to_csv(ruta_tablas / "comparacion_pareada.csv", **opciones)
+    tabla_rango_escenarios(comparacion).to_csv(
+        ruta_tablas / f"rango_escenarios{sufijo}.csv", **opciones)
+    tabla_pareada(cv_todo).to_csv(ruta_tablas / f"comparacion_pareada{sufijo}.csv",
+                                  **opciones)
     return cv_todo
 
 
@@ -230,6 +261,8 @@ def main(argv: list[str] | None = None) -> pd.DataFrame:
                         help="escenario de η a entrenar (por defecto: central)")
     parser.add_argument("--rapido", action="store_true",
                         help="base pequeña y rejillas de 2 valores (para probar el código)")
+    parser.add_argument("--rezagos", default="reales", choices=list(REZAGOS),
+                        help="reales (por defecto, especificación final) o rez1 (Entrega 2)")
     args = parser.parse_args(argv)
 
     escenarios = list(ESCENARIOS) if args.escenario == "todos" else [args.escenario]
@@ -242,9 +275,12 @@ def main(argv: list[str] | None = None) -> pd.DataFrame:
     # Un solo hilo en numpy/BLAS/OpenMP: ver "Reproducibilidad" arriba
     with threadpool_limits(limits=1):
         for escenario in escenarios:
-            print(f"Escenario {escenario}{' (rápido)' if args.rapido else ''}")
-            tablas.append(entrenar_escenario(escenario, args.rapido, ruta_modelos))
-    cv_todo = _guardar(pd.concat(tablas, ignore_index=True), ruta_tablas)
+            print(f"Escenario {escenario}, rezagos {args.rezagos}"
+                  f"{' (rápido)' if args.rapido else ''}")
+            tablas.append(entrenar_escenario(escenario, args.rapido, ruta_modelos,
+                                             args.rezagos))
+    cv_todo = _guardar(pd.concat(tablas, ignore_index=True), ruta_tablas,
+                       sufijo_rezagos(args.rezagos))
     print(f"Listo en {time.perf_counter() - inicio:.0f} s. Tablas en {ruta_tablas}")
     return cv_todo
 

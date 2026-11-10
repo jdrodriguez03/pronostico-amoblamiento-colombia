@@ -90,6 +90,50 @@ def mape_ajuste(modelo, df) -> float:
     return -scorer_mape_nacional(modelo, df, df[OBJETIVO].to_numpy(dtype=float))
 
 
+def buscar_hiperparametros(nombre: str, df: pd.DataFrame, predictores: list[str] | None = None,
+                           rejilla: dict | None = None, cv=None):
+    """GridSearchCV ya ajustado de un candidato, con la configuración congelada.
+
+    Entrega final (lunes 9, congelamiento). Es la ÚNICA definición de la búsqueda: la usan
+    scripts/entrenar.py (validación cruzada) y scripts/evaluar_prueba.py (reentrenar antes
+    de predecir la prueba), así que los dos eligen los hiperparámetros exactamente igual:
+        - cv=CVTemporalPorMes(): 5 folds de 6 meses, ventana creciente, por mes;
+        - scoring=scorer_mape_nacional: MAPE de la serie nacional de muebles;
+        - refit=True: con el valor ganador se reentrena con TODOS los meses de df;
+        - return_train_score=True y n_jobs=1 (un solo hilo: KNN es reproducible).
+
+    nombre: un candidato de candidatos.py ("ridge", "knn", "mlr_stepwise", ...).
+    predictores: los de preparar_datos(); None = config.predictores_modelo().
+    rejilla: None = la rejilla congelada de candidatos.py. Solo entrenar.py --rapido la
+        cambia (2 valores), para probar el código en segundos.
+
+    Ejemplo: buscar_hiperparametros("ridge", df, predictores).best_params_
+             → {"regressor__modelo__alpha": 1000.0}
+    """
+    from sklearn.model_selection import GridSearchCV
+
+    from src.evaluacion.particion import CVTemporalPorMes
+    from src.modelos.pipeline import candidato_con_predictores
+
+    pipeline, rejilla_congelada = candidato_con_predictores(nombre, predictores)
+    return GridSearchCV(
+        pipeline, rejilla_congelada if rejilla is None else rejilla,
+        cv=cv if cv is not None else CVTemporalPorMes(),
+        scoring=scorer_mape_nacional, refit=True, return_train_score=True, n_jobs=1,
+    ).fit(df, df[OBJETIVO])
+
+
+def mape_cv_ganador(busqueda) -> np.ndarray:
+    """MAPE de validación de cada fold con los hiperparámetros ganadores (positivo, en %).
+
+    Sale de cv_results_ (split{k}_test_score con el signo volteado). Su desviación con
+    ddof=1 es la misma mape_desv de comparacion_cv.csv, la que usa la regla Ridge/KNN.
+    """
+    mejor = busqueda.best_index_
+    return np.array([-busqueda.cv_results_[f"split{k}_test_score"][mejor]
+                     for k in range(busqueda.n_splits_)])
+
+
 def evaluar_cv(pipeline, df, cv):
     """DataFrame fold × métrica: MAPE, MAD, MSD y RMSE nacionales y MAPE del panel.
 
