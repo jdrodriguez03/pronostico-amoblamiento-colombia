@@ -52,4 +52,24 @@ Antes de abrir la prueba se congela la especificación completa en `docs/especif
 
 > El modelo final es Ridge. Se cambia a KNN solo si se cumplen las dos condiciones en el escenario central: (a) el MAPE nacional de prueba de KNN es menor que el de Ridge por más de la desviación estándar entre folds del MAPE de validación de Ridge, y (b) KNN tiene menor error absoluto que Ridge en al menos 8 de los 12 meses de prueba. Ridge se prefiere a igualdad práctica por estabilidad e interpretabilidad.
 
-Commit de congelamiento: `________` (hash del merge a `main`; se anota antes de correr `evaluar_prueba.py`).
+Commit de congelamiento: `34722497952b2a8d23ec7e4d18c23e7de3039517` (merge del PR #32 a `main`, 9 de noviembre, 22:03; anotado antes de correr `evaluar_prueba.py`).
+
+## 10 de noviembre de 2026 · Evaluación única en prueba y modelo final (Juanes)
+
+La prueba (agosto 2025 – julio 2026) se abrió una sola vez, el martes 10 a las 14:06, con `python scripts/evaluar_prueba.py --escenario todos`, después del congelamiento (commit `3472249`) y del commit de la tarea 5 con los hiperparámetros ya fijados. Se corrió fuera de la franja planeada (12:00 a 14:00) por el retraso de la mañana; nada se cambió entre el congelamiento y la corrida.
+
+**Resultado de la regla (escenario central):** el modelo final es **KNN** (k = 3, pesos uniformes).
+
+- (a) Se cumple: MAPE nacional de prueba de Ridge 25,73 % y de KNN 19,80 %. La diferencia de 5,94 puntos supera la desviación entre folds del MAPE de validación de Ridge (5,53), con una holgura de solo 0,40 puntos.
+- (b) Se cumple: KNN tiene menor error absoluto en 8 de los 12 meses. Uno de esos 8 meses (marzo de 2026) lo gana por 0,14 puntos del índice; con 7 meses la regla habría dado Ridge.
+- La regla da el mismo resultado en los escenarios bajo y alto.
+
+**¿Persistió la ventaja de KNN en validación?** No había ventaja que persistiera. Con `rez1` (Entrega 2), KNN era mejor en validación (8,76 % frente a 9,08 %). Con los rezagos realistas, Ridge pasó a ser mejor en validación (9,31 % frente a 9,77 %). En la prueba el orden se invierte otra vez y KNN gana. La diferencia Ridge − KNN en prueba tiene un IC 95 % por bloques de −1,35 a 12,03 puntos: cruza el cero, así que la prueba no permite afirmar que KNN sea mejor que Ridge más allá del azar de 12 meses. Se elige KNN porque así lo dice la regla escrita antes, no porque la diferencia sea concluyente.
+
+**Lo que la prueba contradice (se reporta, no se corrige):**
+
+- Todos los modelos empeoran mucho frente a la validación: Ridge de 9,31 % a 25,73 % y KNN de 9,77 % a 19,80 %.
+- **Ningún modelo le gana al ingenuo estacional en la prueba** (16,06 %). KNN − ingenuo: +3,74 puntos, IC de −0,27 a 7,47 (cruza el cero). Ridge − ingenuo: +9,68 puntos, IC de 2,29 a 15,34 (Ridge es peor que el ingenuo).
+- Todos los modelos, incluido el ingenuo, subestiman la serie nacional en los 12 meses. KNN se queda en promedio 26 % por debajo y Ridge 36 %. Es el patrón de subestimación de 2024–2025 (hallazgos de Aleja), que persiste y se agranda en la prueba. Según la regla 3 de la entrega, el modelo no se modifica por esto.
+
+Cifras: `results/tablas/prueba.csv`, `prueba_pareada.csv`, `tabla_final.csv` y la figura `results/figuras/fig_prueba_serie_nacional.png`.

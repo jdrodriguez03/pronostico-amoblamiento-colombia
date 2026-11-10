@@ -1,0 +1,6 @@
+modelo,mape_cv_media,mape_cv_desv,mape_cv_min_escenarios,mape_cv_max_escenarios,mape_prueba,mape_prueba_ic_inf,mape_prueba_ic_sup,mape_prueba_min_escenarios,mape_prueba_max_escenarios,dif_vs_ingenuo,dif_vs_ingenuo_ic_inf,dif_vs_ingenuo_ic_sup,dif_ridge_menos_knn,dif_ridge_menos_knn_ic_inf,dif_ridge_menos_knn_ic_sup,hiperparametros,n_meses,largo_bloque,B
+ridge,9.312366,5.532773,9.107586,9.312366,25.734414,18.630432,31.584500,25.376987,25.743683,9.676843,2.286168,15.337795,5.937648,-1.351559,12.033857,alpha=316.2,12,3,2000
+knn,9.765125,4.173075,9.765125,9.994658,19.796766,16.528585,22.824196,19.257049,19.796766,3.739195,-0.273878,7.472139,5.937648,-1.351559,12.033857,n_neighbors=3; weights=uniform,12,3,2000
+mlr_stepwise,12.260418,4.926948,12.138768,12.450491,29.128800,17.260193,38.930076,28.550824,29.128800,13.071229,1.208399,22.513359,,,,sin hiperparámetros,12,3,2000
+media,9.880791,5.440993,9.880789,9.880794,27.556222,24.035571,29.946411,27.556222,27.556233,11.498651,6.887960,14.750105,,,,sin hiperparámetros,12,3,2000
+ingenuo_estacional,12.298414,7.758059,12.298412,12.298415,16.057571,14.850226,17.576335,16.057571,16.057585,0.000000,0.000000,0.000000,,,,sin hiperparámetros,12,3,2000
