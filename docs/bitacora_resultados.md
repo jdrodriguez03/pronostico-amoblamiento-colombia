@@ -118,3 +118,14 @@ escenario central, manteniendo fijas las demás variables (asociación, no causa
 - **Estacionalidad**: diciembre +8,0 % y noviembre +4,4 % frente a enero; abril −5,7 %.
 - Los signos de Ridge son iguales en los 3 escenarios y los coeficientes cambian menos de 0,005.
 - Ridge, Lasso y KNN coinciden exactamente con `cv_resultados.csv`.
+## 2026-11-10 · Patrón de subestimación 2024–2025 (corrección 3)
+
+`notebooks/06_patron_errores.ipynb`, Ridge de la Entrega 2 (alpha = 1000, `_rez1`), escenario central, solo entrenamiento. Residuo = observado − predicho. Figuras `fig_errores_residuos` y `fig_errores_mapa_lineas`.
+
+- **Desde noviembre de 2024 todos los residuos fuera de muestra son positivos**: 10 de los últimos 12 meses de validación, con residuo medio de +21,3 puntos (julio de 2025: +46,9).
+- **No es ruido, es una deriva**: el residuo crece 1,2 puntos por mes desde 2023 y cambia de signo en el tiempo (−12,3 puntos en 2019, +0,1 en 2021–2023, +11,5 en 2024–2025), lo que indica una tendencia que el modelo no tiene.
+- **Los predictores no acompañan el crecimiento**: el índice pasó de 126 (promedio 2024) a 144 (2025), pero las importaciones rezagadas quedaron planas y la inflación cayó; con su coeficiente positivo, eso baja el pronóstico justo cuando las ventas suben.
+- **Una tendencia lineal corregiría gran parte del sesgo** (diagnóstico, no se adopta): sesgo de los últimos 12 meses de +21,3 a +3,9 puntos y MAPE de 9,08 % a 8,30 %, aunque empeora los primeros folds (4,9 % → 8,3 %).
+- **El error se concentra en informática y telecomunicaciones** (+41 % de residuo medio en los últimos 12 meses, en los 7 departamentos), una diferencia entre líneas que es observada; las diferencias entre departamentos dependen de η y no se interpretan.
+
+**Conclusión:** el patrón se explica por un crecimiento del mercado en 2024–2025 que los predictores rezagados no capturan y que el modelo, sin tendencia, no puede extrapolar. Para el uso: en un mercado que crece, el pronóstico tiende a quedarse corto y debe leerse como piso.
