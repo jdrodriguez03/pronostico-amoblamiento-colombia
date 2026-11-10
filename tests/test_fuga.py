@@ -131,3 +131,10 @@ def test_cv_temporal_no_mezcla_meses_en_entrenamiento_y_validacion():
         assert (entrenamiento < pd.Timestamp(INICIO_PRUEBA)).all()
         assert (validacion < pd.Timestamp(INICIO_PRUEBA)).all()
         assert validacion.nunique() == 6
+def test_app_no_evalua_con_la_prueba():
+    """Excepción documentada: src/despliegue/predecir.py lee la base completa (incluye la
+    prueba) solo para llenar las entradas de la app. No puede llamar a cargar_prueba ni
+    calcular métricas: la app muestra, no evalúa."""
+    codigo = (RAIZ_REPOSITORIO / "src/despliegue/predecir.py").read_text(encoding="utf-8")
+    assert not _llama_a_cargar_prueba(codigo)
+    assert "src.evaluacion.metricas" not in codigo

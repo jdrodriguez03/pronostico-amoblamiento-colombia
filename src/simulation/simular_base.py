@@ -218,20 +218,20 @@ def main(nac, dep, salida):
     base = pd.concat(tablas, ignore_index=True)
     for nombre in ESCENARIOS:
         base[base.escenario == nombre].drop(columns="escenario").to_csv(
-            salida / f"base_{nombre}.csv", index=False, float_format="%.4f")
+            salida / f"base_{nombre}.csv", index=False, float_format="%.4f", lineterminator="\n")
 
     # Componentes reales (para auditoria; NO se usan como predictores)
     comp = pd.DataFrame([(fechas[t], DEPTOS[d], w[d], F[t, d], G[t, d], R[t])
                          for t in range(len(fechas)) for d in range(7)],
                         columns=["fecha", "departamento", "peso_base2019", "factor_regional",
                                  "indice_grupo_depto", "indice_grupo_nacional"])
-    comp.to_csv(salida / "componentes_regionales.csv", index=False, float_format="%.6f")
+    comp.to_csv(salida / "componentes_regionales.csv", index=False, float_format="%.6f",lineterminator="\n")
     lin = pd.DataFrame(L, columns=[f"L_{c}" for c in LINEAS])
     lin.insert(0, "fecha", fechas)
-    lin.to_csv(salida / "lineas_nacionales.csv", index=False, float_format="%.6f")
+    lin.to_csv(salida / "lineas_nacionales.csv", index=False, float_format="%.6f",lineterminator="\n")
 
     VERIFICACION.parent.mkdir(parents=True, exist_ok=True)
-    VERIFICACION.write_text("\n".join(informe), encoding="utf-8")
+    VERIFICACION.write_text("\n".join(informe), encoding="utf-8", newline="\n")
     print("\n".join(informe))
 
 

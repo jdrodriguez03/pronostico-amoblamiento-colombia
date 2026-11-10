@@ -10,3 +10,4 @@ joblib==1.6.0
 jupyter==1.1.1
 pytest==9.1.1
 ruff==0.16.10
+streamlit==1.67.0
