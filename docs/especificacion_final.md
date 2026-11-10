@@ -4,7 +4,7 @@
 
 Este documento fija **todo** lo que define el modelo antes de abrir la prueba (agosto 2025 – julio 2026). Lo que está aquí no cambia después de ver la prueba: si la prueba contradice a la validación, se reporta y se discute, no se corrige. El código que lo implementa ya está en el repositorio; cada fila dice dónde.
 
-**Commit de congelamiento:** `________` (se anota el hash del merge de esta rama a `main`, antes de correr `scripts/evaluar_prueba.py`).
+**Commit de congelamiento:** `34722497952b2a8d23ec7e4d18c23e7de3039517` (merge del PR #32 a `main`, 9 de noviembre de 2026, 22:03). Se anotó el martes 10 antes de correr `scripts/evaluar_prueba.py`.
 
 ## 1. Qué se pronostica
 

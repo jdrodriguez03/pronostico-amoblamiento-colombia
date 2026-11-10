@@ -223,3 +223,35 @@ def regla_modelo_final(y_real, pred_ridge, pred_knn, desv_cv_ridge: float,
         "condicion_b": b,
         "modelo_final": MODELO_RETADOR if (a and b) else MODELO_POR_DEFECTO,
     }
+
+
+# ---------------------------------------------------------------------------
+# Cuánto cuesta ser realistas (entrega final, martes 10, corrección 2)
+# ---------------------------------------------------------------------------
+MODELOS_COSTO_REZAGOS = ["ridge", "knn", "mlr_stepwise", MEDIA, INGENUO]
+
+
+def tabla_costo_rezagos(comparacion_rez1: pd.DataFrame, comparacion_reales: pd.DataFrame,
+                        escenario: str = "central") -> pd.DataFrame:
+    """MAPE de validación con rez1 (Entrega 2) frente a rezagos reales, y su diferencia.
+
+    Recibe las dos comparacion_cv (comparacion_cv_rez1.csv y comparacion_cv.csv, las dos
+    corridas con el mismo código) y devuelve una fila por modelo con media ± desviación
+    entre folds en cada especificación y diferencia = reales − rez1 en puntos de MAPE.
+    Positiva = usar solo lo publicado el día del pronóstico cuesta precisión.
+
+    Ejemplo: Ridge 9,08 % con rez1 y 9,31 % con reales → diferencia +0,23 puntos.
+    """
+    columnas = ["mape_media", "mape_desv", "hiperparametros"]
+    a = comparacion_rez1[comparacion_rez1["escenario"] == escenario].set_index("modelo")
+    b = comparacion_reales[comparacion_reales["escenario"] == escenario].set_index("modelo")
+    faltan = [m for m in MODELOS_COSTO_REZAGOS if m not in a.index or m not in b.index]
+    if faltan:
+        raise ValueError(f"faltan los modelos {faltan} en alguna de las dos tablas")
+    tabla = pd.DataFrame({"escenario": escenario, "modelo": MODELOS_COSTO_REZAGOS})
+    for sufijo, fuente in (("rez1", a), ("reales", b)):
+        for col in columnas:
+            tabla[f"{col}_{sufijo}"] = fuente.loc[MODELOS_COSTO_REZAGOS, col].to_numpy()
+    tabla["diferencia"] = tabla["mape_media_reales"] - tabla["mape_media_rez1"]
+    tabla["diferencia_pct"] = 100 * tabla["diferencia"] / tabla["mape_media_rez1"]
+    return tabla

@@ -1,0 +1,6 @@
+escenario,modelo,mape_media_rez1,mape_desv_rez1,hiperparametros_rez1,mape_media_reales,mape_desv_reales,hiperparametros_reales,diferencia,diferencia_pct
+central,ridge,9.079339,6.036060,alpha=1000,9.312366,5.532773,alpha=316.2,0.233027,2.566563
+central,knn,8.756512,4.807050,n_neighbors=3; weights=uniform,9.765125,4.173075,n_neighbors=3; weights=uniform,1.008613,11.518433
+central,mlr_stepwise,14.978817,6.726186,sin hiperparámetros,12.260418,4.926948,sin hiperparámetros,-2.718399,-18.148289
+central,media,10.256861,5.855434,sin hiperparámetros,9.880791,5.440993,sin hiperparámetros,-0.376070,-3.666521
+central,ingenuo_estacional,12.298414,7.758059,sin hiperparámetros,12.298414,7.758059,sin hiperparámetros,0.000000,0.000000

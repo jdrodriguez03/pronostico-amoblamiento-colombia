@@ -134,6 +134,35 @@ def mape_cv_ganador(busqueda) -> np.ndarray:
                      for k in range(busqueda.n_splits_)])
 
 
+def predicciones_oof(pipeline, df, cv) -> pd.DataFrame:
+    """Predicciones fuera de muestra: cada mes de validación, predicho por un modelo que no lo vio.
+
+    Entrega final, martes 10 (para rango_error.csv). Igual que evaluar_cv, en cada fold se
+    clona el pipeline, se ajusta solo con los meses de entrenamiento del fold y se predicen
+    los 6 meses de validación. Con 5 folds quedan 30 meses por serie (feb 2023 – jul 2025),
+    nunca un mes de la prueba.
+
+    Devuelve una fila por mes, departamento y línea: fold, fecha, departamento,
+    linea_codigo, y_real, y_pred.
+    Ejemplo: la fila de Antioquia, línea 8, marzo de 2024 trae la predicción del fold 3,
+    que entrenó hasta enero de 2024.
+    """
+    y = df[OBJETIVO].to_numpy(dtype=float)
+    partes = []
+    for k, (entrena, valida) in enumerate(cv.split(df), start=1):
+        val = df.iloc[valida]
+        modelo = clone(pipeline).fit(df.iloc[entrena], y[entrena])
+        partes.append(pd.DataFrame({
+            "fold": k,
+            "fecha": val["fecha"].to_numpy(),
+            "departamento": val["departamento"].to_numpy(),
+            "linea_codigo": val["linea_codigo"].to_numpy(),
+            "y_real": y[valida],
+            "y_pred": modelo.predict(val),
+        }))
+    return pd.concat(partes, ignore_index=True)
+
+
 def evaluar_cv(pipeline, df, cv):
     """DataFrame fold × métrica: MAPE, MAD, MSD y RMSE nacionales y MAPE del panel.
 
