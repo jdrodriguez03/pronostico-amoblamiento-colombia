@@ -19,6 +19,7 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 from scipy.stats import ks_2samp
+from threadpoolctl import threadpool_limits
 
 from src.config import FECHA_FIN, INICIO_PRUEBA, LINEAS, OBJETIVO, RUTA_TABLAS, ruta_base
 from src.datos.cargar import cargar_entrenamiento
@@ -89,7 +90,11 @@ def entrenar_para_app(escenario: str = "central", fixture: bool = False):
         pre = prefijo_parametros()
         modelo.set_params(**{f"{pre}n_neighbors": 3, f"{pre}weights": "uniform"})
         descripcion = "KNN, k = 3 (hiperparámetros congelados)"
-    modelo.fit(datos, datos[OBJETIVO])
+    # Un solo hilo, como entrenar.py y evaluar_prueba.py: KNN tiene empates de distancia
+    # (las filas de un mes comparten los predictores nacionales) y el número de hilos puede
+    # cambiar qué vecino entra. Así la app da el mismo número que la evaluación oficial.
+    with threadpool_limits(limits=1):
+        modelo.fit(datos, datos[OBJETIVO])
     return modelo, descripcion
 
 
@@ -111,7 +116,8 @@ def predecir(modelo, entradas: pd.DataFrame) -> float:
     se predice cada departamento y se agrega con agregar_nacional (pesos PESOS_DEPTO), igual
     que en la evaluación.
     """
-    pred = np.asarray(modelo.predict(entradas), dtype=float)
+    with threadpool_limits(limits=1):
+        pred = np.asarray(modelo.predict(entradas), dtype=float)
     if len(entradas) == 1:
         return float(pred[0])
     datos = entradas[["fecha", "departamento", "linea_codigo"]].copy()
