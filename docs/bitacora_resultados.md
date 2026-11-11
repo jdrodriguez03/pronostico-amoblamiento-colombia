@@ -130,6 +130,6 @@ escenario central, manteniendo fijas las demás variables (asociación, no causa
 
 **Conclusión:** el patrón se explica por un crecimiento del mercado en 2024–2025 que los predictores rezagados no capturan y que el modelo, sin tendencia, no puede extrapolar. Para el uso: en un mercado que crece, el pronóstico tiende a quedarse corto y debe leerse como piso.
 
-## 2026-11-10 · ¿El patrón persiste en la prueba? (Aleja, tarea 6)
+## 2026-11-10 · ¿El patrón persiste en la prueba?
 
 Lectura de `prueba_predicciones.csv` (escenario central, serie nacional de la línea 8; no se volvió a correr la prueba). Sí persiste y se agranda: los cinco modelos subestiman los 12 meses. Residuo medio +27,0 puntos para el ingenuo, +33,9 para KNN y +43,8 para Ridge. El índice de prueba promedia 168 (+19 % frente al mismo mes del año anterior) y su máximo (188) supera el del entrenamiento (180); el mayor pronóstico de KNN es 148 y el de Ridge 150. El ICC está fuera del rango del entrenamiento en 10 de 12 meses. Por línea, el error de KNN se concentra en sonido y video (+37 %) e informática (+35 %), y sobrestima prendas (−22 %), igual que en validación. El modelo no se modifica.
