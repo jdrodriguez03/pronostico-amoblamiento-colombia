@@ -1,6 +1,8 @@
 # Pronóstico de ventas de muebles y artículos del hogar en Colombia
 
 [![CI](https://github.com/jdrodriguez03/pronostico-amoblamiento-colombia/actions/workflows/ci.yml/badge.svg)](https://github.com/jdrodriguez03/pronostico-amoblamiento-colombia/actions/workflows/ci.yml)
+## Acceso al streamlit:
+[![Streamlit App](https://streamlit.io)](https://pronostico-amoblamiento-colombia-wnijbu3tvw8nuwtmczyqxt.streamlit.app/)
 
 Proyecto Integrador · Machine Learning I · Universidad Externado de Colombia · 2026
 
